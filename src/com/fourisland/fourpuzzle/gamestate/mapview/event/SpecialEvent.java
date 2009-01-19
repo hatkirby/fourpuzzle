@@ -6,10 +6,9 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
 import com.fourisland.fourpuzzle.*;
+import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,18 +101,18 @@ public class SpecialEvent {
      */
     public void MoveEvent(MoveEvent[] actions)
     {
-        MoveEvent(actions, Game.getHeroEvent());
+        new Thread(new MoveEventThread(Game.getHeroEvent(), actions)).start();
     }
     
     /**
      * Performs actions on an event
      * 
      * @param actions An array of MoveEvents to perform on the event
-     * @param ev The event to act upon
+     * @param label The label of the event to act upon
      */
-    public void MoveEvent(MoveEvent[] actions, Event ev)
+    public void MoveEvent(MoveEvent[] actions, String label)
     {
-        new Thread(new MoveEventThread(ev, actions)).start();
+        new Thread(new MoveEventThread(((MapViewGameState) Game.getGameState()).getCurrentMap().getEvent(label), actions)).start();
     }
     
     /**

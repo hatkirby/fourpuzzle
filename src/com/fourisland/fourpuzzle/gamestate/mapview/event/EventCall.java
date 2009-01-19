@@ -22,4 +22,9 @@ public abstract class EventCall extends SpecialEvent implements Runnable {
 
     public abstract void run();
     
+    public void activate()
+    {
+        new Thread(this, "Special Event").start();
+    }
+    
 }

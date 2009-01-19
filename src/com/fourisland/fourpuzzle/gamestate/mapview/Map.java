@@ -6,9 +6,9 @@
 package com.fourisland.fourpuzzle.gamestate.mapview;
 
 import com.fourisland.fourpuzzle.*;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -41,19 +41,18 @@ public abstract class Map {
         }
     }
     
-    private ArrayList<LayerEvent> events = new ArrayList<LayerEvent>();
-    public ArrayList<LayerEvent> getEvents()
+    private EventList events = new EventList();
+    public EventList getEvents()
     {
         return events;
     }
     public LayerEvent getEvent(String event)
     {
-        int i=0;
-        for (i=0;i<events.size();i++)
+        for (LayerEvent ev : events)
         {
-            if (events.get(i).getLabel().equals(event))
+            if (ev.getLabel().equals(event))
             {
-                return events.get(i);
+                return ev;
             }
         }
         

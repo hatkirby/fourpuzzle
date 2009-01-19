@@ -13,10 +13,12 @@ import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventCallTime;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
+import com.fourisland.fourpuzzle.util.Functions;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 /**
  *
@@ -67,7 +69,7 @@ public class MapViewGameState implements GameState {
                 debugWalkthrough = false;
             }
 
-            if (!hero.isMoving())
+            if (!hero.isMoving() && !MoveEventThread.isHeroMoving())
             {
                 Direction toMove = null;
                 Boolean letsMove = false;
@@ -104,29 +106,22 @@ public class MapViewGameState implements GameState {
 
                 if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))
                 {
-                    int i=0;
-                    for (i=0;i<currentMap.getEvents().size();i++)
+                    for (LayerEvent ev : currentMap.getEvents())
                     {
-                        LayerEvent ev = currentMap.getEvents().get(i);
-
                         if (ev.getCalltime() == EventCallTime.PushKey)
                         {
-                            if ((hero.getDirection() == Direction.North) && (ev.getLocation().x == hero.getLocation().x) && (ev.getLocation().y == (hero.getLocation().y - 1)))
+                            if (ev.getLayer() == Layer.Middle)
                             {
-                                ev.setDirection(Direction.South);
-                                ev.getCallback().run();
-                            } else if ((hero.getDirection() == Direction.West) && (ev.getLocation().x == (hero.getLocation().x - 1)) && (ev.getLocation().y == hero.getLocation().y))
-                            {
-                                ev.setDirection(Direction.East);
-                                ev.getCallback().run();
-                            } else if ((hero.getDirection() == Direction.South) && (ev.getLocation().x == hero.getLocation().x) && (ev.getLocation().y == (hero.getLocation().y + 1)))
-                            {
-                                ev.setDirection(Direction.North);
-                                ev.getCallback().run();
-                            } else if ((hero.getDirection() == Direction.East) && (ev.getLocation().x == (hero.getLocation().x + 1)) && (ev.getLocation().y == hero.getLocation().y))
-                            {
-                                ev.setDirection(Direction.West);
-                                ev.getCallback().run();
+                                if (Functions.isFacing(hero, ev))
+                                {
+                                    ev.setDirection(Functions.oppositeDirection(hero.getDirection()));
+                                    ev.getCallback().activate();
+                                }
+                            } else {
+                                if (ev.getLocation().equals(hero.getLocation()))
+                                {
+                                    ev.getCallback().activate();
+                                }
                             }
                         }
                     }
@@ -145,14 +140,16 @@ public class MapViewGameState implements GameState {
             hero.processMoving();
         }
 
-        int i=0;
-        for (i=0;i<currentMap.getEvents().size();i++)
+        for (LayerEvent ev : currentMap.getEvents())
         {
-            if (!currentMap.getEvents().get(i).isMoving())
+            if (!ev.isMoving())
             {
-                currentMap.getEvents().get(i).startMoving(currentMap);
+                if (!MoveEventThread.isOtherMoving(ev))
+                {
+                    ev.startMoving(currentMap);
+                }
             } else {
-                currentMap.getEvents().get(i).processMoving();
+                ev.processMoving();
             }
         }
     }
@@ -183,10 +180,10 @@ public class MapViewGameState implements GameState {
         mv.draw(g, true);*/
         Game.getSaveFile().getHero().render(g);
 
-        ArrayList<LayerEvent> events = currentMap.getEvents();
-        for (i=0;i<events.size();i++)
+        EventList events = currentMap.getEvents();
+        for (LayerEvent event : events)
         {
-            events.get(i).render(g);
+            event.render(g);
         }
 
         for (i=0;i<currentMap.getMapData().size();i++)

@@ -27,6 +27,7 @@ public class LayerEvent implements Event {
     {
         location = new Point(x,y);
         events = new ArrayList<PossibleEvent>();
+        label = "Unlabelled";
     }
     
     /** Create a new Event instance
@@ -204,4 +205,8 @@ public class LayerEvent implements Event {
         return getPossibleEvent().getCallback();
     }
 
+    public void setLabel(String string) {
+        this.label = string;
+    }
+    
 }
