@@ -14,7 +14,7 @@ import java.awt.Graphics2D;
 public abstract class Transition {
     
     private boolean way;
-    protected void setDirection(boolean from) throws TransitionUnsupportedException
+    protected void setDirection(boolean from)
     {
         if ((from) && !(isFromSupported()))
         {
@@ -26,6 +26,7 @@ public abstract class Transition {
             way = from;
         }
     }
+    
     public boolean getDirection()
     {
         return way;

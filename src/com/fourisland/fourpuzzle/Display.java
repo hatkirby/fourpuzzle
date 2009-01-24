@@ -21,7 +21,7 @@ public class Display {
     
     public static int tileAnimationFrame = 0;
 
-    public static void render(JDialog gameFrame) throws Exception
+    public static void render(JDialog gameFrame)
     {
         if (enabled)
         {
@@ -57,7 +57,7 @@ public class Display {
         }
     }
 
-    private static void render(JDialog gameFrame, VolatileImage vImg) throws Exception
+    private static void render(JDialog gameFrame, VolatileImage vImg)
     {
         if (vImg.validate(gameFrame.getGraphicsConfiguration()) == VolatileImage.IMAGE_INCOMPATIBLE)
         {

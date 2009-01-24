@@ -33,7 +33,7 @@ public class Game {
     {
         return gameState;
     }
-    public static void setGameState(GameState gameState) throws Exception
+    public static void setGameState(GameState gameState)
     {
         if (Game.gameState != null)
         {

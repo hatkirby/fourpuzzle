@@ -14,7 +14,8 @@ import java.util.Random;
  */
 public class RandomMovementType implements MovementType {
 
-    public Direction startMoving() throws Exception {
+    public Direction startMoving()
+    {
         Random r = new Random();
         int ra = r.nextInt(1000);
         Direction toMove = null;

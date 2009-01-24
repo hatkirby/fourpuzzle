@@ -17,8 +17,11 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
 import com.fourisland.fourpuzzle.util.Functions;
+import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,14 +33,14 @@ public class MapViewGameState implements GameState {
     boolean processInput = true;
     Map currentMap;
     
-    public MapViewGameState(String map, int x, int y) throws Exception
+    public MapViewGameState(String map, int x, int y)
     {
         //currentMap = ObjectLoader.getMap(map);
         setCurrentMap(map);
         Game.getSaveFile().getHero().setLocation(x, y);
     }
         
-    public void initalize() throws Exception
+    public void initalize()
     {
         //if (!currentMap.getMusic().equals(""))
         {
@@ -45,7 +48,7 @@ public class MapViewGameState implements GameState {
         }
     }
     
-    public void deinitalize() throws Exception
+    public void deinitalize()
     {
         //if (!currentMap.getMusic().equals(""))
         {
@@ -53,7 +56,7 @@ public class MapViewGameState implements GameState {
         }
     }
 
-    public void processInput() throws Exception
+    public void processInput()
     {
         if (processInput)
         {
@@ -132,7 +135,7 @@ public class MapViewGameState implements GameState {
         }
     }
     
-    public void doGameCycle() throws Exception
+    public void doGameCycle()
     {
         HeroEvent hero = Game.getSaveFile().getHero();
         if (hero.isMoving())
@@ -154,7 +157,7 @@ public class MapViewGameState implements GameState {
         }
     }
 
-    public void render(Graphics2D g) throws Exception
+    public void render(Graphics2D g)
     {
         ChipSet chipSet = ChipSet.getChipSet(currentMap.getChipSet());
         int i,x,y;
@@ -202,19 +205,28 @@ public class MapViewGameState implements GameState {
         }
     }
     
-    public void initCurrentMap(String mapName) throws Exception
+    public void initCurrentMap(String mapName)
     {
-        Class mapClass = Class.forName(PuzzleApplication.INSTANCE.getGamePackage() + ".gamedata.map." + mapName);
-        Object mapObject = mapClass.newInstance();
-        Map map = (Map) mapObject;
-        map.initalize();
-        currentMap = map;
+        try {
+            Class mapClass = Class.forName(PuzzleApplication.INSTANCE.getGamePackage() + ".gamedata.map." + mapName);
+            Object mapObject = mapClass.newInstance();
+            Map map = (Map) mapObject;
+            map.initalize();
+            currentMap = map;
+        } catch (InstantiationException ex) {
+            Logger.getLogger(MapViewGameState.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MapViewGameState.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            throw new ResourceNotFoundException("Map", mapName);
+        }
     }
-    public void setCurrentMap(String mapName) throws Exception
+    public void setCurrentMap(String mapName)
     {
         Game.getSaveFile().setCurrentMap(mapName);
         initCurrentMap(mapName);
     }
+    
     public Map getCurrentMap()
     {
         return currentMap;

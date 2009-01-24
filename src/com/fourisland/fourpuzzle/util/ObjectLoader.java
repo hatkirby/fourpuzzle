@@ -11,8 +11,13 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequence;
 import org.jdesktop.application.ResourceMap;
@@ -25,13 +30,25 @@ public class ObjectLoader {
     
     private static HashMap<String,Object> objectCache = new HashMap<String,Object>();
     
-    public static BufferedImage getImage(String type, String name) throws Exception
+    public static BufferedImage getImage(String type, String name)
     {
         if (!objectCache.containsKey(type + "/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
             String filename = rm.getResourcesDir() + type.toLowerCase() + "/" + name + ".png";
-            BufferedImage bImg = ImageIO.read(rm.getClassLoader().getResourceAsStream(filename));
+            InputStream str = rm.getClassLoader().getResourceAsStream(filename);
+            
+            if (str == null)
+            {
+                throw new ResourceNotFoundException(type, name);
+            }
+            
+            BufferedImage bImg = null;
+            try {
+                bImg = ImageIO.read(str);
+            } catch (IOException ex) {
+                Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             addToObjectCache(type,name,bImg);
         }
@@ -39,13 +56,26 @@ public class ObjectLoader {
         return (BufferedImage) objectCache.get(type + "/" + name);
     }
     
-    public static BufferedImage getImage(String type, String name, int transparencyColor) throws Exception
+    public static BufferedImage getImage(String type, String name, int transparencyColor)
     {
         if (!objectCache.containsKey(type + "/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
-            String filename = rm.getResourcesDir() + type + "/" + name + ".png";
-            BufferedImage bImg = ImageIO.read(rm.getClassLoader().getResourceAsStream(filename));
+            String filename = rm.getResourcesDir() + type.toLowerCase() + "/" + name + ".png";
+            InputStream str = rm.getClassLoader().getResourceAsStream(filename);
+            
+            if (str == null)
+            {
+                throw new ResourceNotFoundException(type, name);
+            }
+            
+            BufferedImage bImg = null;
+            try {
+                bImg = ImageIO.read(str);
+            } catch (IOException ex) {
+                Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             bImg = new BufferedImage(bImg.getWidth(), bImg.getHeight(), BufferedImage.TYPE_INT_RGB);
             Image image = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(bImg.getSource(), new TransparentImageFilter(transparencyColor)));
             bImg.createGraphics().drawImage(image, 0, 0, null);            
@@ -65,7 +95,7 @@ public class ObjectLoader {
         return map;
     }*/
     
-    public static void addToObjectCache(String type, String name, Object object) throws Exception
+    public static void addToObjectCache(String type, String name, Object object)
     {
         if (objectCache.size() >= 100)
         {
@@ -75,13 +105,26 @@ public class ObjectLoader {
         objectCache.put(type + "/" + name, object);
     }
     
-    public static Sequence getMusic(String name) throws Exception
+    public static Sequence getMusic(String name)
     {
         if (!objectCache.containsKey("Music/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
             String filename = rm.getResourcesDir() + "music/" + name + ".mid";
-            Sequence seq = MidiSystem.getSequence(rm.getClassLoader().getResourceAsStream(filename));
+            InputStream str = rm.getClassLoader().getResourceAsStream(filename);
+            if (str == null)
+            {
+                throw new ResourceNotFoundException("Music", name);
+            }
+            
+            Sequence seq = null;
+            try {
+                seq = MidiSystem.getSequence(str);
+            } catch (InvalidMidiDataException ex) {
+                Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             addToObjectCache("Music", name, seq);
         }

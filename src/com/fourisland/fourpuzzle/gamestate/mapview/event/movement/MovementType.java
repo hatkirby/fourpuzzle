@@ -13,7 +13,7 @@ import com.fourisland.fourpuzzle.Direction;
  */
 public interface MovementType {
     
-    public Direction startMoving() throws Exception;
+    public Direction startMoving();
     
 }
     

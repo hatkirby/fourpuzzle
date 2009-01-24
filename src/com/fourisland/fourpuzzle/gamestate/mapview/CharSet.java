@@ -29,7 +29,8 @@ public class CharSet {
         return charSetImage.getSubimage(sx, sy, 24, 32);
     }
 
-    public static CharSet getCharSet(String charSet) throws Exception {
+    public static CharSet getCharSet(String charSet)
+    {
         CharSet temp = new CharSet();
         temp.charSetImage = ObjectLoader.getImage("CharSet", charSet);
         return temp;

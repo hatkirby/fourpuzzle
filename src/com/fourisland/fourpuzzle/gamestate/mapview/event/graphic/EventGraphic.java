@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public interface EventGraphic {
     
-    public BufferedImage getImage() throws Exception;
+    public BufferedImage getImage();
     
     public Direction getDirection();
     public void setDirection(Direction direction);

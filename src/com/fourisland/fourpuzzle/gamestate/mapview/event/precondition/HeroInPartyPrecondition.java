@@ -20,7 +20,8 @@ public class HeroInPartyPrecondition implements Precondition {
         this.heroName = heroName;
     }
     
-    public boolean match() {
+    public boolean match()
+    {
         return Game.getSaveFile().getParty().exists(heroName);
     }
     

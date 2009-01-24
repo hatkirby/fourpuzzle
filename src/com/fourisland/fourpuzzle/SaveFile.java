@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,9 +23,8 @@ public class SaveFile implements Serializable {
     
     /**
      * Creates a new SaveFile
-     * @throws java.lang.CloneNotSupportedException
      */
-    public SaveFile() throws CloneNotSupportedException
+    public SaveFile()
     {
         switches = new HashMap<String, Boolean>();
         party = GameCharacters.createParty();
@@ -35,21 +36,28 @@ public class SaveFile implements Serializable {
     /**
      * Loads a SaveFile
      * @param file The ID of the SaveFile to load
-     * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException
+     * @throws IOException if the SaveFile specified does not exist
      */
-    public SaveFile(int file) throws IOException, ClassNotFoundException
+    public SaveFile(int file) throws IOException
     {
         InputStream is = PuzzleApplication.INSTANCE.getContext().getLocalStorage().openInputFile("Save" + file + ".sav");
         ObjectInputStream ois = new ObjectInputStream(is);
-        SaveFile temp = (SaveFile) ois.readObject();
-        
+        SaveFile temp = null;
+        try {
+            temp = (SaveFile) ois.readObject();
+        } catch (IOException ex) {
+            Logger.getLogger(SaveFile.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SaveFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         switches = temp.getSwitches();
         variables = temp.getVariables();
         party = temp.getParty();
         currentMap = temp.getCurrentMap();
-        
+
         ois.close();
+        is.close();
     }
     
     public void saveGame(int file) throws IOException

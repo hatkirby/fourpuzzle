@@ -6,7 +6,11 @@
 package com.fourisland.fourpuzzle;
 
 import com.fourisland.fourpuzzle.util.ObjectLoader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
 /**
@@ -17,57 +21,61 @@ public class Audio {
 
     private static Sequencer seq;
     
-    public static void init() throws Exception
+    public static void init()
     {
-        seq = MidiSystem.getSequencer();
-        seq.open();
+        try {
+            seq = MidiSystem.getSequencer();
+            seq.open();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                if (seq.isRunning())
-                {
-                    seq.stop();
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                public void run() {
+                    if (seq.isRunning()) {
+                        seq.stop();
+                    }
+
+                    seq.close();
                 }
-
-                seq.close();
-            }
-        }));
+            }));
+        } catch (MidiUnavailableException ex) {
+            Logger.getLogger(Audio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
-    public static void playMusic(String file) throws Exception
+    public static void playMusic(String file)
     {
         playMusic(file, true, 1F);
     }
     
-    public static void playMusic(String file, boolean loop) throws Exception
+    public static void playMusic(String file, boolean loop)
     {
         playMusic(file, loop, 1F);
     }
     
-    public static void playMusic(String file, boolean loop, float speed) throws Exception
+    public static void playMusic(String file, boolean loop, float speed)
     {
-        seq.setSequence(ObjectLoader.getMusic(file));
+        try {
+            seq.setSequence(ObjectLoader.getMusic(file));
 
-        if (loop)
-        {
-            seq.setLoopCount(seq.LOOP_CONTINUOUSLY);
-        } else {
-            seq.setLoopCount(0);
+            if (loop) {
+                seq.setLoopCount(seq.LOOP_CONTINUOUSLY);
+            } else {
+                seq.setLoopCount(0);
+            }
+
+            seq.setTempoFactor(speed);
+
+            seq.start();
+        } catch (InvalidMidiDataException ex) {
+            Logger.getLogger(Audio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        seq.setTempoFactor(speed);
-        
-        seq.start();
     }
     
-    public static void stopMusic() throws Exception
+    public static void stopMusic()
     {
-        if (seq == null)
+        if (seq != null)
         {
-            init();
+            seq.stop();
         }
-        
-        seq.stop();
     }
     
 }

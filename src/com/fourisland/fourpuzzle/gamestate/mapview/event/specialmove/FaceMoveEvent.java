@@ -20,7 +20,7 @@ public class FaceMoveEvent implements MoveEvent {
         this.direction = direction;
     }
     
-    public void doAction(Event ev) throws Exception
+    public void doAction(Event ev)
     {
         ev.setDirection(direction);
     }

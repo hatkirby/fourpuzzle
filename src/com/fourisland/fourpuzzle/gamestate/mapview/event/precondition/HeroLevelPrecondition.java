@@ -22,7 +22,8 @@ public class HeroLevelPrecondition implements Precondition {
         this.level = level;
     }
     
-    public boolean match() throws Exception {
+    public boolean match()
+    {
         return (Game.getSaveFile().getParty().exists(heroName) && (Game.getSaveFile().getParty().get(heroName).getLevel() == level));
     }
     

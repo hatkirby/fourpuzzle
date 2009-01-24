@@ -15,7 +15,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.PossibleEvent;
  */
 public class Functions {
 
-    public static boolean canTurn(PossibleEvent ev) throws Exception
+    public static boolean canTurn(PossibleEvent ev)
     {
         switch (ev.getAnimation())
         {
@@ -30,7 +30,7 @@ public class Functions {
         return false;
     }
     
-    public static boolean isFacing(Event ev1, Event ev2) throws Exception
+    public static boolean isFacing(Event ev1, Event ev2)
     {
         if ((ev1.getDirection() == Direction.North) && (ev2.getLocation().x == ev1.getLocation().x) && (ev2.getLocation().y == (ev1.getLocation().y - 1)))
         {

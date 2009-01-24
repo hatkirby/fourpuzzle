@@ -13,7 +13,7 @@ import com.fourisland.fourpuzzle.Direction;
  */
 public class StayStillMovementType implements MovementType {
 
-    public Direction startMoving() throws Exception
+    public Direction startMoving()
     {
         return null; // Do nothing, stay still
     }

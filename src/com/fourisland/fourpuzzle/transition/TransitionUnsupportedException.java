@@ -9,7 +9,7 @@ package com.fourisland.fourpuzzle.transition;
  *
  * @author hatkirby
  */
-public class TransitionUnsupportedException extends Exception {
+public class TransitionUnsupportedException extends RuntimeException {
 
     public TransitionUnsupportedException(String className, String direction)
     {

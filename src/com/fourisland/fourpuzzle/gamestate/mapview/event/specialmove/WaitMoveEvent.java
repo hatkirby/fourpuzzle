@@ -6,6 +6,8 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove;
 
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,9 +21,13 @@ public class WaitMoveEvent implements MoveEvent {
         this.wait = wait;
     }
     
-    public void doAction(Event ev) throws Exception
+    public void doAction(Event ev)
     {
-        Thread.sleep(wait);
+        try {
+            Thread.sleep(wait);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(WaitMoveEvent.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

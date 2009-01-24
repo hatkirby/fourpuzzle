@@ -68,7 +68,7 @@ public class LayerEvent implements Event {
         events.add(pe);
     }
     
-    private PossibleEvent getPossibleEvent() throws Exception
+    private PossibleEvent getPossibleEvent()
     {
         int i;
         for (i=(events.size()-1);i>-1;i--)
@@ -89,7 +89,7 @@ public class LayerEvent implements Event {
         return new PossibleEvent();
     }
     
-    public void render(Graphics g) throws Exception
+    public void render(Graphics g)
     {
         int x = (location.x * 16) - 4;
         int y = (location.y * 16) - 16;
@@ -131,7 +131,7 @@ public class LayerEvent implements Event {
     
     private int moveTimer;
     private Direction moveDirection;
-    public void startMoving(Map map) throws Exception
+    public void startMoving(Map map)
     {
         Direction toMove = getPossibleEvent().getMovement().startMoving();
         
@@ -143,7 +143,7 @@ public class LayerEvent implements Event {
             }
         }
     }
-    public void startMoving(Direction toMove) throws Exception
+    public void startMoving(Direction toMove)
     {
         getPossibleEvent().setDirection(toMove);
         getPossibleEvent().setAnimationStep(2);
@@ -151,7 +151,7 @@ public class LayerEvent implements Event {
         moving = true;
         moveDirection = toMove;
     }
-    public void processMoving() throws Exception
+    public void processMoving()
     {
         if (moving)
         {
@@ -181,26 +181,26 @@ public class LayerEvent implements Event {
         }
     }
     
-    public Direction getDirection() throws Exception
+    public Direction getDirection()
     {
         return getPossibleEvent().getDirection();
     }
-    public void setDirection(Direction direction) throws Exception
+    public void setDirection(Direction direction)
     {
         getPossibleEvent().setDirection(direction);
     }
 
-    public Layer getLayer() throws Exception
+    public Layer getLayer()
     {
         return getPossibleEvent().getLayer();
     }
     
-    public EventCallTime getCalltime() throws Exception
+    public EventCallTime getCalltime()
     {
         return getPossibleEvent().getCalltime();
     }
     
-    public EventCall getCallback() throws Exception
+    public EventCall getCallback()
     {
         return getPossibleEvent().getCallback();
     }

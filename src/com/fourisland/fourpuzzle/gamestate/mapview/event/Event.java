@@ -23,13 +23,13 @@ public interface Event {
     public void setLocation(Point location);
     public void setLocation(int x, int y);
     
-    public void render(Graphics g) throws Exception;
+    public void render(Graphics g);
     
-    public Direction getDirection() throws Exception;
-    public void setDirection(Direction direction) throws Exception;
+    public Direction getDirection();
+    public void setDirection(Direction direction);
 
     public boolean isMoving();
-    public void startMoving(Direction direction) throws Exception;
+    public void startMoving(Direction direction);
     
-    public Layer getLayer() throws Exception;
+    public Layer getLayer();
 }

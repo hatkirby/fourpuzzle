@@ -12,7 +12,6 @@ import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.GameCharacter;
 import com.fourisland.fourpuzzle.gamestate.mapview.CharSet;
-import com.fourisland.fourpuzzle.NoCharactersInPartyException;
 
 /**
  *
@@ -44,7 +43,7 @@ public class HeroEvent implements Event {
         location.setLocation(x, y);
     }
     
-    public void render(Graphics g) throws Exception
+    public void render(Graphics g)
     {
         int x = (location.x * 16) - 4;
         int y = (location.y * 16) - 16;
@@ -66,15 +65,10 @@ public class HeroEvent implements Event {
             }
         }
         
-        try
+        GameCharacter toDraw = Game.getSaveFile().getParty().getLeader();
+        if (!toDraw.getGraphic().equals("blank"))
         {
-            GameCharacter toDraw = Game.getSaveFile().getParty().getLeader();
-            if (!toDraw.getGraphic().equals("blank"))
-            {
-                g.drawImage(CharSet.getCharSet(toDraw.getGraphic()).getImage(toDraw.getGraphicOffset(), direction, animationStep), x, y, null);
-            }
-        } catch (NoCharactersInPartyException ex)
-        {
+            g.drawImage(CharSet.getCharSet(toDraw.getGraphic()).getImage(toDraw.getGraphicOffset(), direction, animationStep), x, y, null);
         }
     }
     
@@ -91,7 +85,7 @@ public class HeroEvent implements Event {
     
     private int moveTimer;
     private Direction moveDirection;
-    public void startMoving(Direction toMove) throws Exception
+    public void startMoving(Direction toMove)
     {
         setDirection(toMove);
         setAnimationStep(2);
@@ -99,7 +93,7 @@ public class HeroEvent implements Event {
         moving = true;
         moveDirection = toMove;
     }
-    public void processMoving() throws Exception
+    public void processMoving()
     {
         if (moving)
         {
@@ -149,7 +143,7 @@ public class HeroEvent implements Event {
         this.animationStep = animationStep;
     }
 
-    public Layer getLayer() throws Exception
+    public Layer getLayer()
     {
         return Layer.Middle;
     }

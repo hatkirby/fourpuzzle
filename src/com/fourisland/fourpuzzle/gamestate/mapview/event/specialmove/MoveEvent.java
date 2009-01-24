@@ -14,6 +14,6 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
  */
 public interface MoveEvent {
 
-    public void doAction(Event ev) throws Exception;
+    public void doAction(Event ev);
     
 }

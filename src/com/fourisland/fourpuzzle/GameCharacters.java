@@ -30,7 +30,7 @@ public class GameCharacters extends ArrayList<GameCharacter>
         return temp;
     }
 
-    public GameCharacter getLeader() throws Exception
+    public GameCharacter getLeader()
     {
         for (GameCharacter chara : this)
         {

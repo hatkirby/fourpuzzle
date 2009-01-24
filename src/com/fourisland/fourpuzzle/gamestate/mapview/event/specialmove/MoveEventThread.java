@@ -42,11 +42,7 @@ public class MoveEventThread implements Runnable {
         
         for (MoveEvent action : actions)
         {
-            try {
-                action.doAction(ev);
-            } catch (Exception ex) {
-                Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            action.doAction(ev);
         }
         
         events.remove(ev);

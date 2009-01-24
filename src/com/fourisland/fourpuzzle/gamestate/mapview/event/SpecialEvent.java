@@ -129,18 +129,16 @@ public class SpecialEvent {
     
     /**
      * Triggers the Game Over sequence
-     * @throws Exception 
      */
-    public void GameOver() throws Exception
+    public void GameOver()
     {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     
     /**
      * Returns the player to the Title Screen
-     * @throws Exception 
      */
-    public void TitleScreen() throws Exception
+    public void TitleScreen()
     {
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -151,9 +149,8 @@ public class SpecialEvent {
      * @param map The name of the map to move to
      * @param x The X position on the map to move to
      * @param y The Y position on the map to move to
-     * @throws java.lang.Exception
      */
-    public void Teleport(String map, int x, int y) throws Exception
+    public void Teleport(String map, int x, int y)
     {
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -162,11 +159,14 @@ public class SpecialEvent {
      * Waits for a specified interval
      * 
      * @param wait The time to wait in milliseconds
-     * @throws java.lang.InterruptedException
      */
-    public void Wait(int wait) throws InterruptedException
+    public void Wait(int wait)
     {
-        Thread.sleep(wait);
+        try {
+            Thread.sleep(wait);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SpecialEvent.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

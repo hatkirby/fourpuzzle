@@ -17,17 +17,18 @@ import java.awt.event.KeyEvent;
  */
 public class TitleScreenGameState implements GameState {
     
-    public void initalize() throws Exception
+    public void initalize()
     {
         Audio.playMusic("Opening");
     }
     
-    public void deinitalize() throws Exception
+    public void deinitalize()
     {
         Audio.stopMusic();
     }
 
-    public void processInput() throws Exception {
+    public void processInput()
+    {
         if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
         {
             Game.setSaveFile(new SaveFile());
@@ -38,11 +39,13 @@ public class TitleScreenGameState implements GameState {
         }
     }
 
-    public void doGameCycle() throws Exception {
+    public void doGameCycle()
+    {
         // Do nothing, yet
     }
 
-    public void render(Graphics2D g) throws Exception {
+    public void render(Graphics2D g)
+    {
         g.drawImage(ObjectLoader.getImage("Picture", "Title"), 0, 0, null);
     }
 

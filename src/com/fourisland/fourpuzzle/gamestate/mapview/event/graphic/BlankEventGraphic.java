@@ -17,7 +17,8 @@ public class BlankEventGraphic implements EventGraphic {
     private Direction direction;
     private int animationStep;
 
-    public BufferedImage getImage() throws Exception {
+    public BufferedImage getImage()
+    {
         return null;
     }
 

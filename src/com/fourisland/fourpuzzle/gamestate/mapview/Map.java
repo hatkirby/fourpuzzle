@@ -18,7 +18,7 @@ import java.util.Vector;
  */
 public abstract class Map {
 
-    public abstract void initalize() throws Exception;
+    public abstract void initalize();
     
     public void initalize(Dimension size)
     {
@@ -59,7 +59,7 @@ public abstract class Map {
         return null;
     }
 
-    public boolean checkForCollision(int x, int y, Direction toMove) throws Exception
+    public boolean checkForCollision(int x, int y, Direction toMove)
     {
         if ((toMove == Direction.North) && (y == 0))
         {

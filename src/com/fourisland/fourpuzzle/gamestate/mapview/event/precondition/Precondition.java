@@ -11,6 +11,6 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.precondition;
  */
 public interface Precondition {
 
-    public boolean match() throws Exception;
+    public boolean match();
     
 }

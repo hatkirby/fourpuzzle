@@ -15,7 +15,7 @@ import java.awt.Graphics2D;
 public class SquareTransition extends Transition {
     
     private int tick;
-    public SquareTransition(boolean from) throws TransitionUnsupportedException
+    public SquareTransition(boolean from)
     {
         setDirection(from);
         

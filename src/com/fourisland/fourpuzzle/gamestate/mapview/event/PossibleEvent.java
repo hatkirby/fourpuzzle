@@ -47,7 +47,7 @@ public class PossibleEvent {
         animationStep = 1;
     }
         
-    public BufferedImage getImage() throws Exception
+    public BufferedImage getImage()
     {        
         return graphic.getImage();
     }
@@ -88,7 +88,8 @@ public class PossibleEvent {
         return direction;
     }
 
-    public void setDirection(Direction direction) throws Exception {
+    public void setDirection(Direction direction)
+    {
         if (Functions.canTurn(this))
         {
             this.direction = direction;

@@ -21,7 +21,7 @@ public class CustomMovementType implements MovementType {
         this.moves = moves;
     }
     
-    public Direction startMoving() throws Exception
+    public Direction startMoving()
     {        
         if (step >= moves.length)
         {

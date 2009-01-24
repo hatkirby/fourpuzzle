@@ -22,17 +22,18 @@ import java.util.logging.Logger;
  */
 public class GameOverGameState implements GameState {
     
-    public void initalize() throws Exception
+    public void initalize()
     {
         Audio.playMusic("GameOver");
     }
     
-    public void deinitalize() throws Exception
+    public void deinitalize()
     {
         Audio.stopMusic();
     }
 
-    public void processInput() throws Exception {
+    public void processInput()
+    {
         if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))
         {
             Game.setSaveFile(new SaveFile());
@@ -49,11 +50,13 @@ public class GameOverGameState implements GameState {
         }
     }
 
-    public void doGameCycle() throws Exception {
+    public void doGameCycle()
+    {
         // Do nothing
     }
 
-    public void render(Graphics2D g) throws Exception {
+    public void render(Graphics2D g)
+    {
         g.drawImage(ObjectLoader.getImage("Picture", "GameOver"), 0, 0, null);
     }
 

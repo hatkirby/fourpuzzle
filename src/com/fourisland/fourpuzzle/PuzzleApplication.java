@@ -130,27 +130,10 @@ public class PuzzleApplication extends Application {
                             }
                         }
                     }
-                } catch (Throwable ex) {
-                    JFrame errorBox = new JFrame(ex.getClass().getSimpleName());
-                    JLabel text = new JLabel();
-                    text.setText("<HTML><CENTER>I'm sorry, but " + INSTANCE.getContext().getResourceMap().getString("Application.title") +
-                            " has run into an error and been forced to quit.<BR>Your save file has not been kept. The error was:<BR><BR>" +
-                            ex.getMessage() + "</CENTER>");
-                    if (ex instanceof Error)
-                    {
-                        text.setText(text.getText() + "<P><CENTER>We have identified this problem as a serious error in the game.");
-                    }
-                    errorBox.add(text);
-                    errorBox.addWindowListener(new WindowAdapter() {
-                        @Override
-                        public void windowClosing(WindowEvent e) {
-                            System.exit(0);
-                        }
-                    });
-                    errorBox.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                    errorBox.pack();
-                    errorBox.setVisible(true);
-                    ex.printStackTrace();
+                } catch (RuntimeException ex) {
+                    reportError(ex);
+                } catch (Error ex) {
+                    reportError(ex);
                 }
             }
         },"GameCycle").start();
@@ -159,5 +142,34 @@ public class PuzzleApplication extends Application {
     public String getGamePackage()
     {
         return INSTANCE.getContext().getResourceMap().getString("Application.package");
+    }
+    
+    public void reportError(Throwable ex)
+    {
+        if ((ex instanceof Exception) && !(ex instanceof RuntimeException))
+        {
+            return;
+        }
+        
+        JFrame errorBox = new JFrame(ex.getClass().getSimpleName());
+        JLabel text = new JLabel();
+        text.setText("<HTML><CENTER>I'm sorry, but " + INSTANCE.getContext().getResourceMap().getString("Application.title") +
+                " has run into an error and been forced to quit.<BR>Your save file has not been kept. The error was:<BR><BR>" +
+                ex.getMessage() + "</CENTER>");
+        if (ex instanceof Error)
+        {
+            text.setText(text.getText() + "<P><CENTER>We have identified this problem as a serious error in the game.");
+        }
+        errorBox.add(text);
+        errorBox.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        errorBox.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        errorBox.pack();
+        errorBox.setVisible(true);
+        ex.printStackTrace();
     }
 }

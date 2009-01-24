@@ -26,7 +26,7 @@ public class CharSetEventGraphic implements EventGraphic {
         this.graphicOffset = graphicOffset;
     }
 
-    public BufferedImage getImage() throws Exception
+    public BufferedImage getImage()
     {
         return CharSet.getCharSet(getGraphic()).getImage(getGraphicOffset(), getDirection(), getAnimationStep());
     }

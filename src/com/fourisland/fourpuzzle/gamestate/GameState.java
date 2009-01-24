@@ -13,12 +13,12 @@ import java.awt.Graphics2D;
  */
 public interface GameState {
     
-    public void initalize() throws Exception;
-    public void deinitalize() throws Exception;
+    public void initalize();
+    public void deinitalize();
     
-    public void processInput() throws Exception;
-    public void doGameCycle() throws Exception;
-    public void render(Graphics2D g) throws Exception;
+    public void processInput();
+    public void doGameCycle();
+    public void render(Graphics2D g);
     
 }
 

@@ -20,7 +20,8 @@ public class SwitchPrecondition implements Precondition {
         this.switchID = switchID;
     }
     
-    public boolean match() {
+    public boolean match() 
+    {
         return (Game.getSaveFile().getSwitches().containsKey(switchID) && Game.getSaveFile().getSwitches().get(switchID));
     }
 

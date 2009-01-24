@@ -25,7 +25,8 @@ public class VariableVariablePrecondition implements Precondition {
         this.variableID2 = variableID2;
     }
     
-    public boolean match() {
+    public boolean match()
+    {
         if (Game.getSaveFile().getVariables().containsKey(variableID))
         {
             int n1 = Game.getSaveFile().getVariables().get(variableID);
