@@ -26,7 +26,7 @@ public class SaveFile implements Serializable {
     public SaveFile() throws CloneNotSupportedException
     {
         switches = new HashMap<String, Boolean>();
-        party = GameCharacters.INSTANCE.newInstance();
+        party = GameCharacters.createParty();
         variables = new HashMap<String, Integer>();
         currentMap = new String();
         hero = new HeroEvent();

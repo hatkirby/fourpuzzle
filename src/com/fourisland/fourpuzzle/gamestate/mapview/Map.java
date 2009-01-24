@@ -75,27 +75,26 @@ public abstract class Map {
             return true;
         }
         
-        int i=0;
-        for (i=0;i<events.size();i++)
+        for (LayerEvent ev : events)
         {
-            if (events.get(i).getLayer() == Layer.Middle)
+            if (ev.getLayer() == Layer.Middle)
             {
-                if ((events.get(i).getLocation().y == (y - 1)) && (events.get(i).getLocation().x == x) && (toMove == Direction.North))
+                if ((ev.getLocation().y == (y - 1)) && (ev.getLocation().x == x) && (toMove == Direction.North))
                 {
                     return true;
                 }
                 
-                if ((events.get(i).getLocation().x == (x - 1)) && (events.get(i).getLocation().y == y) && (toMove == Direction.West))
+                if ((ev.getLocation().x == (x - 1)) && (ev.getLocation().y == y) && (toMove == Direction.West))
                 {
                     return true;
                 }
                 
-                if ((events.get(i).getLocation().y == (y + 1)) && (events.get(i).getLocation().x == x) && (toMove == Direction.South))
+                if ((ev.getLocation().y == (y + 1)) && (ev.getLocation().x == x) && (toMove == Direction.South))
                 {
                     return true;
                 }
                 
-                if ((events.get(i).getLocation().x == (x + 1)) && (events.get(i).getLocation().y == y) && (toMove == Direction.East))
+                if ((ev.getLocation().x == (x + 1)) && (ev.getLocation().y == y) && (toMove == Direction.East))
                 {
                     return true;
                 }
@@ -124,32 +123,32 @@ public abstract class Map {
         
         ChipSet cSI = ChipSet.getChipSet(chipSet);
         HashMap<Integer,ChipSetData> cSID = cSI.getChipSetData();
-        for (i=0;i<getMapData().size();i++)
+        for (HashMap<Integer,Integer> mapArea : getMapData())
         {
-            if ((toMove == Direction.North) && (!cSID.get(mapData.get(i).get(x+((y-1)*getSize().width))).isEnableSouth()))
+            if ((toMove == Direction.North) && (!cSID.get(mapArea.get(x+((y-1)*getSize().width))).isEnableSouth()))
             {
                 return true;
-            } else if ((toMove == Direction.West) && (!cSID.get(mapData.get(i).get(x-1+(y*getSize().width))).isEnableEast()))
+            } else if ((toMove == Direction.West) && (!cSID.get(mapArea.get(x-1+(y*getSize().width))).isEnableEast()))
             {
                 return true;
-            } else if ((toMove == Direction.South) && (!cSID.get(mapData.get(i).get(x+((y+1)*getSize().width))).isEnableNorth()))
+            } else if ((toMove == Direction.South) && (!cSID.get(mapArea.get(x+((y+1)*getSize().width))).isEnableNorth()))
             {
                 return true;
-            } else if ((toMove == Direction.East) && (!cSID.get(mapData.get(i).get(x+1+(y*getSize().width))).isEnableWest()))
+            } else if ((toMove == Direction.East) && (!cSID.get(mapArea.get(x+1+(y*getSize().width))).isEnableWest()))
             {
                 return true;
             }
 
-            if ((toMove == Direction.North) && (!cSID.get(mapData.get(i).get(x+(y*getSize().width))).isEnableNorth()))
+            if ((toMove == Direction.North) && (!cSID.get(mapArea.get(x+(y*getSize().width))).isEnableNorth()))
             {
                 return true;
-            } else if ((toMove == Direction.West) && (!cSID.get(mapData.get(i).get(x+(y*getSize().width))).isEnableWest()))
+            } else if ((toMove == Direction.West) && (!cSID.get(mapArea.get(x+(y*getSize().width))).isEnableWest()))
             {
                 return true;
-            } else if ((toMove == Direction.South) && (!cSID.get(mapData.get(i).get(x+(y*getSize().width))).isEnableSouth()))
+            } else if ((toMove == Direction.South) && (!cSID.get(mapArea.get(x+(y*getSize().width))).isEnableSouth()))
             {
                 return true;
-            } else if ((toMove == Direction.East) && (!cSID.get(mapData.get(i).get(x+(y*getSize().width))).isEnableEast()))
+            } else if ((toMove == Direction.East) && (!cSID.get(mapArea.get(x+(y*getSize().width))).isEnableEast()))
             {
                 return true;
             }    

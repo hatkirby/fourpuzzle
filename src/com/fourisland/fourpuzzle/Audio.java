@@ -8,7 +8,6 @@ package com.fourisland.fourpuzzle;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Track;
 
 /**
  *
@@ -46,7 +45,7 @@ public class Audio {
     }
     
     public static void playMusic(String file, boolean loop, float speed) throws Exception
-    {   
+    {
         seq.setSequence(ObjectLoader.getMusic(file));
 
         if (loop)

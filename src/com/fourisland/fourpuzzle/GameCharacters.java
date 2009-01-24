@@ -12,45 +12,42 @@ import java.util.ArrayList;
  *
  * @author hatkirby
  */
-public class GameCharacters implements Cloneable {
+public class GameCharacters extends ArrayList<GameCharacter>
+{
+    private GameCharacters() {}
     
-    private GameCharacters()
+    private static GameCharacters INSTANCE = new GameCharacters();
+    public static GameCharacters getDefaultParty()
     {
+        return INSTANCE;
     }
-    
-    public static GameCharacters INSTANCE = new GameCharacters();
 
-    public void add(GameCharacter e)
+    public static GameCharacters createParty()
     {
-        characters.add(e);
+        GameCharacters temp = new GameCharacters();
+        temp.addAll(INSTANCE);
+        
+        return temp;
     }
 
     public GameCharacter getLeader() throws Exception
     {
-        int i = 0;
-        for (i=0;i<characters.size();i++)
+        for (GameCharacter chara : this)
         {
-            if (characters.get(i).isInParty())
+            if (chara.isInParty())
             {
-                return characters.get(i);
+                return chara;
             }
         }
         
         Game.setGameState(new GameOverGameState());
-        throw new NoCharactersInPartyException();
+        return null;
     }
-    public GameCharacters newInstance() throws CloneNotSupportedException
-    {
-        return (GameCharacters) clone();
-    }
-
-    private ArrayList<GameCharacter> characters = new ArrayList<GameCharacter>();
     
     public boolean exists(String heroName) {
-        int i=0;
-        for (i=0;i<characters.size();i++)
+        for (GameCharacter chara : this)
         {
-            if (characters.get(i).getName().equals(heroName))
+            if (chara.getName().equals(heroName))
             {
                 return true;
             }
@@ -59,17 +56,12 @@ public class GameCharacters implements Cloneable {
         return false;
     }
 
-    public GameCharacter get(Integer get) {
-        return characters.get(get);
-    }
-
     public GameCharacter get(String heroName) throws NullPointerException {
-        int i=0;
-        for (i=0;i<characters.size();i++)
+        for (GameCharacter chara : this)
         {
-            if (characters.get(i).getName().equals(heroName))
+            if (chara.getName().equals(heroName))
             {
-                return characters.get(i);
+                return chara;
             }
         }
         
