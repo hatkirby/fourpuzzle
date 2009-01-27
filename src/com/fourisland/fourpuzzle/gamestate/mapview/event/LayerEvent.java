@@ -134,7 +134,7 @@ public class LayerEvent implements Event {
     private Direction moveDirection;
     public void startMoving(Map map)
     {
-        Direction toMove = getPossibleEvent().getMovement().startMoving();
+        Direction toMove = getPossibleEvent().getMovement().nextMovement();
         
         if (toMove != null)
         {

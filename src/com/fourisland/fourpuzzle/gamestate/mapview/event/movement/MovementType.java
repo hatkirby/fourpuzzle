@@ -13,8 +13,7 @@ import com.fourisland.fourpuzzle.Direction;
  */
 public interface MovementType {
     
-    // TODO Rename the following method to getNextDirection
-    public Direction startMoving();
+    public Direction nextMovement();
     
 }
     
