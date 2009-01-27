@@ -5,6 +5,9 @@
 
 package com.fourisland.fourpuzzle;
 
+import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.EventGraphic;
+
 /**
  *
  * @author hatkirby
@@ -45,24 +48,14 @@ public class GameCharacter {
         this.inParty = inParty;
     }
     
-    private String graphic = "blank";
-    public String getGraphic()
+    private EventGraphic graphic = new BlankEventGraphic();
+    public EventGraphic getGraphic()
     {
         return graphic;
     }
-    public void setGraphic(String graphic)
+    public void setGraphic(EventGraphic graphic)
     {
         this.graphic = graphic;
-    }
-
-    private int graphicOffset = 0;
-    public int getGraphicOffset()
-    {
-        return graphicOffset;
-    }
-    public void setGraphicOffset(int graphicOffset)
-    {
-        this.graphicOffset = graphicOffset;
     }
     
 }

@@ -66,14 +66,12 @@ public class HeroEvent implements Event {
             }
         }
         
-        /* TODO Change the specification of GameCharacter
-         * to require an EventGraphic instead of a graphic name
-         * and offset
-         */
         GameCharacter toDraw = Game.getSaveFile().getParty().getLeader();
         if (!toDraw.getGraphic().equals("blank"))
         {
-            g.drawImage(CharSet.getCharSet(toDraw.getGraphic()).getImage(toDraw.getGraphicOffset(), direction, animationStep), x, y, null);
+            toDraw.getGraphic().setDirection(direction);
+            toDraw.getGraphic().setAnimationStep(animationStep);
+            g.drawImage(toDraw.getGraphic().getImage(), x, y, null);
         }
     }
     
