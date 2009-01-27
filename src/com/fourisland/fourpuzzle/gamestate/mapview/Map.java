@@ -6,7 +6,9 @@
 package com.fourisland.fourpuzzle.gamestate.mapview;
 
 import com.fourisland.fourpuzzle.*;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.awt.Dimension;
 import java.util.HashMap;
@@ -41,7 +43,7 @@ public abstract class Map {
         }
     }
     
-    private EventList events = new EventList();
+    private EventList events = new EventList(this);
     public EventList getEvents()
     {
         return events;
@@ -59,8 +61,11 @@ public abstract class Map {
         return null;
     }
     
-    public boolean checkForCollision(int x, int y, Direction toMove)
+    public boolean checkForCollision(Event ev, Direction toMove)
     {
+        int x = ev.getLocation().x;
+        int y = ev.getLocation().y;
+        
         if ((toMove == Direction.North) && (y == 0))
         {
             return true;
@@ -73,6 +78,11 @@ public abstract class Map {
         } else if ((toMove == Direction.East) && (x == (size.width - 1)))
         {
             return true;
+        }
+        
+        if ((ev instanceof HeroEvent) && (((MapViewGameState) Game.getGameState()).debugWalkthrough))
+        {
+            return false;
         }
         
         if ((toMove == Direction.North) && (checkForEventCollision(x, y-1)))

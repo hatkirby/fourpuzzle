@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  */
 public class MapViewGameState implements GameState {
     
-    boolean debugWalkthrough = false;
+    public boolean debugWalkthrough = false;
     boolean processInput = true;
     Map currentMap;
     
@@ -99,12 +99,7 @@ public class MapViewGameState implements GameState {
 
                 if (letsMove)
                 {
-                    if (debugWalkthrough || (!currentMap.checkForCollision(hero.getLocation().x, hero.getLocation().y, toMove)))
-                    {
-                        hero.startMoving(toMove);
-                    } else {
-                        hero.setDirection(toMove);
-                    }
+                    hero.startMoving(toMove);
                 }
 
                 if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))

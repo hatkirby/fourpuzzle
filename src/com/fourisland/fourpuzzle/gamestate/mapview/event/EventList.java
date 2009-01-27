@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
+import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import java.util.Vector;
 
 /**
@@ -12,6 +13,11 @@ import java.util.Vector;
  * @author hatkirby
  */
 public class EventList extends Vector<LayerEvent> {
+    
+    public EventList(Map parentMap)
+    {
+        setParentMap(parentMap);
+    }
     
     @Override
     public boolean add(LayerEvent o)
@@ -27,7 +33,7 @@ public class EventList extends Vector<LayerEvent> {
                 return false;
             }
             
-            for (Event ev : this)
+            for (LayerEvent ev : this)
             {
                 if (ev.getLabel().equals(o.getLabel()))
                 {
@@ -36,7 +42,27 @@ public class EventList extends Vector<LayerEvent> {
             }
         }
         
+        if (parentMap != null)
+        {
+            o.setParentMap(parentMap);
+        }
+        
         return super.add(o);
+    }
+    
+    private Map parentMap = null;
+    public Map getParentMap()
+    {
+        return parentMap;
+    }
+    public void setParentMap(Map parentMap)
+    {
+        this.parentMap = parentMap;
+        
+        for (LayerEvent ev : this)
+        {
+            ev.setParentMap(parentMap);
+        }
     }
 
 }
