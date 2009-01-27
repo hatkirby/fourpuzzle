@@ -159,6 +159,14 @@ public class MapViewGameState implements GameState {
 
     public void render(Graphics2D g)
     {
+        /* TODO Add code that checks to see if the map has been switched
+         * or if the hero has moved in such a way so as to move the
+         * viewpoint. If one or more of these conditions are filled, the
+         * already existing below code should run along with a snippet that
+         * saves a cache of the current viewpoint. If not, the previously
+         * mentioned cache should be displayed rather than re-rendering the
+         * map.
+         */
         ChipSet chipSet = ChipSet.getChipSet(currentMap.getChipSet());
         int i,x,y;
         for (i=0;i<currentMap.getMapData().size();i++)

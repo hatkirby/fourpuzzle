@@ -12,6 +12,7 @@ import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.GameCharacter;
 import com.fourisland.fourpuzzle.gamestate.mapview.CharSet;
+import com.fourisland.fourpuzzle.util.Functions;
 
 /**
  *
@@ -65,6 +66,10 @@ public class HeroEvent implements Event {
             }
         }
         
+        /* TODO Change the specification of GameCharacter
+         * to require an EventGraphic instead of a graphic name
+         * and offset
+         */
         GameCharacter toDraw = Game.getSaveFile().getParty().getLeader();
         if (!toDraw.getGraphic().equals("blank"))
         {
@@ -146,6 +151,21 @@ public class HeroEvent implements Event {
     public Layer getLayer()
     {
         return Layer.Middle;
+    }
+    
+    public boolean isOccupyingSpace(int x, int y)
+    {
+        if (getLocation().equals(new Point(x,y)))
+        {
+            return true;
+        }
+        
+        if (Functions.isMovingTo(this, x, y))
+        {
+            return true;
+        }
+        
+        return false;
     }
 
 }

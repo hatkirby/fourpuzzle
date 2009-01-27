@@ -48,6 +48,36 @@ public class Functions {
         
         return false;
     }
+
+    public static boolean isMovingTo(Event ev, int x, int y)
+    {        
+        if (ev.isMoving() == false)
+        {
+            return false;
+        }
+        
+        if ((ev.getDirection() == Direction.North) && ((ev.getLocation().y-1) == y) && (ev.getLocation().x == x))
+        {
+            return true;
+        }
+        
+        if ((ev.getDirection() == Direction.West) && (ev.getLocation().y == y) && ((ev.getLocation().x-1) == x))
+        {
+            return true;
+        }
+        
+        if ((ev.getDirection() == Direction.South) && ((ev.getLocation().y+1) == y) && (ev.getLocation().x == x))
+        {
+            return true;
+        }
+        
+        if ((ev.getDirection() == Direction.East) && (ev.getLocation().y == y) && ((ev.getLocation().x+1) == x))
+        {
+            return true;
+        }
+        
+        return false;
+    }
     
     public static Direction oppositeDirection(Direction dir)
     {

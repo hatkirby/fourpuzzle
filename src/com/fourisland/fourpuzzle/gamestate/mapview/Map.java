@@ -20,7 +20,7 @@ public abstract class Map {
 
     public abstract void initalize();
     
-    public void initalize(Dimension size)
+    protected void initalize(Dimension size)
     {
         setSize(size);
         mapData = new Vector<HashMap<Integer,Integer>>();
@@ -31,7 +31,7 @@ public abstract class Map {
     {
         return size;
     }
-    public void setSize(Dimension size)
+    private void setSize(Dimension size)
     {
         if ((size.width < 20) || (size.height < 15))
         {
@@ -58,7 +58,7 @@ public abstract class Map {
         
         return null;
     }
-
+    
     public boolean checkForCollision(int x, int y, Direction toMove)
     {
         if ((toMove == Direction.North) && (y == 0))
@@ -75,48 +75,22 @@ public abstract class Map {
             return true;
         }
         
-        for (LayerEvent ev : events)
+        if ((toMove == Direction.North) && (checkForEventCollision(x, y-1)))
         {
-            if (ev.getLayer() == Layer.Middle)
-            {
-                if ((ev.getLocation().y == (y - 1)) && (ev.getLocation().x == x) && (toMove == Direction.North))
-                {
-                    return true;
-                }
-                
-                if ((ev.getLocation().x == (x - 1)) && (ev.getLocation().y == y) && (toMove == Direction.West))
-                {
-                    return true;
-                }
-                
-                if ((ev.getLocation().y == (y + 1)) && (ev.getLocation().x == x) && (toMove == Direction.South))
-                {
-                    return true;
-                }
-                
-                if ((ev.getLocation().x == (x + 1)) && (ev.getLocation().y == y) && (toMove == Direction.East))
-                {
-                    return true;
-                }
-            }
+            return true;
         }
         
-        if ((Game.getHeroEvent().getLocation().y == (y - 1)) && (Game.getHeroEvent().getLocation().x == x) && (toMove == Direction.North))
+        if ((toMove == Direction.West) && (checkForEventCollision(x-1, y)))
         {
             return true;
         }
-
-        if ((Game.getHeroEvent().getLocation().x == (x - 1)) && (Game.getHeroEvent().getLocation().y == y) && (toMove == Direction.West))
+        
+        if ((toMove == Direction.South) && (checkForEventCollision(x, y+1)))
         {
             return true;
         }
-
-        if ((Game.getHeroEvent().getLocation().y == (y + 1)) && (Game.getHeroEvent().getLocation().x == x) && (toMove == Direction.South))
-        {
-            return true;
-        }
-
-        if ((Game.getHeroEvent().getLocation().x == (x + 1)) && (Game.getHeroEvent().getLocation().y == y) && (toMove == Direction.East))
+        
+        if ((toMove == Direction.East) && (checkForEventCollision(x+1, y)))
         {
             return true;
         }
@@ -154,6 +128,27 @@ public abstract class Map {
             }    
         }
         
+        return false;
+    }
+    
+    private boolean checkForEventCollision(int x, int y)
+    {
+        for (LayerEvent ev : events)
+        {
+            if (ev.getLayer() == Layer.Middle)
+            {
+                if (ev.isOccupyingSpace(x, y))
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (Game.getHeroEvent().isOccupyingSpace(x, y))
+        {
+            return true;
+        }
+       
         return false;
     }
 

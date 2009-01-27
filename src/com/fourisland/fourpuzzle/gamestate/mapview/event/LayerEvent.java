@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
+import com.fourisland.fourpuzzle.util.Functions;
 
 /**
  *
@@ -207,6 +208,21 @@ public class LayerEvent implements Event {
 
     public void setLabel(String string) {
         this.label = string;
+    }
+    
+    public boolean isOccupyingSpace(int x, int y)
+    {
+        if (getLocation().equals(new Point(x,y)))
+        {
+            return true;
+        }
+        
+        if (Functions.isMovingTo(this, x, y))
+        {
+            return true;
+        }
+        
+        return false;
     }
     
 }

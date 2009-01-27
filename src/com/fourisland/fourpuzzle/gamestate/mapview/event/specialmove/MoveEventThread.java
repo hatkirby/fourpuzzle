@@ -20,9 +20,10 @@ import java.util.logging.Logger;
  */
 public class MoveEventThread implements Runnable {
     
-    public static volatile CountDownLatch moveEventWait = new CountDownLatch(0);
     public static volatile int countMoveEventThreads = 0;
-    public static volatile List<Event> events = new Vector<Event>();
+    
+    static volatile List<Event> events = new Vector<Event>();
+    static volatile CountDownLatch moveEventWait = new CountDownLatch(0);
     
     Event ev;
     MoveEvent[] actions;
@@ -51,6 +52,10 @@ public class MoveEventThread implements Runnable {
         moveEventWait.countDown();
     }
     
+    /* TODO Rename the two following methods (isHeroMoving and isOtherMoving)
+     * to isHeroActive and isOtherActive respectively.
+     */
+    
     public static boolean isHeroMoving()
     {
         return (events.contains(Game.getHeroEvent()));
@@ -59,6 +64,15 @@ public class MoveEventThread implements Runnable {
     public static boolean isOtherMoving(LayerEvent event)
     {
         return (events.contains(event));
+    }
+    
+    public static void moveAll()
+    {
+        try {
+            moveEventWait.await();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

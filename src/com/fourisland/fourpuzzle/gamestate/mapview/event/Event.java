@@ -32,4 +32,6 @@ public interface Event {
     public void startMoving(Direction direction);
     
     public Layer getLayer();
+    
+    public boolean isOccupyingSpace(int x, int y);
 }
