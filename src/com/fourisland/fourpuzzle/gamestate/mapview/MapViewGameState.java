@@ -13,6 +13,7 @@ import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventCallTime;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.EventHandler;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
@@ -72,7 +73,7 @@ public class MapViewGameState implements GameState {
                 debugWalkthrough = false;
             }
 
-            if (!hero.isMoving() && !MoveEventThread.isHeroMoving())
+            if (!hero.isMoving() && !MoveEventThread.isHeroMoving() && !EventHandler.isRunningEvent())
             {
                 Direction toMove = null;
                 Boolean letsMove = false;
@@ -113,12 +114,12 @@ public class MapViewGameState implements GameState {
                                 if (Functions.isFacing(hero, ev))
                                 {
                                     ev.setDirection(Functions.oppositeDirection(hero.getDirection()));
-                                    ev.getCallback().activate();
+                                    ev.getCallback().activate(ev.getCalltime());
                                 }
                             } else {
                                 if (ev.getLocation().equals(hero.getLocation()))
                                 {
-                                    ev.getCallback().activate();
+                                    ev.getCallback().activate(ev.getCalltime());
                                 }
                             }
                         }
@@ -144,10 +145,18 @@ public class MapViewGameState implements GameState {
             {
                 if (!MoveEventThread.isOtherMoving(ev))
                 {
-                    ev.startMoving(currentMap);
+                    if (!EventHandler.isRunningEvent())
+                    {
+                        ev.startMoving(currentMap);
+                    }
                 }
             } else {
                 ev.processMoving();
+            }
+            
+            if (ev.getCalltime() == EventCallTime.ParallelProcess)
+            {
+                ev.getCallback().activate(ev.getCalltime());
             }
         }
     }

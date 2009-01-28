@@ -78,6 +78,12 @@ public class LayerEvent extends AbstractEvent implements Event {
     public void render(Graphics g)
     {
         PossibleEvent toDraw = getPossibleEvent();
+        
+        /* TODO Replace below condition with an instanceof check to
+         * see if toDraw.getGraphic() is an instance of BlankEventGraphic.
+         * The current way requires BlankEventGraphic() to be instantated
+         * many times for no reason. */
+        
         if (!toDraw.getGraphic().equals(new BlankEventGraphic()))
         {
             g.drawImage(toDraw.getImage(), getRenderX(), getRenderY(), null);
