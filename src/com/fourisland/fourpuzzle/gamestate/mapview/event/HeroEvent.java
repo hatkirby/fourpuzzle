@@ -13,6 +13,7 @@ import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.GameCharacter;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
 
 /**
  *
@@ -33,16 +34,7 @@ public class HeroEvent extends AbstractEvent implements Event {
     public void render(Graphics g)
     {
         GameCharacter toDraw = Game.getSaveFile().getParty().getLeader();
-        
-        /* TODO Replace below condition with an instanceof check to
-         * see if toDraw.getGraphic() is an instance of BlankEventGraphic.
-         * The current way does not, in fact, work because an EventGraphic
-         * never be equal to a String. This current way only exists because
-         * HeroEvent's graphic used to be stored as a filename/offset combo
-         * instead of as an EventGraphic.
-         */
-        
-        if (!toDraw.getGraphic().equals("blank"))
+        if (!(toDraw.getGraphic() instanceof BlankEventGraphic))
         {
             toDraw.getGraphic().setDirection(direction);
             toDraw.getGraphic().setAnimationStep(animationStep);
