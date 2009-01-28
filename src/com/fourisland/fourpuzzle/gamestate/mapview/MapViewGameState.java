@@ -147,7 +147,7 @@ public class MapViewGameState implements GameState {
                 {
                     if (!EventHandler.isRunningEvent())
                     {
-                        ev.startMoving(currentMap);
+                        ev.startMoving();
                     }
                 }
             } else {

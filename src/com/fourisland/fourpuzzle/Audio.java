@@ -37,6 +37,13 @@ public class Audio {
                 }
             }));
         } catch (MidiUnavailableException ex) {
+            /* TODO Because of the frequent MIDI unavailability, when
+             * a MIDI sequencer is unavailable, instead of breaking down,
+             * the application should display a message that something
+             * went wrong with the sound and that they should attempt
+             * the game again.
+             */
+            
             Logger.getLogger(Audio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

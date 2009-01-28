@@ -90,7 +90,7 @@ public class LayerEvent extends AbstractEvent implements Event {
         }
     }
     
-    public void startMoving(Map map)
+    public void startMoving()
     {
         Direction toMove = getPossibleEvent().getMovement().nextMovement();
         

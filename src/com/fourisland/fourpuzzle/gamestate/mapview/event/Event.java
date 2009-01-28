@@ -32,7 +32,7 @@ public interface Event {
     public void setDirection(Direction direction);
 
     public boolean isMoving();
-    public void startMoving(Direction direction);
+    public boolean startMoving(Direction direction);
     
     public Layer getLayer();
     

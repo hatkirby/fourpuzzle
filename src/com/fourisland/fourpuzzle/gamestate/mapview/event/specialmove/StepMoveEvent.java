@@ -24,14 +24,15 @@ public class StepMoveEvent implements MoveEvent {
     
     public void doAction(Event ev)
     {
-        ev.startMoving(direction);
-
-        while (ev.isMoving())
+        if (ev.startMoving(direction))
         {
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(StepMoveEvent.class.getName()).log(Level.SEVERE, null, ex);
+            while (ev.isMoving())
+            {
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(StepMoveEvent.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

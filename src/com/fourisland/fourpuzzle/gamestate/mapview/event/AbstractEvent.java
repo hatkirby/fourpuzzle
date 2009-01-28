@@ -41,8 +41,13 @@ public abstract class AbstractEvent implements Event {
     }
     
     private int moveTimer;
-    public void startMoving(Direction toMove)
+    public boolean startMoving(Direction toMove)
     {
+        if (isMoving())
+        {
+            return false;
+        }
+        
         setDirection(toMove);
         
         if (!getParentMap().checkForCollision(this, toMove))
@@ -50,6 +55,10 @@ public abstract class AbstractEvent implements Event {
             setAnimationStep(2);
             moveTimer = 4;
             setMoving(true);
+            
+            return true;
+        } else {
+            return false;
         }
     }
     
