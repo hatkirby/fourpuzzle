@@ -25,6 +25,8 @@ public interface Event {
     public void setLocation(int x, int y);
     
     public void render(Graphics g);
+    public int getRenderX();
+    public int getRenderY();
     
     public Direction getDirection();
     public void setDirection(Direction direction);

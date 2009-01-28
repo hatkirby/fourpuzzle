@@ -77,30 +77,10 @@ public class LayerEvent extends AbstractEvent implements Event {
     
     public void render(Graphics g)
     {
-        int x = (getLocation().x * 16) - 4;
-        int y = (getLocation().y * 16) - 16;
-        
-        if (isMoving())
-        {
-            if (moveDirection == Direction.North)
-            {
-                y -= (4 - moveTimer) * 4;
-            } else if (moveDirection == Direction.West)
-            {
-                x -= (4 - moveTimer) * 4;
-            } else if (moveDirection == Direction.South)
-            {
-                y += (4 - moveTimer) * 4;
-            } else if (moveDirection == Direction.East)
-            {
-                x += (4 - moveTimer) * 4;
-            }
-        }
-        
         PossibleEvent toDraw = getPossibleEvent();
         if (!toDraw.getGraphic().equals(new BlankEventGraphic()))
         {
-            g.drawImage(toDraw.getImage(), x, y, null);
+            g.drawImage(toDraw.getImage(), getRenderX(), getRenderY(), null);
         }
     }
     

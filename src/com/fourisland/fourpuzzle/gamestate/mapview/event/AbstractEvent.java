@@ -40,13 +40,7 @@ public abstract class AbstractEvent implements Event {
         this.moving = moving;
     }
     
-    /* TODO Remove the moveDirection field. As direction itself is
-     * always the same as moveDirection when moveDirection is needed,
-     * it will do fine without having to complicated access modifiers
-     */
-    
-    protected int moveTimer;
-    protected Direction moveDirection;
+    private int moveTimer;
     public void startMoving(Direction toMove)
     {
         setDirection(toMove);
@@ -56,7 +50,6 @@ public abstract class AbstractEvent implements Event {
             setAnimationStep(2);
             moveTimer = 4;
             setMoving(true);
-            moveDirection = toMove;
         }
     }
     
@@ -73,16 +66,16 @@ public abstract class AbstractEvent implements Event {
                 setAnimationStep(1);
                 moving = false;
                 
-                if (moveDirection == Direction.North)
+                if (getDirection() == Direction.North)
                 {
                     setLocation(getLocation().x,getLocation().y-1);
-                } else if (moveDirection == Direction.West)
+                } else if (getDirection() == Direction.West)
                 {
                     setLocation(getLocation().x-1,getLocation().y);
-                } else if (moveDirection == Direction.South)
+                } else if (getDirection() == Direction.South)
                 {
                     setLocation(getLocation().x,getLocation().y+1);
-                } else if (moveDirection == Direction.East)
+                } else if (getDirection() == Direction.East)
                 {
                     setLocation(getLocation().x+1,getLocation().y);
                 }
@@ -118,5 +111,41 @@ public abstract class AbstractEvent implements Event {
     public void setParentMap(Map parentMap)
     {
         this.parentMap = parentMap;
+    }
+    
+    public int getRenderX()
+    {
+        int x = (getLocation().x * 16) - 4;
+        
+        if (isMoving())
+        {
+            if (getDirection() == Direction.West)
+            {
+                x -= (4 - moveTimer) * 4;
+            } else if (getDirection() == Direction.East)
+            {
+                x += (4 - moveTimer) * 4;
+            }
+        }
+        
+        return x;
+    }
+    
+    public int getRenderY()
+    {
+        int y = (getLocation().y * 16) - 16;
+        
+        if (isMoving())
+        {
+            if (getDirection() == Direction.North)
+            {
+                y -= (4 - moveTimer) * 4;
+            } else if (getDirection() == Direction.South)
+            {
+                y += (4 - moveTimer) * 4;
+            }
+        }
+        
+        return y;
     }
 }

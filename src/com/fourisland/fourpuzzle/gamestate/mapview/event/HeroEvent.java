@@ -32,32 +32,12 @@ public class HeroEvent extends AbstractEvent implements Event {
     
     public void render(Graphics g)
     {
-        int x = (getLocation().x * 16) - 4;
-        int y = (getLocation().y * 16) - 16;
-        
-        if (isMoving())
-        {
-            if (moveDirection == Direction.North)
-            {
-                y -= (4 - moveTimer) * 4;
-            } else if (moveDirection == Direction.West)
-            {
-                x -= (4 - moveTimer) * 4;
-            } else if (moveDirection == Direction.South)
-            {
-                y += (4 - moveTimer) * 4;
-            } else if (moveDirection == Direction.East)
-            {
-                x += (4 - moveTimer) * 4;
-            }
-        }
-        
         GameCharacter toDraw = Game.getSaveFile().getParty().getLeader();
         if (!toDraw.getGraphic().equals("blank"))
         {
             toDraw.getGraphic().setDirection(direction);
             toDraw.getGraphic().setAnimationStep(animationStep);
-            g.drawImage(toDraw.getGraphic().getImage(), x, y, null);
+            g.drawImage(toDraw.getGraphic().getImage(), getRenderX(), getRenderY(), null);
         }
     }
     
