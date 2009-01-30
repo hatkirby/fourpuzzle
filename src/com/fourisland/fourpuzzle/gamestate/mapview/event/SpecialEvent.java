@@ -188,8 +188,8 @@ public class SpecialEvent {
     /**
      * Pans the viewpoint the the specified tile location
      * 
-     * @param x The x coordinate of the tile to pan to
-     * @param y The y coordinate of the tile to pan to
+     * @param x The x coordinate of the tile in the top-left corner to pan to
+     * @param y The y coordinate of the tile in the top-left corner to pan to
      * @param length How long (in milliseconds) it will take to pan
      * @param block If true, the game will wait for the pan to complete
      *              before executing any more commands

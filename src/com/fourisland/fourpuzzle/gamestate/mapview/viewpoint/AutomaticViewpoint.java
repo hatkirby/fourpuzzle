@@ -17,21 +17,22 @@ import java.awt.Point;
 public class AutomaticViewpoint implements Viewpoint {
     
     private Map map;
-    private Point heroLoc;
+    private Point heroLoc = new Point();
     private Point viewpoint;
     
     public AutomaticViewpoint(Map map)
     {
         this.map = map;
-        heroLoc = Game.getHeroEvent().getLocation();
+        
         refresh();
     }
     
     private void refresh()
     {
         int x,y;
+        
         HeroEvent hero = Game.getHeroEvent();
-        heroLoc = hero.getLocation();
+        heroLoc.setLocation(hero.getLocation());
         
         Point endLoc = new Point(hero.getLocation());
         if (hero.isMoving())
@@ -76,7 +77,7 @@ public class AutomaticViewpoint implements Viewpoint {
 
     public int getX()
     {
-        if (Game.getHeroEvent().getLocation().equals(heroLoc))
+        if (!Game.getHeroEvent().getLocation().equals(heroLoc) || Game.getHeroEvent().isMoving())
         {
             refresh();
         }
@@ -86,7 +87,7 @@ public class AutomaticViewpoint implements Viewpoint {
 
     public int getY()
     {
-        if (!Game.getHeroEvent().getLocation().equals(heroLoc))
+        if (!Game.getHeroEvent().getLocation().equals(heroLoc) || Game.getHeroEvent().isMoving())
         {
             refresh();
         }
