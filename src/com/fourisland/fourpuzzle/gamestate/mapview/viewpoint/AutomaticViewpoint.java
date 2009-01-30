@@ -27,7 +27,7 @@ public class AutomaticViewpoint implements Viewpoint {
         refresh();
     }
     
-    public void refresh()
+    private void refresh()
     {
         int x,y;
         HeroEvent hero = Game.getHeroEvent();

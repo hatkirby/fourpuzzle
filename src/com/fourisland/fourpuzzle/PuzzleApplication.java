@@ -107,8 +107,7 @@ public class PuzzleApplication extends Application {
                     Game.setGameState(new TitleScreenGameState());
                     
                     long iTickCount = System.currentTimeMillis();
-                    int iTickDelay = (1000 / 20); // 20 fps
-                    long iTickTrigger = iTickCount + iTickDelay;
+                    long iTickTrigger = iTickCount + Game.FPS;
                     
                     while (true)
                     {
@@ -126,7 +125,7 @@ public class PuzzleApplication extends Application {
                             
                             if (!debugSpeed)
                             {
-                                iTickTrigger = iTickCount + iTickDelay;
+                                iTickTrigger = iTickCount + Game.FPS;
                             }
                         }
                     }

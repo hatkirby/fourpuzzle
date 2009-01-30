@@ -16,6 +16,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.EventCallTime;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventHandler;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.SpecialEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
@@ -43,6 +44,7 @@ public class MapViewGameState implements GameState {
         setCurrentMap(map);
         Game.getSaveFile().getHero().setLocation(x, y);
         currentViewpoint = new AutomaticViewpoint(currentMap);
+        SpecialEvent.setMapView(this);
     }
         
     public void initalize()
@@ -211,6 +213,16 @@ public class MapViewGameState implements GameState {
     public Map getCurrentMap()
     {
         return currentMap;
+    }
+    
+    public Viewpoint getViewpoint()
+    {
+        return currentViewpoint;
+    }
+    
+    public void setViewpoint(Viewpoint viewpoint)
+    {
+        currentViewpoint = viewpoint;
     }
 
 }

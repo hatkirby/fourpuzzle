@@ -9,6 +9,11 @@ import com.fourisland.fourpuzzle.*;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.FixedViewpoint;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.MovingViewpoint;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +22,12 @@ import java.util.logging.Logger;
  * @author hatkirby
  */
 public class SpecialEvent {
+    
+    protected static MapViewGameState mapView = null;
+    public static void setMapView(MapViewGameState mapView)
+    {
+        SpecialEvent.mapView = mapView;
+    }
 
     /**
      * Display a message on the screen.
@@ -163,6 +174,73 @@ public class SpecialEvent {
         } catch (InterruptedException ex) {
             Logger.getLogger(SpecialEvent.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * Fixes the viewpoint in the current position
+     */
+    public void FixViewpoint()
+    {
+        Viewpoint viewpoint = mapView.getViewpoint();
+        mapView.setViewpoint(new FixedViewpoint(viewpoint.getX(),viewpoint.getY()));
+    }
+    
+    /**
+     * Pans the viewpoint the the specified tile location
+     * 
+     * @param x The x coordinate of the tile to pan to
+     * @param y The y coordinate of the tile to pan to
+     * @param length How long (in milliseconds) it will take to pan
+     * @param block If true, the game will wait for the pan to complete
+     *              before executing any more commands
+     */
+    public void PanViewpoint(final int x, final int y, int length, final boolean block)
+    {
+        Viewpoint viewpoint = mapView.getViewpoint();
+        final CountDownLatch blocker;
+        
+        if (block)
+        {
+            blocker = new CountDownLatch(1);
+        } else {
+            blocker = null;
+        }
+            
+        mapView.setViewpoint(new MovingViewpoint(viewpoint.getX(), viewpoint.getY(), x*16, y*16, new Runnable() {
+            public void run()
+            {
+                mapView.setViewpoint(new FixedViewpoint(x*16,y*16));
+                
+                if (block)
+                {
+                    blocker.countDown();
+                }
+            }
+        }, length));
+        
+        if (block)
+        {
+            try {
+                blocker.await();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SpecialEvent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    /**
+     * Resets the viewpoint from whatever state is is currently in
+     */
+    public void ResetViewpoint()
+    {
+        Viewpoint viewpoint = mapView.getViewpoint();
+        AutomaticViewpoint dest = new AutomaticViewpoint(mapView.getCurrentMap());
+        
+        mapView.setViewpoint(new MovingViewpoint(viewpoint.getX(), viewpoint.getY(), dest.getX(), dest.getY(), new Runnable() {
+            public void run() {
+                mapView.setViewpoint(new AutomaticViewpoint(mapView.getCurrentMap()));
+            }
+        }));
     }
     
 }
