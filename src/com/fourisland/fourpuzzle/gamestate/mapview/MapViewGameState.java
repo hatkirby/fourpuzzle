@@ -20,6 +20,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventTh
 import com.fourisland.fourpuzzle.util.Functions;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
@@ -164,18 +165,26 @@ public class MapViewGameState implements GameState {
 
     public void render(Graphics2D g)
     {   
-        /* TODO Fix viewpoint scrolling code. Currently, when the Hero moves
-         * South or East across the scroll barrier, it warps reality a little,
-         * while the other two directions scroll fine.
-         */
-        
         int x,y;
         HeroEvent hero = Game.getHeroEvent();
-        if (hero.getLocation().x > 10)
+        Point origLoc = hero.getLocation();
+        Point endLoc = new Point(hero.getLocation());
+        if (hero.isMoving())
         {
-            if (hero.getLocation().x < (currentMap.getSize().width - 9))
+            switch (hero.getDirection())
             {
-                x = (hero.getLocation().x - 10) * 16;
+                case North: endLoc.translate(0, -1); break;
+                case West: endLoc.translate(-1, 0); break;
+                case South: endLoc.translate(0, 1); break;
+                case East: endLoc.translate(1, 0); break;
+            }
+        }
+        
+        if (Math.max(endLoc.x,origLoc.x) > 10)
+        {
+            if (Math.max(endLoc.x,origLoc.x) < (currentMap.getSize().width - 9))
+            {
+                x = (origLoc.x - 10) * 16;
                 x += hero.getMovingX();
             } else {
                 x = (currentMap.getSize().width - 20) * 16;
@@ -184,11 +193,11 @@ public class MapViewGameState implements GameState {
             x = 0;
         }
         
-        if (hero.getLocation().y > 7)
+        if (Math.max(endLoc.y,origLoc.y) > 7)
         {
-            if (hero.getLocation().y < (currentMap.getSize().height - 7))
+            if (Math.max(endLoc.y,origLoc.y) < (currentMap.getSize().height - 7))
             {
-                y = (hero.getLocation().y - 7) * 16;
+                y = (origLoc.y - 7) * 16;
                 y += hero.getMovingY();
             } else {
                 y = (currentMap.getSize().height - 15) * 16;
