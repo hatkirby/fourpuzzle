@@ -17,10 +17,11 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.EventHandler;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.util.Functions;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
@@ -35,12 +36,13 @@ public class MapViewGameState implements GameState {
     public boolean debugWalkthrough = false;
     boolean processInput = true;
     Map currentMap;
+    Viewpoint currentViewpoint = null;
     
     public MapViewGameState(String map, int x, int y)
     {
-        //currentMap = ObjectLoader.getMap(map);
         setCurrentMap(map);
         Game.getSaveFile().getHero().setLocation(x, y);
+        currentViewpoint = new AutomaticViewpoint(currentMap);
     }
         
     public void initalize()
@@ -165,52 +167,14 @@ public class MapViewGameState implements GameState {
 
     public void render(Graphics2D g)
     {   
-        int x,y;
-        HeroEvent hero = Game.getHeroEvent();
-        Point origLoc = hero.getLocation();
-        Point endLoc = new Point(hero.getLocation());
-        if (hero.isMoving())
-        {
-            switch (hero.getDirection())
-            {
-                case North: endLoc.translate(0, -1); break;
-                case West: endLoc.translate(-1, 0); break;
-                case South: endLoc.translate(0, 1); break;
-                case East: endLoc.translate(1, 0); break;
-            }
-        }
-        
-        if (Math.max(endLoc.x,origLoc.x) > 10)
-        {
-            if (Math.max(endLoc.x,origLoc.x) < (currentMap.getSize().width - 9))
-            {
-                x = (origLoc.x - 10) * 16;
-                x += hero.getMovingX();
-            } else {
-                x = (currentMap.getSize().width - 20) * 16;
-            }
-        } else {
-            x = 0;
-        }
-        
-        if (Math.max(endLoc.y,origLoc.y) > 7)
-        {
-            if (Math.max(endLoc.y,origLoc.y) < (currentMap.getSize().height - 7))
-            {
-                y = (origLoc.y - 7) * 16;
-                y += hero.getMovingY();
-            } else {
-                y = (currentMap.getSize().height - 15) * 16;
-            }
-        } else {
-            y = 0;
-        }
+        int x = currentViewpoint.getX();
+        int y = currentViewpoint.getY();
         
         g.drawImage(currentMap.renderLower(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
 
         BufferedImage eventLayer = new BufferedImage(currentMap.getSize().width*16, currentMap.getSize().height*16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = eventLayer.createGraphics();
-        hero.render(g2);
+        Game.getHeroEvent().render(g2);
 
         EventList events = currentMap.getEvents();
         for (LayerEvent event : events)

@@ -17,14 +17,6 @@ import java.util.logging.Logger;
  * @author hatkirby
  */
 public class SpecialEvent {
-    
-    /* TODO Create a manager for SpecialEvent action threads that
-     * controls when they are executed and allows MapViewGameState
-     * to poll it to see if it is currently managing any action
-     * threads. If it is, MapViewGameState should be able to prevent
-     * certain actions from occuring (unless the action thread is
-     * ParallelProcess) such as keyboard input.
-     */
 
     /**
      * Display a message on the screen.
