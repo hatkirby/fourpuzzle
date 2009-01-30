@@ -11,6 +11,8 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -183,6 +185,63 @@ public abstract class Map {
     public void setMusic(String music)
     {
         this.music = music;
+    }
+    
+    BufferedImage lowerLayer = null;
+    public BufferedImage renderLower()
+    {
+        if (lowerLayer == null)
+        {
+            lowerLayer = new BufferedImage(size.width*16, size.height*16, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = lowerLayer.createGraphics();
+            ChipSet chipSetObj = ChipSet.getChipSet(chipSet);
+            int i,x,y;
+            for (i=0;i<mapData.size();i++)
+            {
+                for (y=0;y<size.height;y++)
+                {
+                    for (x=0;x<size.width;x++)
+                    {
+                        int tile = mapData.get(i).get(x+(y*size.width));
+                        if (chipSetObj.getChipSetData().get(tile).getLayer() != Layer.Above)
+                        {
+                            g.drawImage(chipSetObj.getImage(tile), x*16, y*16, null);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return lowerLayer;
+        
+    }
+    
+    BufferedImage upperLayer = null;
+    public BufferedImage renderUpper()
+    {
+        if (upperLayer == null)
+        {
+            upperLayer = new BufferedImage(size.width*16, size.height*16, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = upperLayer.createGraphics();
+            ChipSet chipSetObj = ChipSet.getChipSet(chipSet);
+            int i,x,y;
+            for (i=0;i<mapData.size();i++)
+            {
+                for (y=0;y<size.height;y++)
+                {
+                    for (x=0;x<size.width;x++)
+                    {
+                        int tile = mapData.get(i).get(x+(y*size.width));
+                        if (chipSetObj.getChipSetData().get(tile).getLayer() == Layer.Above)
+                        {
+                            g.drawImage(chipSetObj.getImage(tile), x*16, y*16, null);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return upperLayer;
     }
     
 }

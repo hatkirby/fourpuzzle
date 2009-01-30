@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
+import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import java.util.concurrent.Future;
 
 /**

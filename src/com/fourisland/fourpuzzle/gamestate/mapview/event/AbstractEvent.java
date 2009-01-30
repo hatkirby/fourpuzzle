@@ -124,37 +124,43 @@ public abstract class AbstractEvent implements Event {
     
     public int getRenderX()
     {
-        int x = (getLocation().x * 16) - 4;
-        
-        if (isMoving())
-        {
-            if (getDirection() == Direction.West)
-            {
-                x -= (4 - moveTimer) * 4;
-            } else if (getDirection() == Direction.East)
-            {
-                x += (4 - moveTimer) * 4;
-            }
-        }
-        
-        return x;
+        return (getLocation().x * 16) - 4 + getMovingX();
     }
     
     public int getRenderY()
     {
-        int y = (getLocation().y * 16) - 16;
+        return (getLocation().y * 16) - 16 + getMovingY();
+    }
+    
+    public int getMovingX()
+    {
+        if (isMoving())
+        {
+            if (getDirection() == Direction.West)
+            {
+                return -((4 - moveTimer) * 4);
+            } else if (getDirection() == Direction.East)
+            {
+                return (4 - moveTimer) * 4;
+            }
+        }
         
+        return 0;
+    }
+    
+    public int getMovingY()
+    {
         if (isMoving())
         {
             if (getDirection() == Direction.North)
             {
-                y -= (4 - moveTimer) * 4;
+                return -((4 - moveTimer) * 4);
             } else if (getDirection() == Direction.South)
             {
-                y += (4 - moveTimer) * 4;
+                return (4 - moveTimer) * 4;
             }
         }
         
-        return y;
+        return 0;
     }
 }

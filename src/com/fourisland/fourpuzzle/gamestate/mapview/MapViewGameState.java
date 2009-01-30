@@ -21,6 +21,7 @@ import com.fourisland.fourpuzzle.util.Functions;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -162,59 +163,54 @@ public class MapViewGameState implements GameState {
     }
 
     public void render(Graphics2D g)
-    {
-        /* TODO Add code that checks to see if the map has been switched
-         * or if the hero has moved in such a way so as to move the
-         * viewpoint. If one or more of these conditions are filled, the
-         * already existing below code should run along with a snippet that
-         * saves a cache of the current viewpoint. If not, the previously
-         * mentioned cache should be displayed rather than re-rendering the
-         * map.
+    {   
+        /* TODO Fix viewpoint scrolling code. Currently, when the Hero moves
+         * South or East across the scroll barrier, it warps reality a little,
+         * while the other two directions scroll fine.
          */
-        ChipSet chipSet = ChipSet.getChipSet(currentMap.getChipSet());
-        int i,x,y;
-        for (i=0;i<currentMap.getMapData().size();i++)
+        
+        int x,y;
+        HeroEvent hero = Game.getHeroEvent();
+        if (hero.getLocation().x > 10)
         {
-            for (y=0;y<currentMap.getSize().height;y++)
+            if (hero.getLocation().x < (currentMap.getSize().width - 9))
             {
-                for (x=0;x<currentMap.getSize().width;x++)
-                {
-                    int tile = currentMap.getMapData().get(i).get(x+(y*currentMap.getSize().width));
-                    if (chipSet.getChipSetData().get(tile).getLayer() != Layer.Above)
-                    {
-                        g.drawImage(chipSet.getImage(tile), x*16, y*16, null);
-                    }
-                }
+                x = (hero.getLocation().x - 10) * 16;
+                x += hero.getMovingX();
+            } else {
+                x = (currentMap.getSize().width - 20) * 16;
             }
+        } else {
+            x = 0;
         }
-/*
-        MapViewer mv = new MapViewer(currentMap, new com.alienfactory.javamappy.viewer.render.J2SE14Renderer(currentMap), Game.WIDTH, Game.HEIGHT);
-        mv.setBlockX(Game.getSaveFile().getHero().getLocation().x);
-        mv.setBlockY(Game.getSaveFile().getHero().getLocation().y);
-        mv.setPixelX((4 - Game.getSaveFile().getHero().getMoveTimer()) * 4);
-        mv.draw(g, true);*/
-        Game.getSaveFile().getHero().render(g);
+        
+        if (hero.getLocation().y > 7)
+        {
+            if (hero.getLocation().y < (currentMap.getSize().height - 7))
+            {
+                y = (hero.getLocation().y - 7) * 16;
+                y += hero.getMovingY();
+            } else {
+                y = (currentMap.getSize().height - 15) * 16;
+            }
+        } else {
+            y = 0;
+        }
+        
+        g.drawImage(currentMap.renderLower(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
+
+        BufferedImage eventLayer = new BufferedImage(currentMap.getSize().width*16, currentMap.getSize().height*16, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = eventLayer.createGraphics();
+        hero.render(g2);
 
         EventList events = currentMap.getEvents();
         for (LayerEvent event : events)
         {
-            event.render(g);
+            event.render(g2);
         }
 
-        for (i=0;i<currentMap.getMapData().size();i++)
-        {
-            for (y=0;y<currentMap.getSize().height;y++)
-            {
-                for (x=0;x<currentMap.getSize().width;x++)
-                {
-                    int tile = currentMap.getMapData().get(i).get(x+(y*currentMap.getSize().width));
-                    if (chipSet.getChipSetData().get(tile).getLayer() == Layer.Above)
-                    {
-                        g.drawImage(chipSet.getImage(tile), x*16, y*16, null);
-                    }
-                }
-            }
-        }
+        g.drawImage(eventLayer, 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
+        g.drawImage(currentMap.renderUpper(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
     }
     
     public void initCurrentMap(String mapName)

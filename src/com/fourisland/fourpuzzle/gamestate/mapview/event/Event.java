@@ -28,6 +28,9 @@ public interface Event {
     public int getRenderX();
     public int getRenderY();
     
+    public int getMovingX();
+    public int getMovingY();
+    
     public Direction getDirection();
     public void setDirection(Direction direction);
 
