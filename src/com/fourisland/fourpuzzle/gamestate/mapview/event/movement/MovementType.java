@@ -16,10 +16,3 @@ public interface MovementType {
     public Direction nextMovement();
     
 }
-    
-/*
-    CycleUpDown
-    CycleLeftRight
-    StepTowardHero
-    StepAwayFromHero
-*/
