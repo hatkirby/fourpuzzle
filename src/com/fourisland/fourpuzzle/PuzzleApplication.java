@@ -5,6 +5,7 @@
 package com.fourisland.fourpuzzle;
 
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
+import com.fourisland.fourpuzzle.gamestate.mapview.ChipSet;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -104,6 +105,7 @@ public class PuzzleApplication extends Application {
             public void run() {
                 try {
                     Audio.init();
+                    ChipSet.initalize();
                     Game.setGameState(new TitleScreenGameState());
                     
                     long iTickCount = System.currentTimeMillis();
