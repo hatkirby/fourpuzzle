@@ -10,7 +10,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,14 +19,12 @@ import java.util.logging.Logger;
  * @author hatkirby
  */
 public class MoveEventThread implements Runnable {
+        
+    private static volatile List<Event> events = new Vector<Event>();
+    private static volatile Semaphore moveEventWait = new Semaphore(100);
     
-    public static volatile int countMoveEventThreads = 0;
-    
-    static volatile List<Event> events = new Vector<Event>();
-    static volatile CountDownLatch moveEventWait = new CountDownLatch(0);
-    
-    Event ev;
-    MoveEvent[] actions;
+    private Event ev;
+    private MoveEvent[] actions;
     
     public MoveEventThread(Event ev, MoveEvent[] actions)
     {
@@ -36,6 +34,12 @@ public class MoveEventThread implements Runnable {
 
     public void run()
     {
+        try {
+            moveEventWait.acquire();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         while (ev.isMoving())
         {
             try {
@@ -47,18 +51,13 @@ public class MoveEventThread implements Runnable {
         
         events.add(ev);
         
-        MoveEventThread.countMoveEventThreads++;
-        moveEventWait = new CountDownLatch(countMoveEventThreads);
-        
         for (MoveEvent action : actions)
         {
             action.doAction(ev);
         }
-        
+
         events.remove(ev);
-        
-        MoveEventThread.countMoveEventThreads--;
-        moveEventWait.countDown();
+        moveEventWait.release();
     }
     
     /* TODO Rename the two following methods (isHeroMoving and isOtherMoving)
@@ -78,7 +77,8 @@ public class MoveEventThread implements Runnable {
     public static void moveAll()
     {
         try {
-            moveEventWait.await();
+            moveEventWait.acquire(100);
+            moveEventWait.release(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
         }
