@@ -50,6 +50,11 @@ public abstract class AbstractEvent implements Event {
         
         setDirection(toMove);
         
+        if (getDirection() != toMove)
+        {
+            return false;
+        }
+        
         if (!getParentMap().checkForCollision(this, toMove))
         {
             setAnimationStep(2);

@@ -9,7 +9,6 @@ import com.fourisland.fourpuzzle.Layer;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import com.fourisland.fourpuzzle.Direction;
-import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
 
 /**

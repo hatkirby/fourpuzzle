@@ -106,7 +106,22 @@ public class MapViewGameState implements GameState {
 
                 if (letsMove)
                 {
-                    hero.startMoving(toMove);
+                    if (!hero.startMoving(toMove))
+                    {
+                        for (LayerEvent ev : currentMap.getEvents())
+                        {
+                            if (ev.getCalltime() == EventCallTime.OnHeroTouch)
+                            {
+                                if (ev.getLayer() == Layer.Middle)
+                                {
+                                    if (Functions.isFacing(hero, ev))
+                                    {
+                                        ev.getCallback().activate(ev.getCalltime());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))
@@ -143,6 +158,23 @@ public class MapViewGameState implements GameState {
         if (hero.isMoving())
         {
             hero.processMoving();
+            
+            if (!hero.isMoving())
+            {
+                for (LayerEvent ev : currentMap.getEvents())
+                {
+                    if (ev.getCalltime() == EventCallTime.OnHeroTouch)
+                    {
+                        if (ev.getLayer() != Layer.Middle)
+                        {
+                            if (hero.getLocation().equals(ev.getLocation()))
+                            {
+                                ev.getCallback().activate(ev.getCalltime());
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         for (LayerEvent ev : currentMap.getEvents())

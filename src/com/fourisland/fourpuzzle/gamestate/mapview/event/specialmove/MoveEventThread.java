@@ -36,6 +36,15 @@ public class MoveEventThread implements Runnable {
 
     public void run()
     {
+        while (ev.isMoving())
+        {
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
         events.add(ev);
         
         MoveEventThread.countMoveEventThreads++;
