@@ -8,6 +8,7 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.movement;
 import com.fourisland.fourpuzzle.Direction;
 
 /**
+ * StayStillMovementType keeps the event stationary.
  *
  * @author hatkirby
  */

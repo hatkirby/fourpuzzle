@@ -9,6 +9,7 @@ import com.fourisland.fourpuzzle.Direction;
 import java.awt.image.BufferedImage;
 
 /**
+ * BlankEventGraphic specifies an Event without an image.
  *
  * @author hatkirby
  */

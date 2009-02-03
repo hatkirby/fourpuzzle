@@ -8,6 +8,7 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.precondition;
 import com.fourisland.fourpuzzle.Game;
 
 /**
+ * SwitchPrecondition checks to see if a certain Switch is ON.
  *
  * @author hatkirby
  */

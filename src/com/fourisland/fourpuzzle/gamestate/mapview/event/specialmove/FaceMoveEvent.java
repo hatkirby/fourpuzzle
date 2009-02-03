@@ -9,7 +9,8 @@ import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 
 /**
- *
+ * FaceMoveEvent turns the selected Event in the chosen direction.
+ * 
  * @author hatkirby
  */
 public class FaceMoveEvent implements MoveEvent {

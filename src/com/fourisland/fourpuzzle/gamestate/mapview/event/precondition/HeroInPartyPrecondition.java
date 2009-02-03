@@ -8,6 +8,8 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.precondition;
 import com.fourisland.fourpuzzle.Game;
 
 /**
+ * HeroInPartyPrecondition checks to see if a specific character is in the
+ * party.
  *
  * @author hatkirby
  */

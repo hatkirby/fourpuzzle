@@ -9,6 +9,7 @@ import com.fourisland.fourpuzzle.Direction;
 import java.util.Random;
 
 /**
+ * RandomMovementType moves the event in random directions.
  *
  * @author hatkirby
  */

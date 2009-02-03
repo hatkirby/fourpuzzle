@@ -9,6 +9,8 @@ import com.fourisland.fourpuzzle.util.Comparison;
 import com.fourisland.fourpuzzle.Game;
 
 /**
+ * VariableVariablePrecondition compares two variables together with a specified
+ * Comparison.
  *
  * @author hatkirby
  */

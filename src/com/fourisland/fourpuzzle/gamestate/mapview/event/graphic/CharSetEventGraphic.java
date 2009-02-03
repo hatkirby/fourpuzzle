@@ -10,6 +10,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.CharSet;
 import java.awt.image.BufferedImage;
 
 /**
+ * CharSetEventGraphic specifes an Event with an image from a <b>CharSet</b>.
  *
  * @author hatkirby
  */

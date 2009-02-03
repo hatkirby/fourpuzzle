@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * WaitMoveEvent pauses for the specifed amount of milliseconds.
+ * 
  * @author hatkirby
  */
 public class WaitMoveEvent implements MoveEvent {

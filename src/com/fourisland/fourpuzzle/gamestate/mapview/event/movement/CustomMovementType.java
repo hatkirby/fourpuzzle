@@ -8,6 +8,9 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.movement;
 import com.fourisland.fourpuzzle.Direction;
 
 /**
+ * CustomMovementEvent takes an array of Directions and directions the event
+ * to move in each of them, one by one, returning to the top of the list when
+ * done.
  *
  * @author hatkirby
  */

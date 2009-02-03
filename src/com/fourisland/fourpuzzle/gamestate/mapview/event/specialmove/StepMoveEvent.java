@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * StepMoveEvent moves the event in the direction specified.
  *
  * @author hatkirby
  */

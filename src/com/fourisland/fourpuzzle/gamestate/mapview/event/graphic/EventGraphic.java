@@ -9,6 +9,7 @@ import com.fourisland.fourpuzzle.Direction;
 import java.awt.image.BufferedImage;
 
 /**
+ * An EventGraphic specifies the image to be displayed on the map for an Event.
  *
  * @author hatkirby
  */
