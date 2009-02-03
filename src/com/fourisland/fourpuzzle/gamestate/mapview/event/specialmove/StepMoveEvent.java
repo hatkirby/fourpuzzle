@@ -7,8 +7,6 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove;
 
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * StepMoveEvent moves the event in the direction specified.
@@ -32,7 +30,7 @@ public class StepMoveEvent implements MoveEvent {
                 try {
                     Thread.sleep(2);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(StepMoveEvent.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread.currentThread().interrupt();
                 }
             }
         }

@@ -11,8 +11,6 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,7 +35,7 @@ public class MoveEventThread implements Runnable {
         try {
             moveEventWait.acquire();
         } catch (InterruptedException ex) {
-            Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
+            Thread.currentThread().interrupt();
         }
         
         while (ev.isMoving())
@@ -45,7 +43,7 @@ public class MoveEventThread implements Runnable {
             try {
                 Thread.sleep(2);
             } catch (InterruptedException ex) {
-                Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
             }
         }
         
@@ -74,14 +72,10 @@ public class MoveEventThread implements Runnable {
         return (events.contains(event));
     }
     
-    public static void moveAll()
+    public static void moveAll() throws InterruptedException
     {
-        try {
-            moveEventWait.acquire(100);
-            moveEventWait.release(100);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MoveEventThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        moveEventWait.acquire(100);
+        moveEventWait.release(100);
     }
 
 }

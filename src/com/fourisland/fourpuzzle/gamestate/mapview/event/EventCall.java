@@ -5,7 +5,6 @@
 
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
-import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import java.util.concurrent.Future;
 
 /**
@@ -22,9 +21,9 @@ public abstract class EventCall extends SpecialEvent implements Runnable {
             }
         };
     }
-
-    public abstract void run();
     
+    public abstract void run();
+
     private Future isRunning = null;
     public void activate(EventCallTime calltime)
     {

@@ -14,8 +14,6 @@ import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.FixedViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.MovingViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -128,8 +126,9 @@ public class SpecialEvent {
     
     /**
      * Waits until all previously called MoveEvent()s have finished
+     * @throws InterruptedException
      */
-    public void MoveEventWait()
+    public void MoveEventWait() throws InterruptedException
     {
         MoveEventThread.moveAll();
     }
@@ -166,14 +165,11 @@ public class SpecialEvent {
      * Waits for a specified interval
      * 
      * @param wait The time to wait in milliseconds
+     * @throws InterruptedException
      */
-    public void Wait(int wait)
+    public void Wait(int wait) throws InterruptedException
     {
-        try {
-            Thread.sleep(wait);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(SpecialEvent.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Thread.sleep(wait);
     }
     
     /**
@@ -193,8 +189,9 @@ public class SpecialEvent {
      * @param length How long (in milliseconds) it will take to pan
      * @param block If true, the game will wait for the pan to complete
      *              before executing any more commands
+     * @throws InterruptedException
      */
-    public void PanViewpoint(final int x, final int y, int length, final boolean block)
+    public void PanViewpoint(final int x, final int y, int length, final boolean block) throws InterruptedException
     {
         Viewpoint viewpoint = mapView.getViewpoint();
         final CountDownLatch blocker;
@@ -220,11 +217,7 @@ public class SpecialEvent {
         
         if (block)
         {
-            try {
-                blocker.await();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SpecialEvent.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            blocker.await();
         }
     }
     

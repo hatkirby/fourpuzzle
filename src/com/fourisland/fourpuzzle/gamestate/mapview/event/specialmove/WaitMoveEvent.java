@@ -6,8 +6,6 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove;
 
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * WaitMoveEvent pauses for the specifed amount of milliseconds.
@@ -27,7 +25,7 @@ public class WaitMoveEvent implements MoveEvent {
         try {
             Thread.sleep(wait);
         } catch (InterruptedException ex) {
-            Logger.getLogger(WaitMoveEvent.class.getName()).log(Level.SEVERE, null, ex);
+            Thread.currentThread().interrupt();
         }
     }
 

@@ -6,8 +6,6 @@
 package com.fourisland.fourpuzzle.transition;
 
 import com.fourisland.fourpuzzle.Display;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,7 +26,7 @@ public class TransitionCallbackThread implements Runnable {
             try {
                 Thread.sleep(300);
             } catch (InterruptedException ex) {
-                Logger.getLogger(TransitionCallbackThread.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
             }
         }
         
