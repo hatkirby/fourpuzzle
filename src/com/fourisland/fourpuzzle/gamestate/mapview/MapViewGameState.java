@@ -79,7 +79,7 @@ public class MapViewGameState implements GameState {
                 debugWalkthrough = false;
             }
 
-            if (!hero.isMoving() && !MoveEventThread.isHeroMoving() && !EventHandler.isRunningEvent())
+            if (!hero.isMoving() && !MoveEventThread.isHeroActive() && !EventHandler.isRunningEvent())
             {
                 Direction toMove = null;
                 Boolean letsMove = false;
@@ -181,7 +181,7 @@ public class MapViewGameState implements GameState {
         {
             if (!ev.isMoving())
             {
-                if (!MoveEventThread.isOtherMoving(ev))
+                if (!MoveEventThread.isOtherActive(ev))
                 {
                     if (!EventHandler.isRunningEvent())
                     {

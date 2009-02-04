@@ -112,7 +112,7 @@ public class SpecialEvent {
      */
     public void MoveEvent(MoveEvent[] actions)
     {
-        new Thread(new MoveEventThread(Game.getHeroEvent(), actions)).start();
+        new MoveEventThread(Game.getHeroEvent(), actions).start();
     }
     
     /**
@@ -123,7 +123,7 @@ public class SpecialEvent {
      */
     public void MoveEvent(MoveEvent[] actions, String label)
     {
-        new Thread(new MoveEventThread(((MapViewGameState) Game.getGameState()).getCurrentMap().getEvent(label), actions)).start();
+        new MoveEventThread(mapView.getCurrentMap().getEvent(label), actions).start();
     }
     
     /**

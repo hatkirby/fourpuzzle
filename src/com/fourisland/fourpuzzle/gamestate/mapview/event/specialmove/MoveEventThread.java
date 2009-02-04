@@ -10,6 +10,8 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -17,7 +19,9 @@ import java.util.concurrent.Semaphore;
  * @author hatkirby
  */
 public class MoveEventThread implements Runnable {
-        
+    
+    private static Executor moveEventExecutor = Executors.newCachedThreadPool();
+
     private static volatile List<Event> events = new Vector<Event>();
     private static volatile Semaphore moveEventWait = new Semaphore(100);
     
@@ -28,6 +32,11 @@ public class MoveEventThread implements Runnable {
     {
         this.ev = ev;
         this.actions = actions;
+    }
+    
+    public void start()
+    {
+        moveEventExecutor.execute(this);
     }
 
     public void run()
@@ -58,24 +67,20 @@ public class MoveEventThread implements Runnable {
         moveEventWait.release();
     }
     
-    /* TODO Rename the two following methods (isHeroMoving and isOtherMoving)
-     * to isHeroActive and isOtherActive respectively.
-     */
-    
-    public static boolean isHeroMoving()
-    {
-        return (events.contains(Game.getHeroEvent()));
-    }
-    
-    public static boolean isOtherMoving(LayerEvent event)
-    {
-        return (events.contains(event));
-    }
-    
     public static void moveAll() throws InterruptedException
     {
         moveEventWait.acquire(100);
         moveEventWait.release(100);
+    }
+    
+    public static boolean isHeroActive()
+    {
+        return (events.contains(Game.getHeroEvent()));
+    }
+    
+    public static boolean isOtherActive(LayerEvent event)
+    {
+        return (events.contains(event));
     }
 
 }
