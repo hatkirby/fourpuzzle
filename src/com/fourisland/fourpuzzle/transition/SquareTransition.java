@@ -7,19 +7,21 @@ package com.fourisland.fourpuzzle.transition;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
  * @author hatkirby
  */
-public class SquareTransition extends Transition {
+public class SquareTransition implements MultidirectionalTransition {
     
     private int tick;
-    public SquareTransition(boolean from)
+    private TransitionDirection direction;
+    public SquareTransition(TransitionDirection direction)
     {
-        setDirection(from);
+        this.direction = direction;
         
-        if (from)
+        if (direction == TransitionDirection.Out)
         {
             tick = 160;
         } else {
@@ -27,24 +29,36 @@ public class SquareTransition extends Transition {
         }
     }
     
-    public void render(Graphics2D g)
+    public boolean render(Graphics2D g)
     {
-        if (((!getDirection()) && (tick == 0)) || ((getDirection()) && (tick == 160)))
+        if (((direction == TransitionDirection.Out) && (tick == 0)) || ((direction == TransitionDirection.In) && (tick == 160)))
         {
-            setRunning(false);
-            return;
+            return true;
         }
         
-        if (getDirection())
+        if (direction == TransitionDirection.In)
         {
             tick+=8;
         } else {
-            tick-=8;
+            tick-=8;    
         }
         
         g.setBackground(Color.BLACK);
         g.fillRect(0, 0, 320, 240);
         g.setClip(160-tick, 140-tick, tick*2, tick*2-40);
+        
+        return false;
+    }
+
+    public TransitionDirection getDirection()
+    {
+        return direction;
+    }
+    
+    private BufferedImage preTransition;
+    public void setPreTransition(BufferedImage preTransition)
+    {
+        this.preTransition = preTransition;
     }
 
 }

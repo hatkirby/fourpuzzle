@@ -10,11 +10,10 @@ import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.SaveFile;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
+import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,16 +36,18 @@ public class GameOverGameState implements GameState {
         if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))
         {
             Game.setSaveFile(new SaveFile());
-            //Display.transition(SquareTransition.class, this, new TitleScreenGameState());
-            Display.transition(new SquareTransition(true), new Runnable() {
+            
+            new Thread(new Runnable() {
                 public void run() {
                     try {
-                        Game.setGameState(new TitleScreenGameState());
-                    } catch (Exception ex) {
-                        Logger.getLogger(GameOverGameState.class.getName()).log(Level.SEVERE, null, ex);
+                        Display.transition(new SquareTransition(TransitionDirection.Out));
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
                     }
+                    
+                    Game.setGameState(new TitleScreenGameState());
                 }
-            });
+            }).start();
         }
     }
 

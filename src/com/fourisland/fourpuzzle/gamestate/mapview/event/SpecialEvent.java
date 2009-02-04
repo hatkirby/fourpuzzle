@@ -13,6 +13,8 @@ import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.FixedViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.MovingViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
+import com.fourisland.fourpuzzle.transition.InTransition;
+import com.fourisland.fourpuzzle.transition.OutTransition;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -149,8 +151,32 @@ public class SpecialEvent {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     
+    private boolean startedTransition = false;
+    
+    /**
+     * Displays a transition from the current map to emptiness
+     * 
+     * If this method is executed before Teleport(), Teleport() will not use
+     * the database-default out transition and instead immeditatly jump to the
+     * new map. It will also not use the database-default in transition which
+     * requires you to also execute EndTransition().
+     * 
+     * @param trans The transition to use
+     * @throws InterruptedException 
+     */
+    public void StartTransition(OutTransition trans) throws InterruptedException
+    {
+        startedTransition = true;
+        
+        Display.transition(trans);
+    }
+    
     /**
      * Moves the player to a different map
+     * 
+     * If StartTransition() is executed prior to this method, then this will
+     * not preform the database-default transitions, which requires that
+     * EndTransition() is executed after this method.
      * 
      * @param map The name of the map to move to
      * @param x The X position on the map to move to
@@ -159,6 +185,24 @@ public class SpecialEvent {
     public void Teleport(String map, int x, int y)
     {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
+    /**
+     * Displays a transition from the emptiness to the new map
+     * 
+     * This method is only required if you called StartTransition() before
+     * Teleport(), in which case it will display the transition. Otherwise,
+     * this action will do nothing.
+     * 
+     * @param trans
+     * @throws InterruptedException 
+     */
+    public void EndTransition(InTransition trans) throws InterruptedException
+    {
+        if (startedTransition)
+        {
+            Display.transition(trans);
+        }
     }
     
     /**

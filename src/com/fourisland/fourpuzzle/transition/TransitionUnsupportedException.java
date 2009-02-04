@@ -11,9 +11,19 @@ package com.fourisland.fourpuzzle.transition;
  */
 public class TransitionUnsupportedException extends RuntimeException {
 
-    public TransitionUnsupportedException(String className, String direction)
+    private String className;
+    private TransitionDirection direction;
+    
+    public TransitionUnsupportedException(String className, TransitionDirection direction)
     {
-        super("Transition \"" + className + "\" does not support the " + direction + " direction");
+        this.className = className;
+        this.direction = direction;
+    }
+    
+    @Override
+    public String getMessage()
+    {
+        return "Transition \"" + className + "\" does not support the " + direction.toString() + " direction";
     }
     
 }

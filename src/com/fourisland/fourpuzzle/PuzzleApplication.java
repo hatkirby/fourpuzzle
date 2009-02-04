@@ -117,12 +117,16 @@ public class PuzzleApplication extends Application {
                         
                         if ((iTickCount > iTickTrigger) && (!gameSleep))
                         {
-                            if (Game.getKey() != null)
+                            if (!Display.isTransitionRunning())
                             {
-                                Game.getGameState().processInput();
+                                if (Game.getKey() != null)
+                                {
+                                    Game.getGameState().processInput();
+                                }
+
+                                Game.getGameState().doGameCycle();
                             }
                             
-                            Game.getGameState().doGameCycle();
                             Display.render(gameFrame);
                             
                             if (!debugSpeed)

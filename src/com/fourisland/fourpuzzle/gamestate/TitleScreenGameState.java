@@ -7,6 +7,8 @@ package com.fourisland.fourpuzzle.gamestate;
 
 import com.fourisland.fourpuzzle.*;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
+import com.fourisland.fourpuzzle.transition.SquareTransition;
+import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -32,10 +34,24 @@ public class TitleScreenGameState implements GameState {
         if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
         {
             Game.setSaveFile(new SaveFile());
-            Game.setGameState(new MapViewGameState("TestMap", 1, 2));
-            //Game.setGameState(new SquareTransition(this, new MapViewGameState("TestMap", 0, 0)));
-            //Game.setGameState(new TransitionGameState(this, this));
-            //Game.setGameState(new GameOverGameState());
+            
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Display.transition(new SquareTransition(TransitionDirection.Out));
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                    
+                    Game.setGameState(new MapViewGameState("TestMap", 1, 2));
+                    
+                    try {
+                        Display.transition(new SquareTransition(TransitionDirection.In));
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }).start();
         }
     }
 

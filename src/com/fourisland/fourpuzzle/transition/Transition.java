@@ -11,47 +11,14 @@ import java.awt.Graphics2D;
  *
  * @author hatkirby
  */
-public abstract class Transition {
-    
-    private boolean way;
-    protected void setDirection(boolean from)
-    {
-        if ((from) && !(isFromSupported()))
-        {
-            throw new TransitionUnsupportedException(this.getClass().getSimpleName(), "From");
-        } else if ((!from) && !(isToSupported()))
-        {
-            throw new TransitionUnsupportedException(this.getClass().getSimpleName(), "To");
-        } else {
-            way = from;
-        }
-    }
-    
-    public boolean getDirection()
-    {
-        return way;
-    }
+public interface Transition {
 
-    public boolean isFromSupported()
-    {
-        return true;
-    }
-    
-    public boolean isToSupported()
-    {
-        return true;
-    }
-    
-    public abstract void render(Graphics2D g);
-    
-    private boolean running = true;
-    public boolean isRunning()
-    {
-        return running;
-    }
-    public void setRunning(boolean running)
-    {
-        this.running = running;
-    }
+    /**
+     * Render the transition to the display
+     * 
+     * @param g The graphics device to render the transition to
+     * @return If the transition has completed, true. Otherwise false.
+     */
+    public boolean render(Graphics2D g);
     
 }
