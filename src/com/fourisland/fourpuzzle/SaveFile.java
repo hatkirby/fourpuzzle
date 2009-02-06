@@ -45,8 +45,6 @@ public class SaveFile implements Serializable {
         SaveFile temp = null;
         try {
             temp = (SaveFile) ois.readObject();
-        } catch (IOException ex) {
-            Logger.getLogger(SaveFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SaveFile.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,6 +64,7 @@ public class SaveFile implements Serializable {
         ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(this);
         oos.close();
+        os.close();
     }
 
     private HashMap<String, Boolean> switches;
