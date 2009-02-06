@@ -69,23 +69,30 @@ public class Display {
 
         Graphics2D g = vImg.createGraphics();
         
-        if (transition != null)
+        if (transitionRunning)
         {
-            if (transition.render(g))
+            Game.getGameState().render(g);
+
+            if (transition != null)
             {
-                if (startedTransition)
+                if (transition.render(g))
                 {
-                    midTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
-                    midTransition.getGraphics().drawImage(vImg, 0, 0, null);
-                } else {
-                    midTransition = null;
+                    if (startedTransition)
+                    {
+                        midTransition = vImg.getSnapshot();
+                    } else {
+                        midTransition = null;
+                    }
+
+                    transitionWait.countDown();
                 }
-                
-                transitionWait.countDown();
+            } else {
+                g.drawImage(midTransition, 0, 0, null);
             }
+        } else {
+            Game.getGameState().render(g);
         }
         
-        Game.getGameState().render(g);
         g.dispose();
     }
     
@@ -94,6 +101,7 @@ public class Display {
     private static CountDownLatch transitionWait;
     private static boolean transitionRunning = false;
     private static BufferedImage midTransition = null;
+    private static BufferedImage postTransition = null;
     public static void transition(Transition transition) throws InterruptedException
     {
         if (transition instanceof MultidirectionalTransition)
@@ -111,6 +119,10 @@ public class Display {
             if (temp.getDirection() == TransitionDirection.In)
             {
                 temp.setPreTransition(midTransition);
+                
+                postTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                Game.getGameState().render(postTransition.createGraphics());
+                temp.setPostTransition(postTransition);
             }
         } else {
             if (startedTransition && !(transition instanceof InTransition))
@@ -124,6 +136,10 @@ public class Display {
             if (transition instanceof InTransition)
             {
                 ((InTransition) transition).setPreTransition(midTransition);
+                
+                postTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                Game.getGameState().render(postTransition.createGraphics());
+                ((InTransition) transition).setPostTransition(postTransition);
             }
         }
         
@@ -133,6 +149,8 @@ public class Display {
         
         transitionWait = new CountDownLatch(1);
         transitionWait.await();
+        
+        transition = null;
         
         if (!startedTransition)
         {

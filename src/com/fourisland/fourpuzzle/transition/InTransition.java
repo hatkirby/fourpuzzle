@@ -14,5 +14,6 @@ import java.awt.image.BufferedImage;
 public interface InTransition extends Transition {
     
     public void setPreTransition(BufferedImage preTransition);
+    public void setPostTransition(BufferedImage postTransition);
 
 }
