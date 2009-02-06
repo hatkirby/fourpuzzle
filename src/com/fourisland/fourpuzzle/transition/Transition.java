@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.transition;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -21,4 +22,5 @@ public interface Transition {
      */
     public boolean render(Graphics2D g);
     
+    public void setPreTransition(BufferedImage preTransition);
 }

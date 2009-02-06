@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.transition;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -16,6 +17,11 @@ public class DoNotEraseTransition implements OutTransition {
     public boolean render(Graphics2D g)
     {
         return true;
+    }
+
+    public void setPreTransition(BufferedImage preTransition)
+    {
+        // Do nothing
     }
 
 }

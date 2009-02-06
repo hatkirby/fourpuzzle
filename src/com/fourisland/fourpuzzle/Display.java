@@ -123,6 +123,10 @@ public class Display {
                 postTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
                 Game.getGameState().render(postTransition.createGraphics());
                 temp.setPostTransition(postTransition);
+            } else {
+                BufferedImage preTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                Game.getGameState().render(preTransition.createGraphics());
+                temp.setPreTransition(preTransition);
             }
         } else {
             if (startedTransition && !(transition instanceof InTransition))
@@ -135,11 +139,15 @@ public class Display {
             
             if (transition instanceof InTransition)
             {
-                ((InTransition) transition).setPreTransition(midTransition);
+                transition.setPreTransition(midTransition);
                 
                 postTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
                 Game.getGameState().render(postTransition.createGraphics());
                 ((InTransition) transition).setPostTransition(postTransition);
+            } else {
+                BufferedImage preTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                Game.getGameState().render(preTransition.createGraphics());
+                transition.setPreTransition(preTransition);
             }
         }
         

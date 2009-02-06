@@ -32,11 +32,12 @@ public class SquareTransition implements MultidirectionalTransition {
     
     public boolean render(Graphics2D g)
     {
+        g.drawImage(preTransition, 0, 0, null);
+        
         if (direction == TransitionDirection.In)
         {
             tick+=8;
             
-            g.drawImage(preTransition, 0, 0, null);
             g.drawImage(postTransition, 160-tick, 140-tick, tick*2+(160-tick), tick*2-40+(140-tick), 160-tick, 140-tick, tick*2+(160-tick), tick*2-40+(140-tick), null);
         } else {
             tick-=8;
