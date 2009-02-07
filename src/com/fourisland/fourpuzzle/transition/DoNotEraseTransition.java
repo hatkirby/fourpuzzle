@@ -23,5 +23,10 @@ public class DoNotEraseTransition implements OutTransition {
     {
         // Do nothing
     }
+    
+    public Transition copy()
+    {
+        return new DoNotEraseTransition();
+    }
 
 }

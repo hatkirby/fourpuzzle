@@ -40,7 +40,7 @@ public class PuzzleApplication extends Application {
         INSTANCE = this;
         
         gameFrame = new JDialog(new JFrame(), false);
-        gameFrame.setTitle("The Hat");
+        gameFrame.setTitle(Database.getVocab("title"));
         gameFrame.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
         gameFrame.setResizable(false);
         gameFrame.addWindowListener(new WindowAdapter() {
@@ -158,7 +158,7 @@ public class PuzzleApplication extends Application {
         
         JFrame errorBox = new JFrame(ex.getClass().getSimpleName());
         JLabel text = new JLabel();
-        text.setText("<HTML><CENTER>I'm sorry, but " + INSTANCE.getContext().getResourceMap().getString("Application.title") +
+        text.setText("<HTML><CENTER>I'm sorry, but " + Database.getVocab("Title") +
                 " has run into an error and been forced to quit.<BR>Your save file has not been kept. The error was:<BR><BR>" +
                 ex.getMessage() + "</CENTER>");
         if (ex instanceof Error)

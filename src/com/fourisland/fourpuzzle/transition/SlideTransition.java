@@ -137,4 +137,9 @@ public class SlideTransition implements MultidirectionalTransition {
         UpOrDown
     }
 
+    public Transition copy()
+    {
+        return new SlideTransition(direction, d);
+    }
+
 }

@@ -21,7 +21,7 @@ public class TitleScreenGameState implements GameState {
     
     public void initalize()
     {
-        Audio.playMusic("Opening");
+        Audio.playMusic(Database.getMusic("Title"));
     }
     
     public void deinitalize()

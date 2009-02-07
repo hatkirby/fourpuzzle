@@ -23,4 +23,6 @@ public interface Transition {
     public boolean render(Graphics2D g);
     
     public void setPreTransition(BufferedImage preTransition);
+    
+    public Transition copy();
 }

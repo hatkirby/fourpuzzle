@@ -27,7 +27,7 @@ public class SaveFile implements Serializable {
     public SaveFile()
     {
         switches = new HashMap<String, Boolean>();
-        party = GameCharacters.createParty();
+        party = Database.createParty();
         variables = new HashMap<String, Integer>();
         currentMap = new String();
         hero = new HeroEvent();

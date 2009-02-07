@@ -166,9 +166,12 @@ public class SpecialEvent {
      */
     public void StartTransition(OutTransition trans) throws InterruptedException
     {
-        startedTransition = true;
-        
-        Display.transition(trans);
+        if (!startedTransition)
+        {
+            startedTransition = true;
+
+            Display.transition(trans);
+        }
     }
     
     /**
@@ -181,10 +184,21 @@ public class SpecialEvent {
      * @param map The name of the map to move to
      * @param x The X position on the map to move to
      * @param y The Y position on the map to move to
+     * @throws InterruptedException 
      */
-    public void Teleport(String map, int x, int y)
+    public void Teleport(String map, int x, int y) throws InterruptedException
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (!startedTransition)
+        {
+            Display.transition(Database.getTransition("MapExit"));
+        }
+        
+        Game.setGameState(new MapViewGameState(map, x, y));
+        
+        if (!startedTransition)
+        {
+            Display.transition(Database.getTransition("MapEnter"));
+        }
     }
     
     /**
@@ -202,6 +216,8 @@ public class SpecialEvent {
         if (startedTransition)
         {
             Display.transition(trans);
+            
+            startedTransition = false;
         }
     }
     

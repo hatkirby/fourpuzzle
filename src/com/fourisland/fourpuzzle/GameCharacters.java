@@ -17,12 +17,12 @@ public class GameCharacters extends ArrayList<GameCharacter>
     private GameCharacters() {}
     
     private static GameCharacters INSTANCE = new GameCharacters();
-    public static GameCharacters getDefaultParty()
+    static GameCharacters getDefaultParty()
     {
         return INSTANCE;
     }
 
-    public static GameCharacters createParty()
+    static GameCharacters createParty()
     {
         GameCharacters temp = new GameCharacters();
         temp.addAll(INSTANCE);
@@ -42,7 +42,7 @@ public class GameCharacters extends ArrayList<GameCharacter>
         
         Game.setGameState(new GameOverGameState());
         return null;
-    }
+    } 
     
     public boolean exists(String heroName) {
         for (GameCharacter chara : this)

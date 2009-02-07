@@ -74,4 +74,9 @@ public class SquareTransition implements MultidirectionalTransition {
         this.postTransition = postTransition;
     }
 
+    public Transition copy()
+    {
+        return new SquareTransition(direction);
+    }
+
 }
