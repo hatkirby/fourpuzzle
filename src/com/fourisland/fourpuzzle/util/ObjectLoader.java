@@ -5,12 +5,9 @@
 
 package com.fourisland.fourpuzzle.util;
 
-//import com.alienfactory.javamappy.loader.MapLoader;
 import com.fourisland.fourpuzzle.PuzzleApplication;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -68,7 +65,7 @@ public class ObjectLoader {
             {
                 throw new ResourceNotFoundException(type, name);
             }
-            
+
             BufferedImage bImg = null;
             try {
                 bImg = ImageIO.read(str);
@@ -76,24 +73,13 @@ public class ObjectLoader {
                 Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            bImg = new BufferedImage(bImg.getWidth(), bImg.getHeight(), BufferedImage.TYPE_INT_RGB);
-            Image image = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(bImg.getSource(), new TransparentImageFilter(transparencyColor)));
-            bImg.createGraphics().drawImage(image, 0, 0, null);            
+            bImg.createGraphics().drawImage(bImg, 0, 0, new Color(transparencyColor, true), null);
             
             addToObjectCache(type,name,bImg);
         }
         
         return (BufferedImage) objectCache.get(type + "/" + name);
     }
-    
-    /*public static com.alienfactory.javamappy.Map getMap(String name) throws Exception
-    {
-        ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
-        String filename = rm.getResourcesDir() + "mapdata/" + name + ".fmp";
-        
-        //com.alienfactory.javamappy.Map map = MapLoader.loadMap(rm.getClassLoader().getResourceAsStream(filename));
-        return map;
-    }*/
     
     public static void addToObjectCache(String type, String name, Object object)
     {

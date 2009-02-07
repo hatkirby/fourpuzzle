@@ -69,7 +69,7 @@ public class ChipSet {
     {
         ChipSet temp = new ChipSet();
         temp.chipSetData = lower;
-        temp.chipSetImage = ObjectLoader.getImage("ChipSet", name);
+        temp.chipSetImage = ObjectLoader.getImage("ChipSet", name, trans);
         
         chipSets.put(name, temp);
     }
