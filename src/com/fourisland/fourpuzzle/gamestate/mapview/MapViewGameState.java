@@ -208,12 +208,24 @@ public class MapViewGameState implements GameState {
 
         BufferedImage eventLayer = new BufferedImage(currentMap.getSize().width*16, currentMap.getSize().height*16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = eventLayer.createGraphics();
-        Game.getHeroEvent().render(g2);
-
         EventList events = currentMap.getEvents();
+        
         for (LayerEvent event : events)
         {
-            event.render(g2);
+            if (event.getLayer() != Layer.Above)
+            {
+                event.render(g2);
+            }
+        }
+        
+        Game.getHeroEvent().render(g2);
+
+        for (LayerEvent event : events)
+        {
+            if (event.getLayer() == Layer.Above)
+            {
+                event.render(g2);
+            }
         }
 
         g.drawImage(eventLayer, 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
