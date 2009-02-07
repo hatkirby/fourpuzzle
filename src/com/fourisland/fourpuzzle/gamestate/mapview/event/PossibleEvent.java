@@ -13,7 +13,6 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraph
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.EventGraphic;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.movement.MovementType;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.movement.StayStillMovementType;
-import com.fourisland.fourpuzzle.util.Functions;
 import java.awt.image.BufferedImage;
 
 /**
@@ -52,7 +51,24 @@ public class PossibleEvent {
         return graphic.getImage();
     }
 
+    private boolean aSLC = false;
     public EventGraphic getGraphic() {
+        if (animation.isAlwaysStepping())
+        {
+            if (aSLC)
+            {
+                aSLC = false;
+                
+                if (animationStep == 0)
+                {
+                    setAnimationStep(2);
+                } else {
+                    setAnimationStep(animationStep-1);
+                }
+            } else {
+                aSLC = true;
+            }
+        }
         return graphic;
     }
 
@@ -90,7 +106,7 @@ public class PossibleEvent {
 
     public void setDirection(Direction direction)
     {
-        if (Functions.canTurn(this))
+        if (animation.canTurn())
         {
             this.direction = direction;
             graphic.setDirection(direction);
@@ -102,8 +118,11 @@ public class PossibleEvent {
     }
 
     public void setAnimationStep(int animationStep) {
-        this.animationStep = animationStep;
-        graphic.setAnimationStep(animationStep);
+        if (animation.canStep())
+        {
+            this.animationStep = animationStep;
+            graphic.setAnimationStep(animationStep);
+        }
     }
     
     public void addPrecondition(Precondition precondition)
