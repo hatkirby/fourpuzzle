@@ -13,10 +13,9 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraph
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.EventGraphic;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.movement.MovementType;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.movement.StayStillMovementType;
-import java.awt.image.BufferedImage;
 
 /**
- *w
+ *
  * @author hatkirby
  */
 public class PossibleEvent {
@@ -27,32 +26,80 @@ public class PossibleEvent {
     private MovementType movement;
     private EventCallTime calltime;
     private EventCall callback;
-    private ArrayList<Precondition> preconditions;
+    private ArrayList<Precondition> preconditions = new ArrayList<Precondition>();
     
-    private Direction direction;
-    private int animationStep;
+    private Direction direction = Direction.South;
+    private int animationStep = 1;
     
-    public PossibleEvent()
-    {   
-        graphic = new BlankEventGraphic();
-        layer = Layer.Below;
-        animation = AnimationType.CommonWithStepping;
-        movement = new StayStillMovementType();
-        calltime = EventCallTime.PushKey;
-        callback = EventCall.getEmptyEventCall();
-        preconditions = new ArrayList<Precondition>();
-        
-        direction = Direction.South;
-        animationStep = 1;
+    PossibleEvent()
+    {
+        this(new Builder());
     }
+    
+    public static class Builder
+    {
+        private EventGraphic graphic = new BlankEventGraphic();
+        private Layer layer = Layer.Below;
+        private AnimationType animation = AnimationType.CommonWithoutStepping;
+        private MovementType movement = new StayStillMovementType();
+        private EventCallTime calltime = EventCallTime.PushKey;
+        private EventCall callback = EventCall.getEmptyEventCall();
         
-    public BufferedImage getImage()
-    {        
-        return graphic.getImage();
+        public Builder graphic(EventGraphic graphic)
+        {
+            this.graphic = graphic;
+            return this;
+        }
+        
+        public Builder layer(Layer layer)
+        {
+            this.layer = layer;
+            return this;
+        }
+        
+        public Builder animation(AnimationType animation)
+        {
+            this.animation = animation;
+            return this;
+        }
+        
+        public Builder movement(MovementType movement)
+        {
+            this.movement = movement;
+            return this;
+        }
+        
+        public Builder calltime(EventCallTime calltime)
+        {
+            this.calltime = calltime;
+            return this;
+        }
+        
+        public Builder callback(EventCall callback)
+        {
+            this.callback = callback;
+            return this;
+        }
+        
+        public PossibleEvent build()
+        {
+            return new PossibleEvent(this);
+        }
+    }
+    
+    private PossibleEvent(Builder builder)
+    {
+        graphic = builder.graphic;
+        layer = builder.layer;
+        animation = builder.animation;
+        movement = builder.movement;
+        calltime = builder.calltime;
+        callback = builder.callback;
     }
 
     private boolean aSLC = false;
-    public EventGraphic getGraphic() {
+    EventGraphic getGraphic()
+    {
         if (animation.isAlwaysStepping())
         {
             if (aSLC)
@@ -72,39 +119,47 @@ public class PossibleEvent {
         return graphic;
     }
 
-    public void setGraphic(EventGraphic graphic) {
+    void setGraphic(EventGraphic graphic)
+    {
         this.graphic = graphic;
     }
 
-    public Layer getLayer() {
+    Layer getLayer()
+    {
         return layer;
     }
 
-    public void setLayer(Layer layer) {
+    void setLayer(Layer layer)
+    {
         this.layer = layer;
     }
 
-    public AnimationType getAnimation() {
+    AnimationType getAnimation()
+    {
         return animation;
     }
 
-    public void setAnimation(AnimationType animation) {
+    void setAnimation(AnimationType animation)
+    {
         this.animation = animation;
     }
 
-    public MovementType getMovement() {
+    MovementType getMovement()
+    {
         return movement;
     }
 
-    public void setMovement(MovementType movement) {
+    void setMovement(MovementType movement)
+    {
         this.movement = movement;
     }
 
-    public Direction getDirection() {
+    Direction getDirection()
+    {
         return direction;
     }
 
-    public void setDirection(Direction direction)
+    void setDirection(Direction direction)
     {
         if (animation.canTurn())
         {
@@ -113,11 +168,13 @@ public class PossibleEvent {
         }
     }
 
-    public int getAnimationStep() {
+    int getAnimationStep()
+    {
         return animationStep;
     }
 
-    public void setAnimationStep(int animationStep) {
+    void setAnimationStep(int animationStep)
+    {
         if (animation.canStep())
         {
             this.animationStep = animationStep;
@@ -125,36 +182,47 @@ public class PossibleEvent {
         }
     }
     
+    /**
+     * Add a precondition to this PossibleEvent
+     * 
+     * PossibleEvents are different versions of a single LayerEvent. A
+     * LayerEvent may have many PossibleEvents, or none at all. The way it
+     * determines which PossibleEvent is current is that each PossibleEvent
+     * (possibly) has a set of <b>Precondition</b>s, objects that describe
+     * certain situations. If a PossibleEvent's Preconditions are all fulfilled,
+     * it is chosen as the active one. If there are more than one PossibleEvents
+     * with completely fulfilled Preconditions (that includes having no
+     * Preconditions at all), the later one is the one chosen as current.
+     * 
+     * @param precondition The Precondition to add to the list
+     */
     public void addPrecondition(Precondition precondition)
     {
         preconditions.add(precondition);
     }
     
-    public Precondition getPrecondition(int i)
+    ArrayList<Precondition> getPreconditions()
     {
-        return preconditions.get(i);
-    }
-    
-    public int preconditions()
-    {
-        return preconditions.size();
+        return preconditions;
     }
 
-    public EventCall getCallback()
+    EventCall getCallback()
     {
         return callback;
     }
     
-    public void setCallback(EventCall callback)
+    void setCallback(EventCall callback)
     {
         this.callback = callback;
     }
 
-    public EventCallTime getCalltime() {
+    EventCallTime getCalltime()
+    {
         return calltime;
     }
 
-    public void setCalltime(EventCallTime calltime) {
+    void setCalltime(EventCallTime calltime)
+    {
         this.calltime = calltime;
     }
     

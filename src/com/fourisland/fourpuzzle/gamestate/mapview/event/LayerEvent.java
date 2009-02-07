@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.precondition.Precondition;
 
 /**
  *
@@ -50,24 +51,22 @@ public class LayerEvent extends AbstractEvent implements Event {
     private ArrayList<PossibleEvent> events;
     public void addEvent(PossibleEvent pe)
     {
-        events.add(pe);
+        events.add(0, pe);
     }
     
     private PossibleEvent getPossibleEvent()
     {
-        int i;
-        for (i=(events.size()-1);i>-1;i--)
+        for (PossibleEvent event : events)
         {
             boolean good = true;
-            int j;
-            for (j=0;j<events.get(i).preconditions();j++)
+            for (Precondition pre : event.getPreconditions())
             {
-                good = (good ? events.get(i).getPrecondition(j).match() : false);
+                good = (good ? pre.match() : false);
             }
             
             if (good)
             {
-                return events.get(i);
+                return event;
             }
         }
         
@@ -79,7 +78,7 @@ public class LayerEvent extends AbstractEvent implements Event {
         PossibleEvent toDraw = getPossibleEvent();
         if (!(toDraw.getGraphic() instanceof BlankEventGraphic))
         {
-            g.drawImage(toDraw.getImage(), getRenderX(), getRenderY(), null);
+            g.drawImage(toDraw.getGraphic().getImage(), getRenderX(), getRenderY(), null);
         }
     }
     
@@ -97,6 +96,7 @@ public class LayerEvent extends AbstractEvent implements Event {
     {
         return getPossibleEvent().getDirection();
     }
+    
     public void setDirection(Direction direction)
     {
         getPossibleEvent().setDirection(direction);
@@ -117,7 +117,8 @@ public class LayerEvent extends AbstractEvent implements Event {
         return getPossibleEvent().getCallback();
     }
 
-    public void setLabel(String string) {
+    public void setLabel(String string)
+    {
         this.label = string;
     }
 
