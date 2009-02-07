@@ -71,8 +71,6 @@ public class Display {
         
         if (transitionRunning)
         {
-            Game.getGameState().render(g);
-
             if (transition != null)
             {
                 if (transition.render(g))

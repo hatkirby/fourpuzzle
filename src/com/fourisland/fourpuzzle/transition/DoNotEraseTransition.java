@@ -16,12 +16,15 @@ public class DoNotEraseTransition implements OutTransition {
     
     public boolean render(Graphics2D g)
     {
+        g.drawImage(preTransition, 0, 0, null);
+        
         return true;
     }
 
+    private BufferedImage preTransition;
     public void setPreTransition(BufferedImage preTransition)
     {
-        // Do nothing
+        this.preTransition = preTransition;
     }
     
     public Transition copy()

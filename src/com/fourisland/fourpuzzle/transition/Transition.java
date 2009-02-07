@@ -24,5 +24,17 @@ public interface Transition {
     
     public void setPreTransition(BufferedImage preTransition);
     
+    /**
+     * Create another Transition with the same properties
+     * 
+     * This function is used in the Database where default transitions are
+     * stored to be used in certain circumstances. When these transitions are
+     * needed, this function is called on them to create a copy of the
+     * Transition with the same parameters. Essentially, this function should
+     * return a new Transition of the same type constructed with the same
+     * parameters as the Transition this function is being called on.
+     * 
+     * @return A copy of the specified Transition
+     */
     public Transition copy();
 }

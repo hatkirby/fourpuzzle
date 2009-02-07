@@ -55,7 +55,7 @@ public class SlideTransition implements MultidirectionalTransition {
     int max;
     SlideDirection way;
     public boolean render(Graphics2D g)
-    {
+    {   
         if (max > 0)
         {
             tick = Math.min(tick + wait, max);
