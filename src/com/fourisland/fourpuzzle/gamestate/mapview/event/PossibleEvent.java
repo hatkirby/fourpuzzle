@@ -26,8 +26,8 @@ public class PossibleEvent {
     private MovementType movement;
     private EventCallTime calltime;
     private EventCall callback;
-    private ArrayList<Precondition> preconditions = new ArrayList<Precondition>();
     
+    private ArrayList<Precondition> preconditions = new ArrayList<Precondition>();
     private Direction direction = Direction.South;
     private int animationStep = 1;
     
@@ -98,7 +98,7 @@ public class PossibleEvent {
     }
 
     private boolean aSLC = false;
-    EventGraphic getGraphic()
+    public EventGraphic getGraphic()
     {
         if (animation.isAlwaysStepping())
         {
@@ -119,39 +119,19 @@ public class PossibleEvent {
         return graphic;
     }
 
-    void setGraphic(EventGraphic graphic)
-    {
-        this.graphic = graphic;
-    }
-
-    Layer getLayer()
+    public Layer getLayer()
     {
         return layer;
     }
 
-    void setLayer(Layer layer)
-    {
-        this.layer = layer;
-    }
-
-    AnimationType getAnimation()
+    public AnimationType getAnimation()
     {
         return animation;
     }
 
-    void setAnimation(AnimationType animation)
-    {
-        this.animation = animation;
-    }
-
-    MovementType getMovement()
+    public MovementType getMovement()
     {
         return movement;
-    }
-
-    void setMovement(MovementType movement)
-    {
-        this.movement = movement;
     }
 
     Direction getDirection()
@@ -201,29 +181,19 @@ public class PossibleEvent {
         preconditions.add(precondition);
     }
     
-    ArrayList<Precondition> getPreconditions()
+    public ArrayList<Precondition> getPreconditions()
     {
         return preconditions;
     }
 
-    EventCall getCallback()
+    public EventCall getCallback()
     {
         return callback;
     }
-    
-    void setCallback(EventCall callback)
-    {
-        this.callback = callback;
-    }
 
-    EventCallTime getCalltime()
+    public EventCallTime getCalltime()
     {
         return calltime;
-    }
-
-    void setCalltime(EventCallTime calltime)
-    {
-        this.calltime = calltime;
     }
     
 }
