@@ -45,13 +45,13 @@ public enum Window
     
     protected enum SystemArea
     {
-        TOP(15, 0, 1, 9),
-        TOP_RIGHT(24, 0, 8, 9),
+        TOP(15, 0, 1, 8),
+        TOP_RIGHT(24, 0, 8, 8),
         RIGHT(24, 15, 8, 1),
-        BOTTOM_RIGHT(24, 25, 8, 9),
-        BOTTOM(15, 24, 1, 9),
-        BOTTOM_LEFT(0, 24, 11, 9),
-        LEFT(0, 15, 11, 1),
+        BOTTOM_RIGHT(24, 24, 8, 8),
+        BOTTOM(15, 24, 1, 8),
+        BOTTOM_LEFT(0, 24, 8, 8),
+        LEFT(0, 15, 8, 1),
         TOP_LEFT(0, 0, 8, 8);
 
         private final int x;

@@ -50,7 +50,6 @@ public class ChoiceWindow {
         }
 
         width += SPACER*2;
-        height -= SPACER;
         
         cacheBase = new BufferedImage(Window.Default.getFullWidth(width), Window.Default.getFullHeight(height), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = cacheBase.createGraphics();
@@ -66,7 +65,7 @@ public class ChoiceWindow {
         g2.setFont(g2.getFont().deriveFont(Font.BOLD));
         
         int fh = g2.getFontMetrics().getHeight();
-        int ty = Window.Default.getTopY()+fh-SPACER+y;
+        int ty = Window.Default.getTopY()+fh-(SPACER/2)+y;
         for (String choice : choices)
         {
             int fw = g2.getFontMetrics().stringWidth(choice);
