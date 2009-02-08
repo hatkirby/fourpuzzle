@@ -6,12 +6,15 @@
 package com.fourisland.fourpuzzle;
 
 import com.fourisland.fourpuzzle.util.ObjectLoader;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
+import javax.sound.sampled.Clip;
 
 /**
  *
@@ -83,6 +86,20 @@ public class Audio {
         {
             seq.stop();
         }
+    }
+    
+    private static Executor soundExecutor = Executors.newCachedThreadPool();
+    public static void playSound(String file)
+    {
+        final Clip temp = ObjectLoader.getSound(file);
+        temp.start();
+
+        soundExecutor.execute(new Runnable() {
+            public void run() {
+                temp.drain();
+                temp.stop();
+            }
+        });
     }
     
 }
