@@ -31,7 +31,13 @@ public class Database {
 
     private static void loadDefaultVocabulary()
     {
+        /* Global */
         vocabulary.put("Title", "Untitled Game");
+        
+        /* TitleScreen */
+        vocabulary.put("NewGame", "New Game");
+        vocabulary.put("LoadGame", "Load Game");
+        vocabulary.put("EndGame", "End");
     }
     
     public static String getVocab(String key)

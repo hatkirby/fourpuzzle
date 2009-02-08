@@ -10,8 +10,10 @@ import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
+import com.fourisland.fourpuzzle.window.ChoiceWindow;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 /**
  *
@@ -19,9 +21,17 @@ import java.awt.event.KeyEvent;
  */
 public class TitleScreenGameState implements GameState {
     
+    ChoiceWindow choices;
+    int wx, wy;
+    
     public void initalize()
     {
         Audio.playMusic(Database.getMusic("Title"));
+        
+        choices = new ChoiceWindow(Arrays.asList(Database.getVocab("NewGame"), Database.getVocab("LoadGame"), Database.getVocab("EndGame")));
+        
+        wx = (Game.WIDTH/2)-(choices.getWidth()/2);
+        wy = (Game.HEIGHT/4*3)-(choices.getHeight()/2);
     }
     
     public void deinitalize()
@@ -63,6 +73,7 @@ public class TitleScreenGameState implements GameState {
     public void render(Graphics2D g)
     {
         g.drawImage(ObjectLoader.getImage("Picture", "Title"), 0, 0, null);
+        choices.render(g, wx, wy);
     }
 
 }
