@@ -28,8 +28,7 @@ public class TitleScreenGameState implements GameState {
     {
         Audio.playMusic(Database.getMusic("Title"));
         
-        choices = new ChoiceWindow(Arrays.asList(Database.getVocab("NewGame"), Database.getVocab("LoadGame"), Database.getVocab("EndGame")));
-        
+        choices = new ChoiceWindow(Arrays.asList(Database.getVocab("NewGame"), Database.getVocab("LoadGame"), Database.getVocab("EndGame")), true);
         wx = (Game.WIDTH/2)-(choices.getWidth()/2);
         wy = (Game.HEIGHT/4*3)-(choices.getHeight()/2);
     }

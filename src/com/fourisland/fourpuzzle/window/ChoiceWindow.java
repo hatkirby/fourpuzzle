@@ -28,10 +28,12 @@ public class ChoiceWindow {
     
     private List<String> choices;
     int numChoices;
-    public ChoiceWindow(List<String> choices)
+    boolean center;
+    public ChoiceWindow(List<String> choices, boolean center)
     {
         this.choices = choices;
         numChoices = choices.size();
+        this.center = center;
         
         createGraphic(new BufferedImage(TopLeft.getWidth()+getWidth()+TopRight.getWidth(), TopLeft.getHeight()+getHeight()+BottomLeft.getHeight(), BufferedImage.TYPE_INT_ARGB).createGraphics());
     }
@@ -74,10 +76,16 @@ public class ChoiceWindow {
         g2.drawImage(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(temp.getSource(), new TransparentPixelFilter(-25600))), 0, 0, null);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD));
         
-        int tx = TopLeft.getWidth();
         int ty = TopLeft.getHeight()+g2.getFontMetrics().getHeight()-SPACER;
         for (String choice : choices)
         {
+            int tx = TopLeft.getWidth();
+            
+            if (center)
+            {
+                tx += ((width/2)-(g2.getFontMetrics().stringWidth(choice)/2));
+            }
+            
             /* TODO The following code paints the text onto the window. However,
              * when it paints the lowercase 'y', the tail is white, not the
              * correct gradient. */
