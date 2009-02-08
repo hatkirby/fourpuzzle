@@ -79,7 +79,7 @@ public class ChoiceWindow {
             
             if (getSelected().equals(choice))
             {
-                g2.drawImage(SystemGraphic.getSelectionBackground(), tx, ty-fh, fw+SPACER-2, fh+SPACER-2, null);
+                g2.drawImage(SystemGraphic.getSelectionBackground(), tx-1, ty-fh+3, fw+SPACER-2, fh+SPACER-2, null);
                 g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh, null);
             }
             
