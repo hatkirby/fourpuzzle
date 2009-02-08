@@ -97,25 +97,10 @@ public class PossibleEvent {
         callback = builder.callback;
     }
 
-    private boolean aSLC = false;
     public EventGraphic getGraphic()
     {
-        if (animation.isAlwaysStepping())
-        {
-            if (aSLC)
-            {
-                aSLC = false;
-                
-                if (animationStep == 0)
-                {
-                    setAnimationStep(2);
-                } else {
-                    setAnimationStep(animationStep-1);
-                }
-            } else {
-                aSLC = true;
-            }
-        }
+        animation.tick(this);
+        
         return graphic;
     }
 

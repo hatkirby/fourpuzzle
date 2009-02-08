@@ -16,6 +16,11 @@ public enum Direction {
     West;
     
     /**
+     * TODO Find a way to serve the inverse of a Direction without using a
+     * switch, which is apparently bad practice
+     */
+    
+    /**
      * Returns the direction opposite from the current one
      * @return A Direction representing the opposite direction
      */

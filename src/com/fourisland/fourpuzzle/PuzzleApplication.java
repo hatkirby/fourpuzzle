@@ -6,6 +6,7 @@ package com.fourisland.fourpuzzle;
 
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.ChipSet;
+import com.fourisland.fourpuzzle.util.Interval;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -108,14 +109,10 @@ public class PuzzleApplication extends Application {
                     ChipSet.initalize();
                     Game.setGameState(new TitleScreenGameState());
                     
-                    long iTickCount = System.currentTimeMillis();
-                    long iTickTrigger = iTickCount + Game.FPS;
-                    
+                    Interval in = Interval.createTickInterval(1);
                     while (true)
                     {
-                        iTickCount = System.currentTimeMillis();
-                        
-                        if ((iTickCount > iTickTrigger) && (!gameSleep))
+                        if ((debugSpeed || in.isElapsed()) && !gameSleep)
                         {
                             if (!Display.isTransitionRunning())
                             {
@@ -128,11 +125,6 @@ public class PuzzleApplication extends Application {
                             }
                             
                             Display.render(gameFrame);
-                            
-                            if (!debugSpeed)
-                            {
-                                iTickTrigger = iTickCount + Game.FPS;
-                            }
                         }
                     }
                 } catch (RuntimeException ex) {

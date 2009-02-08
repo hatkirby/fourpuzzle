@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.viewpoint;
 
 import com.fourisland.fourpuzzle.Game;
+import com.fourisland.fourpuzzle.util.Interval;
 
 /**
  *
@@ -20,10 +21,10 @@ public class MovingViewpoint implements Viewpoint {
     private int dx;
     private int dy;
     private double speed;
-    private int last;
     private int xdist;
     private int ydist;
     private Runnable callback;
+    private Interval in;
     
     public MovingViewpoint(int sx, int sy, int dx, int dy, Runnable callback)
     {
@@ -39,10 +40,10 @@ public class MovingViewpoint implements Viewpoint {
         this.dx = dx;
         this.dy = dy;
         this.speed = length / Game.FPS;
-        this.last = (int) System.currentTimeMillis();
         this.xdist = dx - sx;
         this.ydist = dy - sy;
         this.callback = callback;
+        this.in = Interval.createMillisInterval((int) speed);
     }
     
     private void refresh()
@@ -64,13 +65,11 @@ public class MovingViewpoint implements Viewpoint {
         {
             callback.run();
         }
-        
-        last = (int) System.currentTimeMillis();
     }
 
     public int getX()
     {
-        if (System.currentTimeMillis() + speed > last)
+        if (in.isElapsed())
         {
             refresh();
         }
@@ -80,7 +79,7 @@ public class MovingViewpoint implements Viewpoint {
 
     public int getY()
     {
-        if (System.currentTimeMillis() + speed > last)
+        if (in.isElapsed())
         {
             refresh();
         }
