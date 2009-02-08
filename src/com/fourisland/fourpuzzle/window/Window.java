@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle.window;
 
+import com.fourisland.fourpuzzle.util.Interval;
 import com.fourisland.fourpuzzle.util.TransparentPixelFilter;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -20,9 +21,29 @@ import java.awt.image.FilteredImageSource;
 public enum Window
 {
     Default(32),
-    Selector(64);
+    Selector(64)
+    {
+        Interval in = Interval.createTickInterval(4);
+        boolean isFlashing = false;
+        
+        @Override
+        protected int getX(SystemArea sa)
+        {
+            if (in.isElapsed())
+            {
+                isFlashing = !isFlashing;
+            }
+            
+            if (isFlashing)
+            {
+                return (super.getX(sa)+32);
+            } else {
+                return super.getX(sa);
+            }
+        }
+    };
     
-    private enum SystemArea
+    protected enum SystemArea
     {
         TOP(15, 0, 1, 9),
         TOP_RIGHT(24, 0, 8, 9),
@@ -52,22 +73,22 @@ public enum Window
         this.x = x;
     }
     
-    private int getX(SystemArea sa)
+    protected int getX(SystemArea sa)
     {
         return x+sa.x;
     }
     
-    private int getY(SystemArea sa)
+    protected int getY(SystemArea sa)
     {
         return sa.y;
     }
     
-    private int getWidth(SystemArea sa)
+    protected int getWidth(SystemArea sa)
     {
         return sa.width;
     }
     
-    private int getHeight(SystemArea sa)
+    protected int getHeight(SystemArea sa)
     {
         return sa.height;
     }
