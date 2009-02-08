@@ -73,7 +73,7 @@ public class ChoiceWindow {
         Graphics2D g2 = cacheBase.createGraphics();
         
         g2.drawImage(SystemGraphic.getMessageBackground(), 1, 1, TopLeft.getWidth()+getWidth()+TopRight.getWidth()-2, TopLeft.getHeight()+getHeight()+BottomLeft.getHeight()-2, null);
-        g2.drawImage(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(temp.getSource(), new TransparentPixelFilter(-25600))), 0, 0, null);
+        g2.drawImage(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(temp.getSource(), new TransparentPixelFilter(SystemGraphic.getTransparentColor().getRGB()))), 0, 0, null);
         g2.setFont(g2.getFont().deriveFont(Font.BOLD));
         
         int ty = TopLeft.getHeight()+g2.getFontMetrics().getHeight()-SPACER;
@@ -85,10 +85,6 @@ public class ChoiceWindow {
             {
                 tx += ((width/2)-(g2.getFontMetrics().stringWidth(choice)/2));
             }
-            
-            /* TODO The following code paints the text onto the window. However,
-             * when it paints the lowercase 'y', the tail is white, not the
-             * correct gradient. */
             
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, g2.getFontMetrics().stringWidth(choice),g2.getFontMetrics().getHeight())));
             g2.drawString(choice, tx, ty);
@@ -112,6 +108,22 @@ public class ChoiceWindow {
     public int getHeight()
     {
         return height;
+    }
+    
+    int selected = 0;
+    public void moveUp()
+    {
+        selected--;
+    }
+    
+    public void moveDown()
+    {
+        selected++;
+    }
+    
+    public String getSelected()
+    {
+        return choices.get(selected);
     }
 
 }

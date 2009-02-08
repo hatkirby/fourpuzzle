@@ -7,6 +7,7 @@ package com.fourisland.fourpuzzle;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.ChipSet;
 import com.fourisland.fourpuzzle.util.Interval;
+import com.fourisland.fourpuzzle.window.SystemGraphic;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -107,6 +108,8 @@ public class PuzzleApplication extends Application {
                 try {
                     Audio.init();
                     ChipSet.initalize();
+                    SystemGraphic.initalize();
+                    
                     Game.setGameState(new TitleScreenGameState());
                     
                     Interval in = Interval.createTickInterval(1);

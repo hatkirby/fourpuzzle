@@ -11,13 +11,13 @@ package com.fourisland.fourpuzzle.window;
  */
 public enum SystemChoiceArea
 {
-    Top(47, 0, 1, 4),
-    TopRight(56, 0, 8, 8),
-    Right(60, 15, 4, 1),
-    BottomRight(56, 24, 8, 8),
-    Bottom(47, 28, 1, 4),
-    BottomLeft(32, 24, 8, 8),
-    Left(32, 15, 4, 1),
+    Top(47, 0, 1, 9),
+    TopRight(56, 0, 8, 9),
+    Right(56, 15, 8, 1),
+    BottomRight(56, 25, 8, 9),
+    Bottom(47, 24, 1, 9),
+    BottomLeft(32, 24, 11, 9),
+    Left(32, 15, 11, 1),
     TopLeft(32, 0, 8, 8),
     UpArrow(43, 9, 10, 6),
     DownArrow(43, 17, 10, 6);

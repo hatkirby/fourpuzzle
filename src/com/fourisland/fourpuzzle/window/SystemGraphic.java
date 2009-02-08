@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.window;
 
 import com.fourisland.fourpuzzle.util.ObjectLoader;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
@@ -15,14 +16,15 @@ import java.awt.image.BufferedImage;
 public class SystemGraphic {
     
     private static BufferedImage systemGraphic;
-    static
+    private static String filename = "System";
+    public static void setGraphic(String filename)
     {
-        initalize("System");
+        SystemGraphic.filename = filename;
     }
     
-    public static void initalize(String graphic)
+    public static void initalize()
     {
-        systemGraphic = ObjectLoader.getImage("Picture", graphic);
+        systemGraphic = ObjectLoader.getImage("Picture", filename);
     }
     
     public static BufferedImage getMessageBackground()
@@ -38,6 +40,11 @@ public class SystemGraphic {
     public static BufferedImage getTextColor()
     {
         return systemGraphic.getSubimage(0, 48, 16, 16);
+    }
+    
+    public static Color getTransparentColor()
+    {
+        return new Color(systemGraphic.getRGB(159, 0));
     }
 
 }
