@@ -5,18 +5,13 @@
 
 package com.fourisland.fourpuzzle.window;
 
-import com.fourisland.fourpuzzle.util.TransparentPixelFilter;
+import com.fourisland.fourpuzzle.Audio;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
 import java.util.List;
-import static com.fourisland.fourpuzzle.window.SystemChoiceArea.*;
-
-/* TODO Find a more elegant way to implement window, it looks terrible now */
 
 /**
  *
@@ -35,7 +30,7 @@ public class ChoiceWindow {
         numChoices = choices.size();
         this.center = center;
         
-        createGraphic(new BufferedImage(TopLeft.getWidth()+getWidth()+TopRight.getWidth(), TopLeft.getHeight()+getHeight()+BottomLeft.getHeight(), BufferedImage.TYPE_INT_ARGB).createGraphics());
+        createGraphic(new BufferedImage(Window.Default.getFullWidth(width), Window.Default.getFullHeight(height), BufferedImage.TYPE_INT_ARGB).createGraphics());
     }
     
     private int width;
@@ -57,47 +52,44 @@ public class ChoiceWindow {
         width += SPACER*2;
         height -= SPACER;
         
-        BufferedImage temp = new BufferedImage(TopLeft.getWidth()+getWidth()+TopRight.getWidth(), TopLeft.getHeight()+getHeight()+BottomLeft.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = temp.createGraphics();
-
-        g.drawImage(SystemGraphic.getChoiceArea(TopLeft), 0, 0, null);
-        g.drawImage(SystemGraphic.getChoiceArea(Top), TopLeft.getWidth(), 0, getWidth(),Top.getHeight(), null);
-        g.drawImage(SystemGraphic.getChoiceArea(TopRight), TopLeft.getWidth()+getWidth(), 0, null);
-        g.drawImage(SystemGraphic.getChoiceArea(Left), 0, TopLeft.getHeight(), Left.getWidth(),getHeight(), null);
-        g.drawImage(SystemGraphic.getChoiceArea(BottomLeft), 0, TopLeft.getHeight()+getHeight(), null);
-        g.drawImage(SystemGraphic.getChoiceArea(Bottom), BottomLeft.getWidth(), (getHeight()+TopLeft.getHeight()+BottomLeft.getHeight())-Bottom.getHeight(), getWidth(),Bottom.getHeight(), null);
-        g.drawImage(SystemGraphic.getChoiceArea(BottomRight), BottomRight.getWidth()+getWidth(), TopRight.getHeight()+getHeight(), null);
-        g.drawImage(SystemGraphic.getChoiceArea(Right), (getWidth()+TopLeft.getWidth()+TopRight.getWidth())-Right.getWidth(), TopRight.getHeight(), Right.getWidth(),getHeight(), null);
-
-        cacheBase = new BufferedImage(TopLeft.getWidth()+getWidth()+TopRight.getWidth(), TopLeft.getHeight()+getHeight()+BottomLeft.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        cacheBase = new BufferedImage(Window.Default.getFullWidth(width), Window.Default.getFullHeight(height), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = cacheBase.createGraphics();
         
-        g2.drawImage(SystemGraphic.getMessageBackground(), 1, 1, TopLeft.getWidth()+getWidth()+TopRight.getWidth()-2, TopLeft.getHeight()+getHeight()+BottomLeft.getHeight()-2, null);
-        g2.drawImage(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(temp.getSource(), new TransparentPixelFilter(SystemGraphic.getTransparentColor().getRGB()))), 0, 0, null);
+        g2.drawImage(SystemGraphic.getMessageBackground(), 1, 1, Window.Default.getFullWidth(width)-2, Window.Default.getFullHeight(height)-2, null);
+        g2.drawImage(Window.Default.getImage(width, height), 0, 0, null);
+    }
+
+    public void render(Graphics2D g2, int x, int y)
+    {
+        g2.drawImage(cacheBase, x, y, null);
+        
         g2.setFont(g2.getFont().deriveFont(Font.BOLD));
         
-        int ty = TopLeft.getHeight()+g2.getFontMetrics().getHeight()-SPACER;
+        int fh = g2.getFontMetrics().getHeight();
+        int ty = Window.Default.getTopY()+fh-SPACER+y;
         for (String choice : choices)
         {
-            int tx = TopLeft.getWidth();
+            int fw = g2.getFontMetrics().stringWidth(choice);
+            int tx = Window.Default.getLeftX()+x;
             
             if (center)
             {
-                tx += ((width/2)-(g2.getFontMetrics().stringWidth(choice)/2));
+                tx += ((width/2)-(fw/2));
             }
             
-            g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, g2.getFontMetrics().stringWidth(choice),g2.getFontMetrics().getHeight())));
+            if (getSelected().equals(choice))
+            {
+                g2.drawImage(SystemGraphic.getSelectionBackground(), tx, ty-fh, fw+SPACER-2, fh+SPACER-2, null);
+                g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh, null);
+            }
+            
+            g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(choice, tx, ty);
             
             ty+=(SPACER+g2.getFontMetrics().getHeight());
         }
         
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN));
-    }
-
-    public void render(Graphics2D g2, int x, int y)
-    {
-        g2.drawImage(cacheBase, x, y, null);
     }
 
     public int getWidth()
@@ -113,12 +105,22 @@ public class ChoiceWindow {
     int selected = 0;
     public void moveUp()
     {
-        selected--;
+        if (selected > 0)
+        {
+            Audio.playSound("Cursor1");
+        
+            selected--;
+        }
     }
     
     public void moveDown()
     {
-        selected++;
+        if (selected < (choices.size()-1))
+        {
+            Audio.playSound("Cursor1");
+        
+            selected++;
+        }
     }
     
     public String getSelected()

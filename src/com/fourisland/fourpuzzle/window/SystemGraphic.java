@@ -7,6 +7,7 @@ package com.fourisland.fourpuzzle.window;
 
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -32,9 +33,14 @@ public class SystemGraphic {
         return systemGraphic.getSubimage(0, 0, 32, 32);
     }
     
-    public static BufferedImage getChoiceArea(SystemChoiceArea sca)
+    public static BufferedImage getSelectionBackground()
     {
-        return systemGraphic.getSubimage(sca.getX(), sca.getY(), sca.getWidth(), sca.getHeight());
+        return systemGraphic.getSubimage(79, 15, 1, 1);
+    }
+    
+    public static BufferedImage getChoiceArea(Rectangle sca)
+    {
+        return systemGraphic.getSubimage(sca.x, sca.y, sca.width, sca.height);
     }
     
     public static BufferedImage getTextColor()

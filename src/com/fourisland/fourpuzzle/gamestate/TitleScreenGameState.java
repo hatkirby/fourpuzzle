@@ -10,6 +10,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
+import com.fourisland.fourpuzzle.util.PauseTimer;
 import com.fourisland.fourpuzzle.window.ChoiceWindow;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -38,29 +39,62 @@ public class TitleScreenGameState implements GameState {
         Audio.stopMusic();
     }
 
+    PauseTimer pt = new PauseTimer(0);
     public void processInput()
     {
-        if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
+        if (pt.isElapsed())
         {
-            Game.setSaveFile(new SaveFile());
-            
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        Display.transition(new SquareTransition(TransitionDirection.Out));
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
-                    
-                    Game.setGameState(new MapViewGameState("TestMap", 1, 2));
-                    
-                    try {
-                        Display.transition(new SquareTransition(TransitionDirection.In));
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
+            if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
+            {
+                if (choices.getSelected().equals(Database.getVocab("NewGame")))
+                {
+                    Game.setSaveFile(new SaveFile());
+
+                    new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                Display.transition(new SquareTransition(TransitionDirection.Out));
+                            } catch (InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                            }
+
+                            Game.setGameState(new MapViewGameState("TestMap", 1, 2));
+
+                            try {
+                                Display.transition(new SquareTransition(TransitionDirection.In));
+                            } catch (InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                    }).start();
+                } else if (choices.getSelected().equals(Database.getVocab("LoadGame")))
+                {
+                    // Do nothing, yet
+                } else if (choices.getSelected().equals(Database.getVocab("EndGame")))
+                {
+                    new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                Display.transition(new SquareTransition(TransitionDirection.Out));
+                            } catch (InterruptedException ex) {
+                                Thread.currentThread().interrupt();
+                            }
+                            
+                            System.exit(0);
+                        }
+                    }).start();
                 }
-            }).start();
+            } else if (Game.getKey().getKeyCode() == KeyEvent.VK_UP)
+            {
+                choices.moveUp();
+                
+                pt.setTimer(1);
+            } else if (Game.getKey().getKeyCode() == KeyEvent.VK_DOWN)
+            {
+                choices.moveDown();
+                
+                pt.setTimer(1);
+            }
         }
     }
 
