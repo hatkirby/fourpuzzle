@@ -134,7 +134,7 @@ public class MapViewGameState implements GameState {
                             {
                                 if (Functions.isFacing(hero, ev))
                                 {
-                                    ev.setDirection(hero.getDirection().oppositeDirection());
+                                    ev.setDirection(hero.getDirection().opposite());
                                     ev.getCallback().activate(ev.getCalltime());
                                 }
                             } else {

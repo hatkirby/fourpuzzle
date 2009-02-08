@@ -132,4 +132,11 @@ public class LayerEvent extends AbstractEvent implements Event {
         return getPossibleEvent().getAnimationStep();
     }
     
+    @Override
+    public void setMoving(boolean moving)
+    {
+        super.setMoving(moving);
+        getPossibleEvent().setMoving(moving);
+    }
+    
 }

@@ -119,6 +119,12 @@ public class PossibleEvent {
         return movement;
     }
 
+    private boolean moving = false;
+    void setMoving(boolean moving)
+    {
+        this.moving = moving;
+    }
+    
     Direction getDirection()
     {
         return direction;
@@ -126,7 +132,7 @@ public class PossibleEvent {
 
     void setDirection(Direction direction)
     {
-        if (animation.canTurn())
+        if (animation.canTurn() && !moving)
         {
             this.direction = direction;
             graphic.setDirection(direction);

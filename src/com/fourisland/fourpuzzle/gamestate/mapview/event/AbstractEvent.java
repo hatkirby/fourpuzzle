@@ -78,7 +78,7 @@ public abstract class AbstractEvent implements Event {
             } else if (moveTimer == 0)
             {
                 setAnimationStep(1);
-                moving = false;
+                setMoving(false);
                 
                 if (getDirection() == Direction.North)
                 {

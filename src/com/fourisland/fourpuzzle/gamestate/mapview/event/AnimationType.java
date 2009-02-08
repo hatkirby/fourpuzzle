@@ -46,10 +46,44 @@ public enum AnimationType {
     /**
      * An AnimationType that does not allow the Event to turn or animate.
      */
-    FixedGraphic(false, false);
+    FixedGraphic(false, false),
+    /**
+     * An AnimationType that is identical to CommonWithoutStepping except that
+     * it causes the Event in question to continually rotate counterclockwise.
+     */
+    TurnLeft(true, true)
+    {
+        Interval in = Interval.createTickInterval(2);
+        
+        @Override
+        public void tick(PossibleEvent pe)
+        {
+            if (in.isElapsed())
+            {
+                pe.setDirection(pe.getDirection().left());
+            }
+        }
+    },
+    /**
+     * An AnimationType that is identical to CommonWithoutStepping except that
+     * it causes the Event in question to continually rotate clockwise.
+     */
+    TurnRight(true, true)
+    {
+        Interval in = Interval.createTickInterval(2);
+        
+        @Override
+        public void tick(PossibleEvent pe)
+        {
+            if (in.isElapsed())
+            {
+                pe.setDirection(pe.getDirection().right());
+            }
+        }
+    };
     
-    private boolean canTurn;
-    private boolean canStep;
+    private final boolean canTurn;
+    private final boolean canStep;
     private AnimationType(boolean canTurn, boolean canStep)
     {
         this.canTurn = canTurn;
