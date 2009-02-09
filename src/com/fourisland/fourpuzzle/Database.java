@@ -66,7 +66,7 @@ public class Database {
     
     public static void loadDefaultMusic()
     {
-        music.put("Title", "Opening");
+        music.put("Title", "Opening1");
         music.put("GameOver", "GameOver");
     }
     

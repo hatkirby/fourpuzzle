@@ -8,9 +8,9 @@ package com.fourisland.fourpuzzle.util;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -56,14 +56,8 @@ public class ObjectLoader {
         if (!objectCache.containsKey(type + "/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
-            String filename = rm.getResourcesDir() + type.toLowerCase() + "/" + name + ".png";
+            String filename = getFilename(type, name, "png");
             InputStream str = rm.getClassLoader().getResourceAsStream(filename);
-            
-            if (str == null)
-            {
-                throw new ResourceNotFoundException(type, name);
-            }
-            
             BufferedImage bImg = null;
             try {
                 bImg = ImageIO.read(str);
@@ -82,14 +76,8 @@ public class ObjectLoader {
         if (!objectCache.containsKey(type + "/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
-            String filename = rm.getResourcesDir() + type.toLowerCase() + "/" + name + ".png";
+            String filename = getFilename(type, name, "png");
             InputStream str = rm.getClassLoader().getResourceAsStream(filename);
-            
-            if (str == null)
-            {
-                throw new ResourceNotFoundException(type, name);
-            }
-
             BufferedImage bImg = null;
             try {
                 bImg = ImageIO.read(str);
@@ -120,13 +108,8 @@ public class ObjectLoader {
         if (!objectCache.containsKey("Music/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
-            String filename = rm.getResourcesDir() + "music/" + name + ".mid";
+            String filename = getFilename("Music", name, "mid");
             InputStream str = rm.getClassLoader().getResourceAsStream(filename);
-            if (str == null)
-            {
-                throw new ResourceNotFoundException("Music", name);
-            }
-            
             Sequence seq = null;
             try {
                 seq = MidiSystem.getSequence(str);
@@ -147,7 +130,7 @@ public class ObjectLoader {
         if (!objectCache.containsKey("Sound/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
-            String filename = rm.getResourcesDir() + "sound/" + name + ".wav";
+            String filename = getFilename("Sound", name, "wav");
             InputStream soundFile = rm.getClassLoader().getResourceAsStream(filename);
             AudioInputStream ais = null;
             try {
@@ -155,7 +138,7 @@ public class ObjectLoader {
             } catch (UnsupportedAudioFileException ex) {
                 Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                throw new ResourceNotFoundException("Sound", name);
+                Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             AudioFormat af = ais.getFormat();
@@ -179,6 +162,26 @@ public class ObjectLoader {
         }
         
         return (Clip) objectCache.get("Sound/" + name);
+    }
+    
+    public static String getFilename(String type, String name, String ex)
+    {
+        ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+        String f = rm.getResourcesDir() + type.toLowerCase() + "/" + name + "." + ex;
+        URL fu = rm.getClassLoader().getResource(f);
+
+        if (fu == null)
+        {
+            f = "com/fourisland/fourpuzzle/resources/" + type.toLowerCase() + "/" + name + "." + ex;
+            fu = rm.getClassLoader().getResource(f);
+
+            if (fu == null)
+            {
+                throw new ResourceNotFoundException(type, name);
+            }
+        }
+        
+        return f;
     }
     
 }
