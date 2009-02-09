@@ -46,6 +46,8 @@ public class TitleScreenGameState implements GameState {
         {
             if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
             {
+                Audio.playSound("Decision2");
+                
                 if (choices.getSelected().equals(Database.getVocab("NewGame")))
                 {
                     Game.setSaveFile(new SaveFile());

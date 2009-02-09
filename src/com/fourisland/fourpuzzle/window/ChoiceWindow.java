@@ -81,7 +81,7 @@ public class ChoiceWindow {
                 g2.drawImage(SystemGraphic.getSelectionBackground(), tx-1, ty-fh+3, fw+SPACER-2, fh+SPACER-2, null);
                 g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh, null);
             }
-            
+
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(choice, tx, ty);
             
