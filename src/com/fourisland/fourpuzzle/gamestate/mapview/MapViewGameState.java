@@ -22,6 +22,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.util.Functions;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
+import com.fourisland.fourpuzzle.window.MessageWindow;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -230,6 +231,11 @@ public class MapViewGameState implements GameState {
 
         g.drawImage(eventLayer, 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
         g.drawImage(currentMap.renderUpper(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
+        
+        if (mw != null)
+        {
+            mw.render(g);
+        }
     }
     
     public void initCurrentMap(String mapName)
@@ -267,6 +273,12 @@ public class MapViewGameState implements GameState {
     public void setViewpoint(Viewpoint viewpoint)
     {
         currentViewpoint = viewpoint;
+    }
+    
+    volatile MessageWindow mw = null;
+    public void displayMessage(String message)
+    {
+        mw = new MessageWindow(message);
     }
 
 }

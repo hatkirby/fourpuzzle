@@ -51,7 +51,7 @@ public class SpecialEvent {
      */
     public void DisplayMessage(String message)
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        mapView.displayMessage(message);
     }
 
     /**

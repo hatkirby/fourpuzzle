@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class ChoiceWindow {
     
-    private final int SPACER = 4;
+    private static final int SPACER = 4;
     
     private List<String> choices;
     int numChoices;
