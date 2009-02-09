@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.fourisland.fourpuzzle;
+package com.fourisland.fourpuzzle.database;
 
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.EventGraphic;

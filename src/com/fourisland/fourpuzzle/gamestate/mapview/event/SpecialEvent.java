@@ -5,7 +5,9 @@
 
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
+import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.*;
+import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
@@ -190,14 +192,14 @@ public class SpecialEvent {
     {
         if (!startedTransition)
         {
-            Display.transition(Database.getTransition("MapExit"));
+            Display.transition(Database.getTransition(Transitions.MapExit));
         }
         
         Game.setGameState(new MapViewGameState(map, x, y));
         
         if (!startedTransition)
         {
-            Display.transition(Database.getTransition("MapEnter"));
+            Display.transition(Database.getTransition(Transitions.MapEnter));
         }
     }
     

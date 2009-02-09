@@ -5,7 +5,10 @@
 
 package com.fourisland.fourpuzzle.window;
 
+import com.fourisland.fourpuzzle.window.SystemGraphic;
 import com.fourisland.fourpuzzle.Audio;
+import com.fourisland.fourpuzzle.database.Database;
+import com.fourisland.fourpuzzle.database.Sound;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -106,7 +109,7 @@ public class ChoiceWindow {
     {
         if (selected > 0)
         {
-            Audio.playSound("Cursor1");
+            Audio.playSound(Database.getSound(Sound.MoveCursor));
         
             selected--;
         }
@@ -116,7 +119,7 @@ public class ChoiceWindow {
     {
         if (selected < (choices.size()-1))
         {
-            Audio.playSound("Cursor1");
+            Audio.playSound(Database.getSound(Sound.MoveCursor));
         
             selected++;
         }

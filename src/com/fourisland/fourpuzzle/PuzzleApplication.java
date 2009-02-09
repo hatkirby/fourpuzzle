@@ -4,6 +4,8 @@
  */
 package com.fourisland.fourpuzzle;
 
+import com.fourisland.fourpuzzle.database.Database;
+import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.ChipSet;
 import com.fourisland.fourpuzzle.util.Interval;
@@ -42,7 +44,7 @@ public class PuzzleApplication extends Application {
         INSTANCE = this;
         
         gameFrame = new JDialog(new JFrame(), false);
-        gameFrame.setTitle(Database.getVocab("title"));
+        gameFrame.setTitle(Database.getVocab(Vocabulary.Title));
         gameFrame.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
         gameFrame.setResizable(false);
         gameFrame.addWindowListener(new WindowAdapter() {
@@ -153,7 +155,7 @@ public class PuzzleApplication extends Application {
         
         JFrame errorBox = new JFrame(ex.getClass().getSimpleName());
         JLabel text = new JLabel();
-        text.setText("<HTML><CENTER>I'm sorry, but " + Database.getVocab("Title") +
+        text.setText("<HTML><CENTER>I'm sorry, but " + Database.getVocab(Vocabulary.Title) +
                 " has run into an error and been forced to quit.<BR>Your save file has not been kept. The error was:<BR><BR>" +
                 ex.getMessage() + "</CENTER>");
         if (ex instanceof Error)

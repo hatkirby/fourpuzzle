@@ -6,10 +6,11 @@
 package com.fourisland.fourpuzzle.gamestate;
 
 import com.fourisland.fourpuzzle.Audio;
-import com.fourisland.fourpuzzle.Database;
+import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.SaveFile;
+import com.fourisland.fourpuzzle.database.Music;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
@@ -24,7 +25,7 @@ public class GameOverGameState implements GameState {
     
     public void initalize()
     {
-        Audio.playMusic(Database.getMusic("GameOver"));
+        Audio.playMusic(Database.getMusic(Music.GameOver));
     }
     
     public void deinitalize()

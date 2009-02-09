@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package com.fourisland.fourpuzzle;
+package com.fourisland.fourpuzzle.database;
 
+import com.fourisland.fourpuzzle.*;
 import com.fourisland.fourpuzzle.gamestate.GameOverGameState;
 import java.util.ArrayList;
 

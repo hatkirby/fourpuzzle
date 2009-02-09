@@ -4,6 +4,8 @@
  */
 package com.fourisland.fourpuzzle;
 
+import com.fourisland.fourpuzzle.database.GameCharacters;
+import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import java.io.IOException;
 import java.io.InputStream;

@@ -10,7 +10,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.Game;
-import com.fourisland.fourpuzzle.GameCharacter;
+import com.fourisland.fourpuzzle.database.GameCharacter;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;

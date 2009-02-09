@@ -5,7 +5,11 @@
 
 package com.fourisland.fourpuzzle.gamestate;
 
+import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.*;
+import com.fourisland.fourpuzzle.database.Music;
+import com.fourisland.fourpuzzle.database.Sound;
+import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
@@ -27,9 +31,9 @@ public class TitleScreenGameState implements GameState {
     
     public void initalize()
     {
-        Audio.playMusic(Database.getMusic("Title"));
+        Audio.playMusic(Database.getMusic(Music.Title));
         
-        choices = new ChoiceWindow(Arrays.asList(Database.getVocab("NewGame"), Database.getVocab("LoadGame"), Database.getVocab("EndGame")), true);
+        choices = new ChoiceWindow(Arrays.asList(Database.getVocab(Vocabulary.NewGame), Database.getVocab(Vocabulary.LoadGame), Database.getVocab(Vocabulary.EndGame)), true);
         wx = (Game.WIDTH/2)-(choices.getWidth()/2);
         wy = (Game.HEIGHT/4*3)-(choices.getHeight()/2);
     }
@@ -46,9 +50,9 @@ public class TitleScreenGameState implements GameState {
         {
             if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
             {
-                Audio.playSound("Decision2");
+                Audio.playSound(Database.getSound(Sound.Selection));
                 
-                if (choices.getSelected().equals(Database.getVocab("NewGame")))
+                if (choices.getSelected().equals(Database.getVocab(Vocabulary.NewGame)))
                 {
                     Game.setSaveFile(new SaveFile());
 
@@ -69,10 +73,10 @@ public class TitleScreenGameState implements GameState {
                             }
                         }
                     }).start();
-                } else if (choices.getSelected().equals(Database.getVocab("LoadGame")))
+                } else if (choices.getSelected().equals(Database.getVocab(Vocabulary.LoadGame)))
                 {
                     // Do nothing, yet
-                } else if (choices.getSelected().equals(Database.getVocab("EndGame")))
+                } else if (choices.getSelected().equals(Database.getVocab(Vocabulary.EndGame)))
                 {
                     new Thread(new Runnable() {
                         public void run() {
