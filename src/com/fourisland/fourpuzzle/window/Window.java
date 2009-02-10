@@ -46,7 +46,12 @@ public enum Window
         
         protected BufferedImage getBackground()
         {
-            return SystemGraphic.getSelectionBackground();
+            if (in.isElapsed())
+            {
+                isFlashing = !isFlashing;
+            }
+            
+            return SystemGraphic.getSelectionBackground(isFlashing);
         }
     };
     
@@ -132,7 +137,7 @@ public enum Window
         BufferedImage temp = new BufferedImage(getFullWidth(width), getFullHeight(height), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = temp.createGraphics();
         
-        g.drawImage(getBackground(), 1, 1, getFullWidth(width)-2, getFullHeight(height)-2, null);
+        g.drawImage(getBackground(), 3, 3, getFullWidth(width)-6, getFullHeight(height)-6, null);
         
         g.drawImage(SystemGraphic.getChoiceArea(getBounds(SystemArea.TOP_LEFT)), 0, 0, null);
         g.drawImage(SystemGraphic.getChoiceArea(getBounds(SystemArea.TOP)), getWidth(SystemArea.TOP_LEFT), 0, width, getHeight(SystemArea.TOP), null);

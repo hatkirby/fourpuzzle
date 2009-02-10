@@ -44,14 +44,14 @@ public class SystemGraphic {
         return systemGraphic.getSubimage(0, 0, 32, 32);
     }
     
-    public static BufferedImage getSelectionBackground()
+    public static BufferedImage getSelectionBackground(boolean isFlashing)
     {
         if (systemGraphic == null)
         {
             initalize();
         }
         
-        return systemGraphic.getSubimage(Window.Selector.getX(SystemArea.TOP_LEFT)+15, 15, 1, 1);
+        return systemGraphic.getSubimage((isFlashing ? 96 : 64) + 15, 15, 1, 1);
     }
     
     public static BufferedImage getChoiceArea(Rectangle sca)
