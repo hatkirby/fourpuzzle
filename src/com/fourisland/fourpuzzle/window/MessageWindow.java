@@ -38,11 +38,7 @@ public class MessageWindow {
         
         initalizeMessages(message, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics());
         
-        cacheBase = new BufferedImage(Game.WIDTH, Window.Default.getFullHeight(HEIGHT), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = cacheBase.createGraphics();
-        
-        g2.drawImage(SystemGraphic.getMessageBackground(), 1, 1, Game.WIDTH-2, Window.Default.getFullHeight(HEIGHT)-2, null);
-        g2.drawImage(Window.Default.getImage(width, HEIGHT), 0, 0, null);
+        cacheBase = Window.Default.getImage(width, HEIGHT);
     }
     
     private void initalizeMessages(String message, Graphics2D g)

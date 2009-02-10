@@ -5,7 +5,6 @@
 
 package com.fourisland.fourpuzzle.window;
 
-import com.fourisland.fourpuzzle.window.SystemGraphic;
 import com.fourisland.fourpuzzle.Audio;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.database.Sound;
@@ -54,11 +53,7 @@ public class ChoiceWindow {
 
         width += SPACER*2;
         
-        cacheBase = new BufferedImage(Window.Default.getFullWidth(width), Window.Default.getFullHeight(height), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = cacheBase.createGraphics();
-        
-        g2.drawImage(SystemGraphic.getMessageBackground(), 1, 1, Window.Default.getFullWidth(width)-2, Window.Default.getFullHeight(height)-2, null);
-        g2.drawImage(Window.Default.getImage(width, height), 0, 0, null);
+        cacheBase = Window.Default.getImage(width, height);
     }
 
     public void render(Graphics2D g2, int x, int y)
@@ -81,7 +76,6 @@ public class ChoiceWindow {
             
             if (getSelected().equals(choice))
             {
-                g2.drawImage(SystemGraphic.getSelectionBackground(), tx-1, ty-fh+3, fw+SPACER-2, fh+SPACER-2, null);
                 g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh, null);
             }
 

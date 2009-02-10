@@ -6,13 +6,9 @@
 package com.fourisland.fourpuzzle.window;
 
 import com.fourisland.fourpuzzle.util.Interval;
-import com.fourisland.fourpuzzle.util.TransparentPixelFilter;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
 
 /**
  *
@@ -20,7 +16,13 @@ import java.awt.image.FilteredImageSource;
  */
 public enum Window
 {
-    Default(32),
+    Default(32)
+    {
+        protected BufferedImage getBackground()
+        {
+            return SystemGraphic.getMessageBackground();
+        }
+    },
     Selector(64)
     {
         Interval in = Interval.createTickInterval(4);
@@ -40,6 +42,11 @@ public enum Window
             } else {
                 return super.getX(sa);
             }
+        }
+        
+        protected BufferedImage getBackground()
+        {
+            return SystemGraphic.getSelectionBackground();
         }
     };
     
@@ -118,10 +125,14 @@ public enum Window
         return getHeight(SystemArea.TOP_LEFT);
     }
     
-    public Image getImage(int width, int height)
+    protected abstract BufferedImage getBackground();
+    
+    public BufferedImage getImage(int width, int height)
     {
         BufferedImage temp = new BufferedImage(getFullWidth(width), getFullHeight(height), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = temp.createGraphics();
+        
+        g.drawImage(getBackground(), 1, 1, getFullWidth(width)-2, getFullHeight(height)-2, null);
         
         g.drawImage(SystemGraphic.getChoiceArea(getBounds(SystemArea.TOP_LEFT)), 0, 0, null);
         g.drawImage(SystemGraphic.getChoiceArea(getBounds(SystemArea.TOP)), getWidth(SystemArea.TOP_LEFT), 0, width, getHeight(SystemArea.TOP), null);
@@ -132,6 +143,6 @@ public enum Window
         g.drawImage(SystemGraphic.getChoiceArea(getBounds(SystemArea.BOTTOM_RIGHT)), getWidth(SystemArea.BOTTOM_RIGHT)+width, getHeight(SystemArea.TOP_RIGHT)+height, null);
         g.drawImage(SystemGraphic.getChoiceArea(getBounds(SystemArea.RIGHT)), (width+getWidth(SystemArea.TOP_LEFT)+getWidth(SystemArea.TOP_RIGHT))-getWidth(SystemArea.RIGHT), getHeight(SystemArea.TOP_RIGHT), getWidth(SystemArea.RIGHT), height, null);
         
-        return Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(temp.getSource(), new TransparentPixelFilter(SystemGraphic.getTransparentColor().getRGB())));
+        return temp;
     }
 }
