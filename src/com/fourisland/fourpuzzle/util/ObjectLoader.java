@@ -119,6 +119,13 @@ public class ObjectLoader {
                 Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            MidiParser mp = new MidiParser(seq);
+            try {
+                seq = mp.parse();
+            } catch (InvalidMidiDataException ex) {
+                Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             addToObjectCache("Music", name, seq);
         }
         

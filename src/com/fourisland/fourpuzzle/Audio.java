@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle;
 
+import com.fourisland.fourpuzzle.util.MidiParser;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
