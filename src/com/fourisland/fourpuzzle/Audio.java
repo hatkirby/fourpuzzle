@@ -5,7 +5,6 @@
 
 package com.fourisland.fourpuzzle;
 
-import com.fourisland.fourpuzzle.util.MidiParser;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -14,6 +13,7 @@ import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.sound.sampled.Clip;
 
@@ -64,8 +64,16 @@ public class Audio {
     
     public static void playMusic(String file, boolean loop, float speed)
     {
+        Sequence s = ObjectLoader.getMusic(file);
+        
+        if ((seq.getSequence() != null) && (seq.getSequence().equals(s)))
+        {
+            return;
+        }
+        
         try {
-            seq.setSequence(ObjectLoader.getMusic(file));
+            seq.setSequence(s);
+            seq.setTickPosition(0);
 
             if (loop) {
                 seq.setLoopCount(seq.LOOP_CONTINUOUSLY);
@@ -86,6 +94,12 @@ public class Audio {
         if (seq != null)
         {
             seq.stop();
+            
+            try {
+                seq.setSequence((Sequence) null);
+            } catch (InvalidMidiDataException ex) {
+                Logger.getLogger(Audio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     

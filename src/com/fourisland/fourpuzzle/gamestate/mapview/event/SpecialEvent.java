@@ -298,4 +298,26 @@ public class SpecialEvent {
         }));
     }
     
+    /**
+     * Starts playing a Music file
+     * 
+     * @param filename The name of the Music file to play
+     * @param loop Whether or not you want this Music to loop
+     * @param speed The Tempo Factor. If this is 1, the Music will play at
+     * normal speed. If this is 2, the Music will play at twice the normal
+     * speed, and so on.
+     */
+    public void PlayMusic(String filename, boolean loop, float speed)
+    {
+        Audio.playMusic(filename, loop, speed);
+    }
+    
+    /**
+     * Stops playing the currently playing Music file
+     */
+    public void StopMusic()
+    {
+        Audio.stopMusic();
+    }
+    
 }

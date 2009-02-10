@@ -182,9 +182,31 @@ public abstract class Map {
     {
         return music;
     }
-    public void setMusic(String music)
+    
+    /**
+     * Sets the name of the Music file to play when this Map loads
+     * 
+     * When this function is run, it also sets the MusicType to Specified
+     * automatically as the only time this function would be used would be when
+     * the MusicType was Specified.
+     * 
+     * @param music
+     */
+    protected void setMusic(String music)
     {
         this.music = music;
+        this.musicType = MapMusicType.Specified;
+    }
+    
+    private MapMusicType musicType = MapMusicType.NoChange;
+    public MapMusicType getMusicType()
+    {
+        return musicType;
+    }
+    
+    protected void setMusicType(MapMusicType musicType)
+    {
+        this.musicType = musicType;
     }
     
     BufferedImage lowerLayer = null;

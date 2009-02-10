@@ -50,18 +50,17 @@ public class MapViewGameState implements GameState {
         
     public void initalize()
     {
-        //if (!currentMap.getMusic().equals(""))
+        switch (currentMap.getMusicType())
         {
-          //  Audio.playMusic(currentMap.getMusic());
+            case NoMusic: Audio.stopMusic(); break;
+            case NoChange: break;
+            case Specified: Audio.playMusic(currentMap.getMusic()); break;
         }
     }
     
     public void deinitalize()
     {
-        //if (!currentMap.getMusic().equals(""))
-        {
-            Audio.stopMusic();
-        }
+        // Do nothing, yet
     }
 
     public void processInput()
