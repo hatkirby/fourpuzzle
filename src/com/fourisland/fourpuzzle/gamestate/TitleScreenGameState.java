@@ -34,7 +34,7 @@ public class TitleScreenGameState implements GameState {
         Audio.playMusic(Database.getMusic(Music.Title));
         
         choices = new ChoiceWindow(Arrays.asList(Database.getVocab(Vocabulary.NewGame), Database.getVocab(Vocabulary.LoadGame), Database.getVocab(Vocabulary.EndGame)), true);
-        wx = (Game.WIDTH/2)-(choices.getWidth()/2);
+        wx = (Game.WIDTH/5)-(choices.getWidth()/2);
         wy = (Game.HEIGHT/4*3)-(choices.getHeight()/2);
     }
     
@@ -94,12 +94,12 @@ public class TitleScreenGameState implements GameState {
             {
                 choices.moveUp();
                 
-                pt.setTimer(1);
+                pt.setTimer(2);
             } else if (Game.getKey().getKeyCode() == KeyEvent.VK_DOWN)
             {
                 choices.moveDown();
                 
-                pt.setTimer(1);
+                pt.setTimer(2);
             }
         }
     }

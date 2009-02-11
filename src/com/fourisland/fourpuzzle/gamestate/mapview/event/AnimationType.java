@@ -8,7 +8,10 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event;
 import com.fourisland.fourpuzzle.util.Interval;
 
 /**
- *
+ * An AnimationType is a property all PossibleEvents have. An AnimationType 
+ * exerts some control over the Direction and AnimationStep of the
+ * PossibleEvent in question.
+ * 
  * @author hatkirby
  */
 public enum AnimationType {
