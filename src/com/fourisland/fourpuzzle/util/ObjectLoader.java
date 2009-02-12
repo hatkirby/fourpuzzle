@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,18 +35,17 @@ import org.jdesktop.application.ResourceMap;
  */
 public class ObjectLoader {
     
-    private static HashMap<String,Object> objectCache = new HashMap<String,Object>();
+    private static Map<String,BufferedImage> imageCache = new HashMap<String,BufferedImage>();
+    private static Map<String,Sequence> musicCache = new HashMap<String,Sequence>();
+    private static Map<String,Clip> soundCache = new HashMap<String,Clip>();
     
     static
     {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
-                for (Entry<String, Object> o : objectCache.entrySet())
+                for (Entry<String, Clip> o : soundCache.entrySet())
                 {
-                    if (o.getKey().startsWith("Sound/"))
-                    {
-                        ((Clip) o.getValue()).close();
-                    }
+                        o.getValue().close();
                 }
             }
         }));
@@ -53,7 +53,7 @@ public class ObjectLoader {
     
     public static BufferedImage getImage(String type, String name)
     {
-        if (!objectCache.containsKey(type + "/" + name))
+        if (!imageCache.containsKey(type + "/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
             String filename = getFilename(type, name, "png");
@@ -65,15 +65,15 @@ public class ObjectLoader {
                 Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            addToObjectCache(type,name,bImg);
+            addToObjectCache(imageCache, type + "/" + name, bImg);
         }
         
-        return (BufferedImage) objectCache.get(type + "/" + name);
+        return imageCache.get(type + "/" + name);
     }
     
     public static BufferedImage getImage(String type, String name, int transparencyColor)
     {
-        if (!objectCache.containsKey(type + "/" + name))
+        if (!imageCache.containsKey(type + "/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
             String filename = getFilename(type, name, "png");
@@ -87,25 +87,25 @@ public class ObjectLoader {
             
             bImg.createGraphics().drawImage(bImg, 0, 0, new Color(transparencyColor, true), null);
             
-            addToObjectCache(type,name,bImg);
+            addToObjectCache(imageCache, type + "/" + name, bImg);
         }
         
-        return (BufferedImage) objectCache.get(type + "/" + name);
+        return imageCache.get(type + "/" + name);
     }
     
-    public static void addToObjectCache(String type, String name, Object object)
+    public static void addToObjectCache(Map cacheMap, String name, Object object)
     {
-        if (objectCache.size() >= 100)
+        if (cacheMap.size() >= 100)
         {
-            objectCache.clear();
+            cacheMap.clear();
         }
         
-        objectCache.put(type + "/" + name, object);
+        cacheMap.put(name, object);
     }
     
     public static Sequence getMusic(String name)
     {
-        if (!objectCache.containsKey("Music/" + name))
+        if (!musicCache.containsKey(name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
             String filename = getFilename("Music", name, "mid");
@@ -126,15 +126,15 @@ public class ObjectLoader {
                 Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            addToObjectCache("Music", name, seq);
+            addToObjectCache(musicCache, name, seq);
         }
         
-        return (Sequence) objectCache.get("Music/" + name);
+        return musicCache.get(name);
     }
     
     public static Clip getSound(String name)
     {
-        if (!objectCache.containsKey("Sound/" + name))
+        if (!soundCache.containsKey("Sound/" + name))
         {
             ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
             String filename = getFilename("Sound", name, "wav");
@@ -165,10 +165,10 @@ public class ObjectLoader {
                 Logger.getLogger(ObjectLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            addToObjectCache("Sound", name, line);
+            addToObjectCache(soundCache, name, line);
         }
         
-        return (Clip) objectCache.get("Sound/" + name);
+        return soundCache.get(name);
     }
     
     public static String getFilename(String type, String name, String ex)
