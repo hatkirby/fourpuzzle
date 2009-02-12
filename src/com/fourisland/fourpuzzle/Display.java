@@ -11,13 +11,20 @@ import com.fourisland.fourpuzzle.transition.OutTransition;
 import com.fourisland.fourpuzzle.transition.Transition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
+import org.jdesktop.application.ResourceMap;
 
 /**
  *
@@ -118,11 +125,11 @@ public class Display {
             {
                 temp.setPreTransition(midTransition);
                 
-                postTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                postTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
                 Game.getGameState().render(postTransition.createGraphics());
                 temp.setPostTransition(postTransition);
             } else {
-                BufferedImage preTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                BufferedImage preTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
                 Game.getGameState().render(preTransition.createGraphics());
                 temp.setPreTransition(preTransition);
             }
@@ -139,11 +146,11 @@ public class Display {
             {
                 transition.setPreTransition(midTransition);
                 
-                postTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                postTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
                 Game.getGameState().render(postTransition.createGraphics());
                 ((InTransition) transition).setPostTransition(postTransition);
             } else {
-                BufferedImage preTransition = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                BufferedImage preTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
                 Game.getGameState().render(preTransition.createGraphics());
                 transition.setPreTransition(preTransition);
             }
@@ -167,6 +174,40 @@ public class Display {
     public static boolean isTransitionRunning()
     {
         return transitionRunning;
+    }
+    
+    private static Font theFont = null;
+    private static void initalizeFont()
+    {
+        ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceMap();
+        InputStream file = rm.getClassLoader().getResourceAsStream("com/fourisland/fourpuzzle/resources/RMG2000.ttf");
+
+        try {
+            theFont = Font.createFont(Font.TRUETYPE_FONT, file);
+        } catch (FontFormatException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        theFont = theFont.deriveFont(Font.PLAIN, 10);
+    }
+    
+    public static void setFont(Graphics2D g)
+    {
+        if (theFont == null)
+        {
+            initalizeFont();
+        }
+        
+        g.setFont(theFont);
+    }
+    
+    public static BufferedImage createCanvas(int width, int height)
+    {
+        BufferedImage temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        
+        return temp;
     }
     
 }

@@ -6,9 +6,9 @@
 package com.fourisland.fourpuzzle.window;
 
 import com.fourisland.fourpuzzle.Audio;
+import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.database.Sound;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
@@ -26,20 +26,18 @@ public class ChoiceWindow {
     private List<String> choices;
     int numChoices;
     boolean center;
+    private int width;
+    private int height;
+    BufferedImage cacheBase;
     public ChoiceWindow(List<String> choices, boolean center)
     {
         this.choices = choices;
         numChoices = choices.size();
         this.center = center;
         
-        createGraphic(new BufferedImage(Window.Default.getFullWidth(width), Window.Default.getFullHeight(height), BufferedImage.TYPE_INT_ARGB).createGraphics());
-    }
-    
-    private int width;
-    private int height;
-    BufferedImage cacheBase;
-    private void createGraphic(Graphics2D g3)
-    {
+        Graphics2D g3 = Display.createCanvas(1, 1).createGraphics();
+        Display.setFont(g3);
+        
         for (String choice : choices)
         {
             int l = g3.getFontMetrics().stringWidth(choice);
@@ -58,12 +56,12 @@ public class ChoiceWindow {
 
     public void render(Graphics2D g2, int x, int y)
     {
+        Display.setFont(g2);
+        
         g2.drawImage(cacheBase, x, y, null);
         
-        g2.setFont(g2.getFont().deriveFont(Font.BOLD));
-        
         int fh = g2.getFontMetrics().getHeight();
-        int ty = Window.Default.getTopY()+fh-(SPACER/2)+y;
+        int ty = Window.Default.getTopY()+fh+y;
         for (String choice : choices)
         {
             int fw = g2.getFontMetrics().stringWidth(choice);
@@ -76,7 +74,7 @@ public class ChoiceWindow {
             
             if (getSelected().equals(choice))
             {
-                g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh, null);
+                g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh-SPACER, null);
             }
 
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
@@ -84,8 +82,6 @@ public class ChoiceWindow {
             
             ty+=(SPACER+g2.getFontMetrics().getHeight());
         }
-        
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN));
     }
 
     public int getWidth()

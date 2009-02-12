@@ -5,9 +5,9 @@
 
 package com.fourisland.fourpuzzle.window;
 
+import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import com.fourisland.fourpuzzle.util.TransparentPixelFilter;
-import com.fourisland.fourpuzzle.window.Window.SystemArea;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -29,7 +29,7 @@ public class SystemGraphic {
     public static void initalize()
     {
         BufferedImage temp = ObjectLoader.getImage("Picture", filename);
-        systemGraphic = new BufferedImage(160, 80, BufferedImage.TYPE_INT_ARGB);
+        systemGraphic = Display.createCanvas(160, 80);
         
         systemGraphic.createGraphics().drawImage(Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(temp.getSource(), new TransparentPixelFilter(temp.getRGB(159, 0)))),0,0,null);
     }

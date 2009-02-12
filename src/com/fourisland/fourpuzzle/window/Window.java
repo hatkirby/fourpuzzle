@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle.window;
 
+import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.util.Interval;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -134,7 +135,7 @@ public enum Window
     
     public BufferedImage getImage(int width, int height)
     {
-        BufferedImage temp = new BufferedImage(getFullWidth(width), getFullHeight(height), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage temp = Display.createCanvas(getFullWidth(width), getFullHeight(height));
         Graphics2D g = temp.createGraphics();
         
         g.drawImage(getBackground(), 3, 3, getFullWidth(width)-6, getFullHeight(height)-6, null);

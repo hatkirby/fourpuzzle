@@ -214,7 +214,7 @@ public abstract class Map {
     {
         if (lowerLayer == null)
         {
-            lowerLayer = new BufferedImage(size.width*16, size.height*16, BufferedImage.TYPE_INT_ARGB);
+            lowerLayer = Display.createCanvas(size.width*16, size.height*16);
             Graphics2D g = lowerLayer.createGraphics();
             ChipSet chipSetObj = ChipSet.getChipSet(chipSet);
             int i,x,y;
@@ -243,7 +243,7 @@ public abstract class Map {
     {
         if (upperLayer == null)
         {
-            upperLayer = new BufferedImage(size.width*16, size.height*16, BufferedImage.TYPE_INT_ARGB);
+            upperLayer = Display.createCanvas(size.width*16, size.height*16);
             Graphics2D g = upperLayer.createGraphics();
             ChipSet chipSetObj = ChipSet.getChipSet(chipSet);
             int i,x,y;

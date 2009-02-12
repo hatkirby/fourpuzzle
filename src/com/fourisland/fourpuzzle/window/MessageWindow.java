@@ -5,19 +5,14 @@
 
 package com.fourisland.fourpuzzle.window;
 
+import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,7 +21,7 @@ import java.util.logging.Logger;
 public class MessageWindow {
     
     private static final int SPACER = 4;
-    private static final int HEIGHT = 4*(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics().getFontMetrics().getHeight()+SPACER);
+    private static final int HEIGHT = 4*(Display.createCanvas(1, 1).createGraphics().getFontMetrics().getHeight()+SPACER);
     
     private List<String> messages;
     int width;
@@ -36,14 +31,14 @@ public class MessageWindow {
         width = Game.WIDTH - Window.Default.getFullWidth(0);
         messages = new ArrayList<String>();
         
-        initalizeMessages(message, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics());
+        initalizeMessages(message, Display.createCanvas(1, 1).createGraphics());
         
         cacheBase = Window.Default.getImage(width, HEIGHT);
     }
     
     private void initalizeMessages(String message, Graphics2D g)
     {
-        setFont(g);
+        Display.setFont(g);
         
         String temp = message;
         int len = 0;
@@ -79,9 +74,9 @@ public class MessageWindow {
     {
         int y = MessageWindowLocation.Bottom.getY();
         
+        Display.setFont(g2);
+        
         g2.drawImage(cacheBase, 0, y, null);
-
-        setFont(g2);
         
         int fh = g2.getFontMetrics().getHeight();
         int ty = Window.Default.getTopY()+fh-(SPACER/2)+y;
@@ -97,8 +92,6 @@ public class MessageWindow {
             
             ty+=(SPACER+g2.getFontMetrics().getHeight());
         }
-        
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN));
     }
     
     public static enum MessageWindowLocation
@@ -118,18 +111,4 @@ public class MessageWindow {
             return y;
         }
     }
-    
-    public static void setFont(Graphics2D g)
-    {
-        try {
-            g.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf")));
-        } catch (FontFormatException ex) {
-            Logger.getLogger(MessageWindow.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MessageWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        g.setFont(g.getFont().deriveFont(Font.PLAIN, 10));        
-    }
-
 }

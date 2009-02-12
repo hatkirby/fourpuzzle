@@ -8,6 +8,7 @@ package com.fourisland.fourpuzzle.gamestate.mapview;
 import com.fourisland.fourpuzzle.Audio;
 import com.fourisland.fourpuzzle.gamestate.*;
 import com.fourisland.fourpuzzle.Direction;
+import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.Layer;
@@ -206,7 +207,7 @@ public class MapViewGameState implements GameState {
         
         g.drawImage(currentMap.renderLower(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
 
-        BufferedImage eventLayer = new BufferedImage(currentMap.getSize().width*16, currentMap.getSize().height*16, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage eventLayer = Display.createCanvas(currentMap.getSize().width*16, currentMap.getSize().height*16);
         Graphics2D g2 = eventLayer.createGraphics();
         EventList events = currentMap.getEvents();
         
