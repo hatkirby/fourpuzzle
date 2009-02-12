@@ -52,8 +52,6 @@ public class ChoiceWindow implements Renderable {
             
             height += g3.getFontMetrics().getHeight() + SPACER;
         }
-
-        width += SPACER*2;
         
         cacheBase = Window.Default.getImage(width, height);
         
