@@ -94,12 +94,12 @@ public class TitleScreenGameState implements GameState {
             {
                 choices.moveUp();
                 
-                pt.setTimer(2);
+                pt.setTimer(1);
             } else if (Game.getKey().getKeyCode() == KeyEvent.VK_DOWN)
             {
                 choices.moveDown();
                 
-                pt.setTimer(2);
+                pt.setTimer(1);
             }
         }
     }

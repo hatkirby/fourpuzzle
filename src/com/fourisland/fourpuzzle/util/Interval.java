@@ -21,20 +21,20 @@ public class Interval {
     
     public static Interval createTickInterval(int ticks)
     {
-        return new Interval(Game.FPS*ticks);
+        return createMillisInterval(Game.FPS*ticks);
     }
     
     public static Interval createMillisInterval(int millis)
     {
-        return new Interval(millis);
+        return new Interval(millis*1000000);
     }
     
-    private long last = System.currentTimeMillis();
+    private long last = System.nanoTime();
     public boolean isElapsed()
     {
-        if (last+wait < System.currentTimeMillis())
+        if (last+wait < System.nanoTime())
         {
-            last = System.currentTimeMillis();
+            last = System.nanoTime();
             
             return true;
         }
