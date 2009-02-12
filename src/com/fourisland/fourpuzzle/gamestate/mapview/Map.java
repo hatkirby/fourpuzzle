@@ -14,20 +14,53 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 /**
  *
  * @author hatkirby
  */
-public abstract class Map {
-
-    public abstract void initalize();
+public class Map {
     
-    protected void initalize(Dimension size)
+    /**
+     * Creates a new Map
+     * 
+     * @param width The width of the Map in tiles
+     * @param height The height of the Map in tiles
+     * @param chipSet The name of the ChipSet to use
+     * @param music The name of the Music file to play in the background
+     */
+    public Map(int width, int height, String chipSet, String music)
     {
-        setSize(size);
-        mapData = new Vector<HashMap<Integer,Integer>>();
+        setSize(new Dimension(width, height));
+        setChipSet(chipSet);
+        setMusic(music);
+    }
+    
+    /**
+     * Creates a new Map
+     * 
+     * @param width The width of the Map in tiles
+     * @param height The height of the Map in tiles
+     * @param chipSet The name of the ChipSet to use
+     * @param musicType The non-Specified Music mode to use
+     * 
+     * @throws IllegalArgumentException if MapMusicType.Specified is passed in
+     * musicType. This constructor is for MapMusicType.NoMusic or
+     * MapMusicType.NoChange. If you wish to specify a Music file, use the other
+     * constructor (int, int, String, String)
+     */
+    public Map(int width, int height, String chipSet, MapMusicType musicType)
+    {
+        if (musicType == MapMusicType.Specified)
+        {
+            throw new IllegalArgumentException("MapMusicType.Specified is not a valid value for musicType. If you wish to specify a music type, use the other constructor (int, int, String, String)");
+        }
+        
+        setSize(new Dimension(width, height));
+        setChipSet(chipSet);
+        setMusicType(musicType);
     }
     
     private Dimension size;
@@ -172,8 +205,8 @@ public abstract class Map {
         this.chipSet = chipSet;
     }
 
-    private Vector<HashMap<Integer,Integer>> mapData;
-    public Vector<HashMap<Integer, Integer>> getMapData() {
+    private List<HashMap<Integer,Integer>> mapData = new Vector<HashMap<Integer,Integer>>();
+    public List<HashMap<Integer, Integer>> getMapData() {
         return mapData;
     }
     
@@ -182,17 +215,8 @@ public abstract class Map {
     {
         return music;
     }
-    
-    /**
-     * Sets the name of the Music file to play when this Map loads
-     * 
-     * When this function is run, it also sets the MusicType to Specified
-     * automatically as the only time this function would be used would be when
-     * the MusicType was Specified.
-     * 
-     * @param music
-     */
-    protected void setMusic(String music)
+
+    private void setMusic(String music)
     {
         this.music = music;
         this.musicType = MapMusicType.Specified;
@@ -204,7 +228,7 @@ public abstract class Map {
         return musicType;
     }
     
-    protected void setMusicType(MapMusicType musicType)
+    private void setMusicType(MapMusicType musicType)
     {
         this.musicType = musicType;
     }

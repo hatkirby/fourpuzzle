@@ -5,7 +5,9 @@
 
 package com.fourisland.fourpuzzle.database;
 
+import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.transition.Transition;
+import java.util.HashMap;
 
 /**
  *
@@ -116,6 +118,17 @@ public class Database {
     public static void setSound(Sound key, String value)
     {
         key.setValue(value);
+    }
+    
+    private static java.util.Map<String, Map> maps = new HashMap<String, Map>();
+    public static void addMap(String key, Map value)
+    {
+        maps.put(key, value);
+    }
+    
+    public static Map getMap(String key)
+    {
+        return maps.get(key);
     }
 
 }

@@ -17,7 +17,7 @@ public class Game {
     
     public static final int WIDTH = 320;
     public static final int HEIGHT = 240;
-    public static final int FPS = (1000 / 30); // 30 fps
+    public static final int FPS = (1000 / 20); // 20 fps
 
     private static SaveFile saveFile;
     public static SaveFile getSaveFile()

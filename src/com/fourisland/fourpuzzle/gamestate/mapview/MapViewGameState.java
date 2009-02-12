@@ -13,6 +13,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.PuzzleApplication;
+import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventCallTime;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventHandler;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
@@ -22,13 +23,10 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventTh
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.util.Functions;
-import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import com.fourisland.fourpuzzle.window.MessageWindow;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -238,26 +236,10 @@ public class MapViewGameState implements GameState {
         }
     }
     
-    public void initCurrentMap(String mapName)
-    {
-        try {
-            Class mapClass = Class.forName(PuzzleApplication.INSTANCE.getGamePackage() + ".gamedata.map." + mapName);
-            Object mapObject = mapClass.newInstance();
-            Map map = (Map) mapObject;
-            map.initalize();
-            currentMap = map;
-        } catch (InstantiationException ex) {
-            Logger.getLogger(MapViewGameState.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(MapViewGameState.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            throw new ResourceNotFoundException("Map", mapName);
-        }
-    }
     public void setCurrentMap(String mapName)
     {
         Game.getSaveFile().setCurrentMap(mapName);
-        initCurrentMap(mapName);
+        currentMap = Database.getMap(mapName);
     }
     
     public Map getCurrentMap()
