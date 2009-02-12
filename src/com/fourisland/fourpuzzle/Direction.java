@@ -81,18 +81,21 @@ public enum Direction {
     
     /**
      * Returns the direction opposite from the current one
+     * 
      * @return A Direction representing the wanted direction
      */
     public abstract Direction opposite();
     
     /**
      * Returns the direction counterclockwise from the current one
+     * 
      * @return A Direction representing the wanted direction
      */
     public abstract Direction left();
     
     /**
      * Returns the direction clockwise from the current one
+     * 
      * @return A Direction representing the wanted direction
      */
     public abstract Direction right();

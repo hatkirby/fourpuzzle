@@ -18,7 +18,8 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.precondition.Preconditi
  */
 public class LayerEvent extends AbstractEvent implements Event {
     
-    /** Create a new Event instance
+    /**
+     * Create a new Event instance
      * 
      * @param x The horizontal location of the Event on the Map
      * @param y The vertical location of the Event on the Map
@@ -30,7 +31,8 @@ public class LayerEvent extends AbstractEvent implements Event {
         label = "Unlabelled";
     }
     
-    /** Create a new Event instance
+    /**
+     * Create a new Event instance
      * 
      * @param x The horizontal location of the Event on the Map
      * @param y The vertical location of the Event on the Map

@@ -35,20 +35,16 @@ public class SpecialEvent {
     /**
      * Display a message on the screen.
      * 
-     * Usually used for dialogue. If SetFace() is
+     * <p>Usually used for dialogue. If SetFace() is used prior to this, the face
+     * set is displayed on the left side.</p>
      * 
-     * used prior to this, the face set is displayed
-     * on the left side.
+     * <p>Display of the message area can be modified using
+     * MessageDisplaySettings().</p>
      * 
-     * Display of the message area can be modified using
-     * MessageDisplaySettings().
-     * 
-     * This function also automatically splits your
-     * message up into blocks that will fit on
-     * the screen (breaks at spaces). If there are too
-     * many words, they will be held and displayed in
-     * the message area after the prior message has
-     * been read.
+     * <p>This function also automatically splits your message up into blocks that
+     * will fit onthe screen (breaks at spaces). If there are too many words,
+     * they will be held and displayed in the message area after the prior
+     * message has been read.</p>
      * 
      * @param message The message to display
      * @throws InterruptedException 
@@ -61,12 +57,12 @@ public class SpecialEvent {
     /**
      * Sets the face used when displaying a message
      * 
-     * See DisplayMessage() for more info
+     * <p>See DisplayMessage() for more info</p>
      * 
      * @param faceSet The name of the FaceSet to use
-     * @param face The number of the face in the FaceSet
-     *             to use. The faces are numbered
-     *             horizontally.
+     * @param face The number of the face in the FaceSet to use. The faces are
+     * numbered horizontally as in the top-left is 0, the one to the right is 1
+     * and so on.
      */
     public void SetFace(String faceSet, int face)
     {
@@ -76,7 +72,7 @@ public class SpecialEvent {
     /**
      * Clears the face used when displaying a message
      * 
-     * See DisplayMessage() for more info
+     * <p>See DisplayMessage() for more info</p>
      */
     public void EraseFace()
     {
@@ -132,6 +128,7 @@ public class SpecialEvent {
     
     /**
      * Waits until all previously called MoveEvent()s have finished
+     * 
      * @throws InterruptedException
      */
     public void MoveEventWait() throws InterruptedException
@@ -160,10 +157,10 @@ public class SpecialEvent {
     /**
      * Displays a transition from the current map to emptiness
      * 
-     * If this method is executed before Teleport(), Teleport() will not use
+     * <p>If this method is executed before Teleport(), Teleport() will not use
      * the database-default out transition and instead immeditatly jump to the
      * new map. It will also not use the database-default in transition which
-     * requires you to also execute EndTransition().
+     * requires you to also execute EndTransition().</p>
      * 
      * @param trans The transition to use
      * @throws InterruptedException 
@@ -181,9 +178,9 @@ public class SpecialEvent {
     /**
      * Moves the player to a different map
      * 
-     * If StartTransition() is executed prior to this method, then this will
+     * <p>If StartTransition() is executed prior to this method, then this will
      * not preform the database-default transitions, which requires that
-     * EndTransition() is executed after this method.
+     * EndTransition() is executed after this method.</p>
      * 
      * @param map The name of the map to move to
      * @param x The X position on the map to move to
@@ -208,9 +205,9 @@ public class SpecialEvent {
     /**
      * Displays a transition from the emptiness to the new map
      * 
-     * This method is only required if you called StartTransition() before
+     * <p>This method is only required if you called StartTransition() before
      * Teleport(), in which case it will display the transition. Otherwise,
-     * this action will do nothing.
+     * this action will do nothing.</p>
      * 
      * @param trans
      * @throws InterruptedException 
@@ -251,8 +248,8 @@ public class SpecialEvent {
      * @param x The x coordinate of the tile in the top-left corner to pan to
      * @param y The y coordinate of the tile in the top-left corner to pan to
      * @param length How long (in milliseconds) it will take to pan
-     * @param block If true, the game will wait for the pan to complete
-     *              before executing any more commands
+     * @param block If true, the game will wait for the pan to complete before
+     * executing any more commands
      * @throws InterruptedException
      */
     public void PanViewpoint(final int x, final int y, int length, final boolean block) throws InterruptedException

@@ -156,14 +156,14 @@ public class PossibleEvent {
     /**
      * Add a precondition to this PossibleEvent
      * 
-     * PossibleEvents are different versions of a single LayerEvent. A
+     * <p>PossibleEvents are different versions of a single LayerEvent. A
      * LayerEvent may have many PossibleEvents, or none at all. The way it
      * determines which PossibleEvent is current is that each PossibleEvent
      * (possibly) has a set of <b>Precondition</b>s, objects that describe
      * certain situations. If a PossibleEvent's Preconditions are all fulfilled,
      * it is chosen as the active one. If there are more than one PossibleEvents
      * with completely fulfilled Preconditions (that includes having no
-     * Preconditions at all), the later one is the one chosen as current.
+     * Preconditions at all), the later one is the one chosen as current.</p>
      * 
      * @param precondition The Precondition to add to the list
      */
