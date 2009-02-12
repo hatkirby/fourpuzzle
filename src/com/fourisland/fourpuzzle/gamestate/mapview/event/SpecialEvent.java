@@ -17,6 +17,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.MovingViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.transition.InTransition;
 import com.fourisland.fourpuzzle.transition.OutTransition;
+import com.fourisland.fourpuzzle.window.MessageWindow;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -50,10 +51,11 @@ public class SpecialEvent {
      * been read.
      * 
      * @param message The message to display
+     * @throws InterruptedException 
      */
-    public void DisplayMessage(String message)
+    public void DisplayMessage(String message) throws InterruptedException
     {
-        mapView.displayMessage(message);
+        MessageWindow.displayMessage(message);
     }
 
     /**

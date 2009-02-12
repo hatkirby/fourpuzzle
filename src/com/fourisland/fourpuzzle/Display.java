@@ -11,6 +11,7 @@ import com.fourisland.fourpuzzle.transition.OutTransition;
 import com.fourisland.fourpuzzle.transition.Transition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
+import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
@@ -20,6 +21,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +36,8 @@ import org.jdesktop.application.ResourceMap;
 public class Display {
     
     public static int tileAnimationFrame = 0;
+    
+    private static List<Renderable> renderables = new CopyOnWriteArrayList<Renderable>();
 
     public static void render(JDialog gameFrame)
     {
@@ -95,10 +100,30 @@ public class Display {
                 g.drawImage(midTransition, 0, 0, null);
             }
         } else {
-            Game.getGameState().render(g);
+            render(g);
         }
         
         g.dispose();
+    }
+    
+    private static void render(Graphics2D g)
+    {
+        Game.getGameState().render(g);
+        
+        for (Renderable r : renderables)
+        {
+            r.render(g);
+        }
+    }
+    
+    public static void registerRenderable(Renderable r)
+    {
+        renderables.add(r);
+    }
+    
+    public static void unregisterRenderable(Renderable r)
+    {
+        renderables.remove(r);
     }
     
     private static boolean startedTransition = false;
@@ -106,7 +131,6 @@ public class Display {
     private static CountDownLatch transitionWait;
     private static boolean transitionRunning = false;
     private static BufferedImage midTransition = null;
-    private static BufferedImage postTransition = null;
     public static void transition(Transition transition) throws InterruptedException
     {
         if (transition instanceof MultidirectionalTransition)
@@ -125,13 +149,13 @@ public class Display {
             {
                 temp.setPreTransition(midTransition);
                 
-                postTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
-                Game.getGameState().render(postTransition.createGraphics());
-                temp.setPostTransition(postTransition);
+                BufferedImage bImg = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
+                render(bImg.createGraphics());
+                temp.setPostTransition(bImg);
             } else {
-                BufferedImage preTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
-                Game.getGameState().render(preTransition.createGraphics());
-                temp.setPreTransition(preTransition);
+                BufferedImage bImg = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
+                render(bImg.createGraphics());
+                temp.setPreTransition(bImg);
             }
         } else {
             if (startedTransition && !(transition instanceof InTransition))
@@ -146,13 +170,13 @@ public class Display {
             {
                 transition.setPreTransition(midTransition);
                 
-                postTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
-                Game.getGameState().render(postTransition.createGraphics());
-                ((InTransition) transition).setPostTransition(postTransition);
+                BufferedImage bImg = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
+                render(bImg.createGraphics());
+                ((InTransition) transition).setPostTransition(bImg);
             } else {
-                BufferedImage preTransition = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
-                Game.getGameState().render(preTransition.createGraphics());
-                transition.setPreTransition(preTransition);
+                BufferedImage bImg = Display.createCanvas(Game.WIDTH, Game.HEIGHT);
+                render(bImg.createGraphics());
+                transition.setPreTransition(bImg);
             }
         }
         

@@ -27,20 +27,20 @@ import java.util.Arrays;
 public class TitleScreenGameState implements GameState {
     
     ChoiceWindow choices;
-    int wx, wy;
     
     public void initalize()
     {
         Audio.playMusic(Database.getMusic(Music.Title));
         
-        choices = new ChoiceWindow(Arrays.asList(Database.getVocab(Vocabulary.NewGame), Database.getVocab(Vocabulary.LoadGame), Database.getVocab(Vocabulary.EndGame)), true);
-        wx = (Game.WIDTH/5)-(choices.getWidth()/2);
-        wy = (Game.HEIGHT/4*3)-(choices.getHeight()/2);
+        choices = new ChoiceWindow(Arrays.asList(Database.getVocab(Vocabulary.NewGame), Database.getVocab(Vocabulary.LoadGame), Database.getVocab(Vocabulary.EndGame)), true, ChoiceWindow.ChoiceWindowLocation.BottomLeft);
+        Display.registerRenderable(choices);
     }
     
     public void deinitalize()
     {
         Audio.stopMusic();
+        
+        Display.unregisterRenderable(choices);
     }
 
     PauseTimer pt = new PauseTimer(0);
@@ -112,7 +112,6 @@ public class TitleScreenGameState implements GameState {
     public void render(Graphics2D g)
     {
         g.drawImage(ObjectLoader.getImage("Picture", "Title"), 0, 0, null);
-        choices.render(g, wx, wy);
     }
 
 }

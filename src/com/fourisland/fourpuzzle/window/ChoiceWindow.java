@@ -7,8 +7,10 @@ package com.fourisland.fourpuzzle.window;
 
 import com.fourisland.fourpuzzle.Audio;
 import com.fourisland.fourpuzzle.Display;
+import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.database.Sound;
+import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
@@ -19,7 +21,7 @@ import java.util.List;
  *
  * @author hatkirby
  */
-public class ChoiceWindow {
+public class ChoiceWindow implements Renderable {
     
     private static final int SPACER = 4;
     
@@ -29,7 +31,9 @@ public class ChoiceWindow {
     private int width;
     private int height;
     BufferedImage cacheBase;
-    public ChoiceWindow(List<String> choices, boolean center)
+    int x;
+    int y;
+    public ChoiceWindow(List<String> choices, boolean center, ChoiceWindowLocation cwl)
     {
         this.choices = choices;
         numChoices = choices.size();
@@ -52,9 +56,12 @@ public class ChoiceWindow {
         width += SPACER*2;
         
         cacheBase = Window.Default.getImage(width, height);
+        
+        x = cwl.getX(width);
+        y = cwl.getY(height);
     }
 
-    public void render(Graphics2D g2, int x, int y)
+    public void render(Graphics2D g2)
     {
         Display.setFont(g2);
         
@@ -118,6 +125,38 @@ public class ChoiceWindow {
     public String getSelected()
     {
         return choices.get(selected);
+    }
+    
+    public static enum ChoiceWindowLocation
+    {
+        BottomLeft
+        {
+            public int getX(int width)
+            {
+                return (Game.WIDTH/5)-(width/2);
+            }
+        },
+        BottomCenter
+        {
+            public int getX(int width)
+            {
+                return (Game.WIDTH/2)-(width/2);
+            }
+        },
+        BottomRight
+        {
+            public int getX(int width)
+            {
+                return (Game.WIDTH/5*4)-(width/2);
+            }    
+        };
+        
+        public abstract int getX(int width);
+        
+        public int getY(int height)
+        {
+            return (Game.HEIGHT/4*3)-(height/2);
+        }
     }
 
 }
