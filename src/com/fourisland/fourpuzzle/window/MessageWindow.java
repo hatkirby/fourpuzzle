@@ -116,7 +116,7 @@ public class MessageWindow implements Renderable {
     {
         num = 0;
         
-        for (int i=0;i<messages.size();i++)
+        for (int i=0;i<Math.min(messages.size(),4);i++)
         {
             num += messages.get(i).length();
         }
