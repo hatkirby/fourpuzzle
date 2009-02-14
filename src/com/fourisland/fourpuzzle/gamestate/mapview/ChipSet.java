@@ -8,9 +8,12 @@ package com.fourisland.fourpuzzle.gamestate.mapview;
 import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
+import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -45,23 +48,31 @@ public class ChipSet {
         return chipSetData;
     }
 
-    public static void initalize()
+    public static void initalize(String name)
     {
         ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
-        File folder = new File(new File(rm.getResourcesDir()).getParent() + "/gamedata/chipset/");
-        URL path = rm.getClassLoader().getResource(folder.toString());
-        File[] files = new File(path.getPath().replace("%20", " ")).listFiles();
-        for (File cs : files)
+        InputStream cs = null;
+        
+        if (rm.getClassLoader().getResource(rm.getResourcesDir() + "chipset/" + name + ".tsx") == null)
         {
-            try {
-                SAXParserFactory.newInstance().newSAXParser().parse(cs, new ChipSetDefaultHandler());
-            } catch (SAXException ex) {
-                Logger.getLogger(ChipSet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(ChipSet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ChipSet.class.getName()).log(Level.SEVERE, null, ex);
+            if (rm.getClassLoader().getResource("com/fourisland/fourpuzzle/resources/chipset/" + name + ".tsx") == null)
+            {
+                throw new ResourceNotFoundException("ChipSet", name);
+            } else {
+                cs = rm.getClassLoader().getResourceAsStream("com/fourisland/fourpuzzle/resources/chipset/" + name + ".tsx");
             }
+        } else {
+            cs = rm.getClassLoader().getResourceAsStream(rm.getResourcesDir() + "chipset/" + name + ".tsx");
+        }
+        
+        try {
+            SAXParserFactory.newInstance().newSAXParser().parse(cs, new ChipSetDefaultHandler());
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(ChipSet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(ChipSet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ChipSet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -77,6 +88,11 @@ public class ChipSet {
     private static HashMap<String, ChipSet> chipSets = new HashMap<String, ChipSet>();
     public static ChipSet getChipSet(String name)
     {
+        if (!chipSets.containsKey(name))
+        {
+            initalize(name);
+        }
+        
         return chipSets.get(name);
     }
 

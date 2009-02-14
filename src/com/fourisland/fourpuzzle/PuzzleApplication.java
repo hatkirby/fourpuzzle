@@ -109,7 +109,6 @@ public class PuzzleApplication extends Application {
             public void run() {
                 try {
                     Audio.init();
-                    ChipSet.initalize();
                     SystemGraphic.initalize();
                     
                     Game.setGameState(new TitleScreenGameState());
