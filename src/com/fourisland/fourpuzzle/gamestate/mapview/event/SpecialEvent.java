@@ -31,6 +31,9 @@ public class SpecialEvent {
     {
         SpecialEvent.mapView = mapView;
     }
+    
+    private String faceSet = "";
+    private int face = 0;
 
     /**
      * Display a message on the screen.
@@ -51,7 +54,12 @@ public class SpecialEvent {
      */
     public void DisplayMessage(String message) throws InterruptedException
     {
-        MessageWindow.displayMessage(message);
+        if (faceSet.equals(""))
+        {
+            MessageWindow.displayMessage(message);
+        } else {
+            MessageWindow.displayMessage(message, faceSet, face);
+        }
     }
 
     /**
@@ -66,7 +74,8 @@ public class SpecialEvent {
      */
     public void SetFace(String faceSet, int face)
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.faceSet = faceSet;
+        this.face = face;
     }
     
     /**
@@ -76,7 +85,8 @@ public class SpecialEvent {
      */
     public void EraseFace()
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        faceSet = "";
+        face = 0;
     }
     
     /**

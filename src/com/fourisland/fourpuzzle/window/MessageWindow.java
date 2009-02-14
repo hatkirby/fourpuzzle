@@ -8,6 +8,7 @@ package com.fourisland.fourpuzzle.window;
 import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.PuzzleApplication;
+import com.fourisland.fourpuzzle.gamestate.mapview.FaceSet;
 import com.fourisland.fourpuzzle.util.Interval;
 import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Graphics2D;
@@ -29,6 +30,7 @@ public class MessageWindow implements Renderable {
     private static final int SPACER = 4;
     private static final int HEIGHT = 4*(Display.createCanvas(1, 1).createGraphics().getFontMetrics().getHeight()+SPACER);
     
+    String message;
     private volatile List<String> messages;
     int width;
     BufferedImage cacheBase;
@@ -38,17 +40,24 @@ public class MessageWindow implements Renderable {
     Interval in = Interval.createTickInterval(4);
     private MessageWindow(String message)
     {
+        this.message = message;
         width = Game.WIDTH - Window.Default.getFullWidth(0);
-        messages = new ArrayList<String>();
-        
-        initalizeMessages(message, Display.createCanvas(1, 1).createGraphics());
-        
+
         cacheBase = Window.Default.getImage(width, HEIGHT);
     }
     
-    public static void displayMessage(String message) throws InterruptedException
+    boolean hasFace = false;
+    BufferedImage face;
+    private MessageWindow(String message, String faceSet, int face)
     {
-        final MessageWindow mw = new MessageWindow(message);
+        this(message);
+        
+        this.face = FaceSet.getFaceSet(faceSet).getImage(face);
+        hasFace = true;
+    }
+    
+    private static void displayMessage(final MessageWindow mw) throws InterruptedException
+    {
         final CountDownLatch cdl = new CountDownLatch(1);
         
         Display.registerRenderable(mw);
@@ -76,15 +85,33 @@ public class MessageWindow implements Renderable {
         Display.unregisterRenderable(mw);
     }
     
+    public static void displayMessage(String message) throws InterruptedException
+    {
+        displayMessage(new MessageWindow(message));
+    }
+    
+    public static void displayMessage(String message, String faceSet, int face) throws InterruptedException
+    {
+        displayMessage(new MessageWindow(message, faceSet, face));
+    }
+    
     private void initalizeMessages(String message, Graphics2D g)
     {
+        messages = new ArrayList<String>();
+        
         Display.setFont(g);
+        
+        int length = width - SPACER;
+        if (hasFace)
+        {
+            length -= (48 + (SPACER*2));
+        }
         
         String temp = message;
         int len = 0;
         while (!temp.isEmpty())
         {
-            while ((g.getFontMetrics().stringWidth(temp.substring(0, len)) < (width - SPACER)) && (len < temp.length()))
+            while ((g.getFontMetrics().stringWidth(temp.substring(0, len)) < length) && (len < temp.length()))
             {
                 len++;
             }
@@ -124,6 +151,11 @@ public class MessageWindow implements Renderable {
     
     public void render(Graphics2D g2)
     {
+        if (messages == null)
+        {
+            initalizeMessages(message, g2);
+        }
+        
         int y = MessageWindowLocation.Bottom.getY();
 
         Display.setFont(g2);
@@ -139,6 +171,13 @@ public class MessageWindow implements Renderable {
             String message = messages.get(i);
             int fw = g2.getFontMetrics().stringWidth(message);
             int tx = Window.Default.getLeftX();
+            
+            if (hasFace)
+            {
+                g2.drawImage(face, tx, y + ((HEIGHT/2)-24), null);
+                
+                tx += 48 + SPACER;
+            }
             
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(message.substring(0, Math.min(toPrint, message.length())), tx, ty);
