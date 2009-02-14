@@ -214,7 +214,7 @@ public class Display {
             Logger.getLogger(Display.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        theFont = theFont.deriveFont(Font.PLAIN, 10);
+        theFont = theFont.deriveFont(Font.PLAIN, 9);
     }
     
     public static void setFont(Graphics2D g)

@@ -28,7 +28,15 @@ import java.util.concurrent.CountDownLatch;
 public class MessageWindow implements Renderable {
     
     private static final int SPACER = 4;
-    private static final int HEIGHT = 4*(Display.createCanvas(1, 1).createGraphics().getFontMetrics().getHeight()+SPACER);
+    private static final int HEIGHT;
+    
+    static
+    {
+        BufferedImage d = Display.createCanvas(1, 1);
+        Display.setFont(d.createGraphics());
+        
+        HEIGHT =  3*(d.createGraphics().getFontMetrics().getHeight()+SPACER);
+    }
     
     String message;
     private volatile List<String> messages;
@@ -104,7 +112,7 @@ public class MessageWindow implements Renderable {
         int length = width - SPACER;
         if (hasFace)
         {
-            length -= (48 + (SPACER*2));
+            length -= (48 + (SPACER*3));
         }
         
         String temp = message;
@@ -162,22 +170,23 @@ public class MessageWindow implements Renderable {
         
         g2.drawImage(cacheBase, 0, y, null);
         
+        int fw = g2.getFontMetrics().stringWidth(message);
         int fh = g2.getFontMetrics().getHeight();
+        int tx = Window.Default.getLeftX();
         int ty = Window.Default.getTopY()+fh-(SPACER/2)+y;
         int msgs = Math.min(messages.size(), 4);
         int toPrint = upTo;
+        
+        if (hasFace)
+        {
+            g2.drawImage(face, tx+SPACER, ty-fh+SPACER, null);
+
+            tx += 48 + (SPACER*2);
+        }
+        
         for (int i=0;i<msgs;i++)
         {
             String message = messages.get(i);
-            int fw = g2.getFontMetrics().stringWidth(message);
-            int tx = Window.Default.getLeftX();
-            
-            if (hasFace)
-            {
-                g2.drawImage(face, tx, y + ((HEIGHT/2)-24), null);
-                
-                tx += 48 + SPACER;
-            }
             
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(message.substring(0, Math.min(toPrint, message.length())), tx, ty);
@@ -191,7 +200,7 @@ public class MessageWindow implements Renderable {
         {
             upTo+=3;
         } else {
-            g2.drawImage(SystemGraphic.getDownArrow(), (Window.Default.getFullWidth(width)/2)-5, y+HEIGHT-SPACER+(bounceArrow ? 1 : 0), null);
+            g2.drawImage(SystemGraphic.getDownArrow(), (Window.Default.getFullWidth(width)/2)-5, y+HEIGHT+SPACER+(bounceArrow ? 1 : 0), null);
             
             if (in.isElapsed())
             {
