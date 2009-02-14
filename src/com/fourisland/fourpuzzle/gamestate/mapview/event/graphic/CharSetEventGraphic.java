@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
  *
  * @author hatkirby
  */
-public class CharSetEventGraphic implements EventGraphic {
+public class CharSetEventGraphic implements MoveableEventGraphic {
     
     private Direction direction = Direction.South;
     private int animationStep = 1;

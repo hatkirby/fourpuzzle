@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.MoveableEventGraphic;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.precondition.Precondition;
 
 /**
@@ -92,6 +93,17 @@ public class LayerEvent extends AbstractEvent implements Event {
         {
             startMoving(toMove);
         }
+    }
+    
+    @Override
+    public boolean startMoving(Direction toMove)
+    {
+        if (!(getPossibleEvent().getGraphic() instanceof MoveableEventGraphic))
+        {
+            return false;
+        }
+        
+        return super.startMoving(toMove);
     }
     
     public Direction getDirection()
