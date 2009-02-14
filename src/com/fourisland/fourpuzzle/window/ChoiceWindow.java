@@ -39,18 +39,15 @@ public class ChoiceWindow implements Renderable {
         numChoices = choices.size();
         this.center = center;
         
-        Graphics2D g3 = Display.createCanvas(1, 1).createGraphics();
-        Display.setFont(g3);
-        
         for (String choice : choices)
         {
-            int l = g3.getFontMetrics().stringWidth(choice);
+            int l = Display.getFontMetrics().stringWidth(choice);
             if (l > getWidth())
             {
                 width = l;
             }
             
-            height += g3.getFontMetrics().getHeight() + SPACER;
+            height += Display.getFontMetrics().getHeight() + SPACER;
         }
         
         cacheBase = Window.Default.getImage(width, height);
@@ -85,7 +82,7 @@ public class ChoiceWindow implements Renderable {
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(choice, tx, ty);
             
-            ty+=(SPACER+g2.getFontMetrics().getHeight());
+            ty+=(SPACER+fh);
         }
     }
 

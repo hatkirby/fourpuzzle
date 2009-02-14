@@ -14,6 +14,7 @@ import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
 import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -227,11 +228,32 @@ public class Display {
         g.setFont(theFont);
     }
     
+    public static Font getFont()
+    {
+        if (theFont == null)
+        {
+            initalizeFont();
+        }
+        
+        return theFont;
+    }
+    
     public static BufferedImage createCanvas(int width, int height)
     {
         BufferedImage temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         
         return temp;
+    }
+    
+    private static FontMetrics fontMetrics = null;
+    public static FontMetrics getFontMetrics()
+    {
+        if (fontMetrics == null)
+        {
+            fontMetrics = createCanvas(1, 1).createGraphics().getFontMetrics(getFont());
+        }
+        
+        return fontMetrics;
     }
     
 }
