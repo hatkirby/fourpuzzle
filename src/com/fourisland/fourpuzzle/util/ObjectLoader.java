@@ -86,14 +86,14 @@ public class ObjectLoader {
             }
             
             bImg.createGraphics().drawImage(bImg, 0, 0, new Color(transparencyColor, true), null);
-            
+
             addToObjectCache(imageCache, type + "/" + name, bImg);
         }
         
         return imageCache.get(type + "/" + name);
     }
     
-    public static void addToObjectCache(Map cacheMap, String name, Object object)
+    public static <T> void addToObjectCache(Map<String, T> cacheMap, String name, T object)
     {
         if (cacheMap.size() >= 100)
         {

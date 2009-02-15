@@ -11,6 +11,7 @@ import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.SaveFile;
 import com.fourisland.fourpuzzle.database.Music;
+import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
@@ -42,12 +43,18 @@ public class GameOverGameState implements GameState {
             new Thread(new Runnable() {
                 public void run() {
                     try {
-                        Display.transition(new SquareTransition(TransitionDirection.Out));
+                        Display.transition(Database.getTransition(Transitions.GameOverToTitle));
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
                     }
                     
                     Game.setGameState(new TitleScreenGameState());
+                    
+                    try {
+                        Display.transition(Database.getTransition(Transitions.TitleEnter));
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }).start();
         }

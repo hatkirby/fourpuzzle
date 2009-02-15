@@ -9,10 +9,9 @@ import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.*;
 import com.fourisland.fourpuzzle.database.Music;
 import com.fourisland.fourpuzzle.database.Sound;
+import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
-import com.fourisland.fourpuzzle.transition.SquareTransition;
-import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import com.fourisland.fourpuzzle.util.PauseTimer;
 import com.fourisland.fourpuzzle.window.ChoiceWindow;
@@ -59,7 +58,7 @@ public class TitleScreenGameState implements GameState {
                     new Thread(new Runnable() {
                         public void run() {
                             try {
-                                Display.transition(new SquareTransition(TransitionDirection.Out));
+                                Display.transition(Database.getTransition(Transitions.TitleExit));
                             } catch (InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                             }
@@ -67,7 +66,7 @@ public class TitleScreenGameState implements GameState {
                             Game.setGameState(new MapViewGameState("TestMap", 1, 2));
 
                             try {
-                                Display.transition(new SquareTransition(TransitionDirection.In));
+                                Display.transition(Database.getTransition(Transitions.TitleToMap));
                             } catch (InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                             }
@@ -81,7 +80,7 @@ public class TitleScreenGameState implements GameState {
                     new Thread(new Runnable() {
                         public void run() {
                             try {
-                                Display.transition(new SquareTransition(TransitionDirection.Out));
+                                Display.transition(Database.getTransition(Transitions.TitleExit));
                             } catch (InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                             }

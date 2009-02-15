@@ -37,5 +37,18 @@ public class PauseTimer {
     {
         this.ticks = ticks;
     }
+    
+    public int getTimer()
+    {
+        if (in.isElapsed())
+        {
+            if (ticks > 0)
+            {
+                ticks--;
+            }
+        }
+        
+        return ticks;
+    }
 
 }

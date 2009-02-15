@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle.database;
 
+import com.fourisland.fourpuzzle.transition.FadeTransition;
 import com.fourisland.fourpuzzle.transition.InTransition;
 import com.fourisland.fourpuzzle.transition.MultidirectionalTransition;
 import com.fourisland.fourpuzzle.transition.OutTransition;
@@ -18,8 +19,15 @@ import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
  * @author hatkirby
  */
 public enum Transitions {
+    TitleExit(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out)),
+    TitleToMap(TransitionDirection.In, new FadeTransition(TransitionDirection.In)),
     MapExit(TransitionDirection.Out, new SquareTransition(TransitionDirection.Out)),
-    MapEnter(TransitionDirection.In, new SquareTransition(TransitionDirection.In));
+    MapEnter(TransitionDirection.In, new SquareTransition(TransitionDirection.In)),
+    MapToTitle(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out)),
+    TitleEnter(TransitionDirection.In, new FadeTransition(TransitionDirection.In)),
+    MapToGameOver(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out)),
+    GameOverEnter(TransitionDirection.In, new FadeTransition(TransitionDirection.In)),
+    GameOverToTitle(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out));
     
     private final TransitionDirection dir;
     private Transition trans;

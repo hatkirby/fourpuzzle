@@ -8,6 +8,8 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.*;
 import com.fourisland.fourpuzzle.database.Transitions;
+import com.fourisland.fourpuzzle.gamestate.GameOverGameState;
+import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
@@ -148,18 +150,32 @@ public class SpecialEvent {
     
     /**
      * Triggers the Game Over sequence
+     * 
+     * @throws InterruptedException
      */
-    public void GameOver()
+    public void GameOver() throws InterruptedException
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Display.transition(Database.getTransition(Transitions.MapToGameOver));
+
+        Audio.stopMusic();
+        Game.setGameState(new GameOverGameState());
+
+        Display.transition(Database.getTransition(Transitions.GameOverEnter));
     }
     
     /**
      * Returns the player to the Title Screen
+     * 
+     * @throws InterruptedException
      */
-    public void TitleScreen()
+    public void TitleScreen() throws InterruptedException
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Display.transition(Database.getTransition(Transitions.MapToTitle));
+
+        Audio.stopMusic();
+        Game.setGameState(new TitleScreenGameState());
+
+        Display.transition(Database.getTransition(Transitions.TitleEnter));
     }
     
     private boolean startedTransition = false;
