@@ -11,6 +11,7 @@ import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import com.fourisland.fourpuzzle.Game;
+import com.fourisland.fourpuzzle.KeyInput;
 import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 import com.fourisland.fourpuzzle.database.Database;
@@ -34,7 +35,6 @@ import java.awt.image.BufferedImage;
 public class MapViewGameState implements GameState {
     
     public boolean debugWalkthrough = false;
-    boolean processInput = true;
     Map currentMap;
     Viewpoint currentViewpoint = null;
     
@@ -61,90 +61,85 @@ public class MapViewGameState implements GameState {
         // Do nothing, yet
     }
 
-    public void processInput()
+    public void processInput(KeyInput key)
     {
-        if (processInput)
-        {
-            HeroEvent hero = Game.getSaveFile().getHero();
+        HeroEvent hero = Game.getSaveFile().getHero();
 
-            if (Game.getKey().isControlDown() && !debugWalkthrough)
+        if (key.isCtrlDown() && !debugWalkthrough)
+        {
+            if (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
             {
-                if (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
-                {
-                    debugWalkthrough = true;
-                }
-            } else {
-                debugWalkthrough = false;
+                debugWalkthrough = true;
+            }
+        } else {
+            debugWalkthrough = false;
+        }
+
+        if (!hero.isMoving() && !MoveEventThread.isHeroActive() && !EventHandler.isRunningEvent())
+        {
+            Direction toMove = null;
+            Boolean letsMove = false;
+
+            switch (key.getKey())
+            {
+                case KeyEvent.VK_UP:
+                    toMove = Direction.North;
+                    letsMove = true;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    toMove = Direction.East;
+                    letsMove = true;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    toMove = Direction.South;
+                    letsMove = true;
+                    break;
+                case KeyEvent.VK_LEFT:
+                    toMove = Direction.West;
+                    letsMove = true;
+                    break;
             }
 
-            if (!hero.isMoving() && !MoveEventThread.isHeroActive() && !EventHandler.isRunningEvent())
+            if (letsMove)
             {
-                Direction toMove = null;
-                Boolean letsMove = false;
-
-                switch (Game.getKey().getKeyCode())
-                {
-                    case KeyEvent.VK_UP:
-                        toMove = Direction.North;
-                        letsMove = true;
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        toMove = Direction.East;
-                        letsMove = true;
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        toMove = Direction.South;
-                        letsMove = true;
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        toMove = Direction.West;
-                        letsMove = true;
-                        break;
-                }
-
-                if (letsMove)
-                {
-                    if (!hero.startMoving(toMove))
-                    {
-                        for (LayerEvent ev : currentMap.getEvents())
-                        {
-                            if (ev.getCalltime() == EventCallTime.OnHeroTouch)
-                            {
-                                if (ev.getLayer() == Layer.Middle)
-                                {
-                                    if (Functions.isFacing(hero, ev))
-                                    {
-                                        ev.getCallback().activate(ev.getCalltime());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))
+                if (!hero.startMoving(toMove))
                 {
                     for (LayerEvent ev : currentMap.getEvents())
                     {
-                        if (ev.getCalltime() == EventCallTime.PushKey)
+                        if (ev.getCalltime() == EventCallTime.OnHeroTouch)
                         {
                             if (ev.getLayer() == Layer.Middle)
                             {
                                 if (Functions.isFacing(hero, ev))
                                 {
-                                    ev.setDirection(hero.getDirection().opposite());
-                                    ev.getCallback().activate(ev.getCalltime());
-                                }
-                            } else {
-                                if (ev.getLocation().equals(hero.getLocation()))
-                                {
                                     ev.getCallback().activate(ev.getCalltime());
                                 }
                             }
                         }
                     }
+                }
+            }
 
-                    Game.getKey().setKeyCode(KeyEvent.VK_UNDEFINED);
+            if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
+            {
+                for (LayerEvent ev : currentMap.getEvents())
+                {
+                    if (ev.getCalltime() == EventCallTime.PushKey)
+                    {
+                        if (ev.getLayer() == Layer.Middle)
+                        {
+                            if (Functions.isFacing(hero, ev))
+                            {
+                                ev.setDirection(hero.getDirection().opposite());
+                                ev.getCallback().activate(ev.getCalltime());
+                            }
+                        } else {
+                            if (ev.getLocation().equals(hero.getLocation()))
+                            {
+                                ev.getCallback().activate(ev.getCalltime());
+                            }
+                        }
+                    }
                 }
             }
         }

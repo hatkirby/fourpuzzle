@@ -9,11 +9,10 @@ import com.fourisland.fourpuzzle.Audio;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
+import com.fourisland.fourpuzzle.KeyInput;
 import com.fourisland.fourpuzzle.SaveFile;
 import com.fourisland.fourpuzzle.database.Music;
 import com.fourisland.fourpuzzle.database.Transitions;
-import com.fourisland.fourpuzzle.transition.SquareTransition;
-import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -34,9 +33,9 @@ public class GameOverGameState implements GameState {
         Audio.stopMusic();
     }
 
-    public void processInput()
+    public void processInput(KeyInput key)
     {
-        if ((Game.getKey().getKeyCode() == KeyEvent.VK_ENTER) || (Game.getKey().getKeyCode() == KeyEvent.VK_SPACE))
+        if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
         {
             Game.setSaveFile(new SaveFile());
             

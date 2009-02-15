@@ -7,7 +7,6 @@ package com.fourisland.fourpuzzle;
 
 import com.fourisland.fourpuzzle.gamestate.mapview.event.HeroEvent;
 import com.fourisland.fourpuzzle.gamestate.GameState;
-import java.awt.event.KeyEvent;
 
 /**
  *
@@ -43,16 +42,6 @@ public class Game {
         
         Game.gameState = gameState;
         Game.gameState.initalize();
-    }
-    
-    private static KeyEvent key;
-    public static KeyEvent getKey()
-    {
-        return key;
-    }
-    public static void setKey(KeyEvent key)
-    {
-        Game.key = key;
     }
     
     public static HeroEvent getHeroEvent()

@@ -7,6 +7,7 @@ package com.fourisland.fourpuzzle.gamestate;
 
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.*;
+import com.fourisland.fourpuzzle.KeyInput;
 import com.fourisland.fourpuzzle.database.Music;
 import com.fourisland.fourpuzzle.database.Sound;
 import com.fourisland.fourpuzzle.database.Transitions;
@@ -43,11 +44,11 @@ public class TitleScreenGameState implements GameState {
     }
 
     PauseTimer pt = new PauseTimer(0);
-    public void processInput()
+    public void processInput(KeyInput key)
     {
         if (pt.isElapsed())
         {
-            if (Game.getKey().getKeyCode() == KeyEvent.VK_ENTER)
+            if (key.getKey() == KeyEvent.VK_ENTER)
             {
                 Audio.playSound(Database.getSound(Sound.Selection));
                 
@@ -89,12 +90,12 @@ public class TitleScreenGameState implements GameState {
                         }
                     }).start();
                 }
-            } else if (Game.getKey().getKeyCode() == KeyEvent.VK_UP)
+            } else if (key.getKey() == KeyEvent.VK_UP)
             {
                 choices.moveUp();
                 
                 pt.setTimer(1);
-            } else if (Game.getKey().getKeyCode() == KeyEvent.VK_DOWN)
+            } else if (key.getKey() == KeyEvent.VK_DOWN)
             {
                 choices.moveDown();
                 

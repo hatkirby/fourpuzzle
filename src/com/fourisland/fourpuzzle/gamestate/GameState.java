@@ -5,18 +5,18 @@
 
 package com.fourisland.fourpuzzle.gamestate;
 
+import com.fourisland.fourpuzzle.util.Inputable;
 import com.fourisland.fourpuzzle.util.Renderable;
 
 /**
  *
  * @author hatkirby
  */
-public interface GameState extends Renderable {
+public interface GameState extends Renderable, Inputable {
     
     public void initalize();
     public void deinitalize();
     
-    public void processInput();
     public void doGameCycle();
     
 }

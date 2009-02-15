@@ -7,14 +7,15 @@ package com.fourisland.fourpuzzle.window;
 
 import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
-import com.fourisland.fourpuzzle.PuzzleApplication;
+import com.fourisland.fourpuzzle.KeyboardInput;
+import com.fourisland.fourpuzzle.KeyInput;
 import com.fourisland.fourpuzzle.gamestate.mapview.FaceSet;
+import com.fourisland.fourpuzzle.util.Inputable;
 import com.fourisland.fourpuzzle.util.Interval;
 import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -59,47 +60,45 @@ public class MessageWindow implements Renderable {
     private static void displayMessage(final MessageWindow mw) throws InterruptedException
     {
         final CountDownLatch cdl = new CountDownLatch(1);
-        
-        Display.registerRenderable(mw);
-        
-        KeyAdapter ka = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if ((e.getKeyCode() == KeyEvent.VK_ENTER) || (e.getKeyCode() == KeyEvent.VK_SPACE))
+        Inputable in = new Inputable() {
+            public void processInput(KeyInput key)
+            {
+                if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
                 {
                     if (mw.pushEnter())
                     {
                         cdl.countDown();
                     }
                 }
-
-                Game.setKey(null);
             }
         };
         
-        PuzzleApplication.gameFrame.addKeyListener(ka);
-        
+        Display.registerRenderable(mw);
+        KeyboardInput.registerInputable(in);
+
         cdl.await();
         
-        PuzzleApplication.gameFrame.removeKeyListener(ka);
         Display.unregisterRenderable(mw);
+        KeyboardInput.unregisterInputable(in);
     }
     
     public static void displayMessage(String message) throws InterruptedException
     {
-        displayMessage(new MessageWindow(message));
+        MessageWindow temp = new MessageWindow(message);
+        temp.initalizeMessages(message);
+        displayMessage(temp);
     }
     
     public static void displayMessage(String message, String faceSet, int face) throws InterruptedException
     {
-        displayMessage(new MessageWindow(message, faceSet, face));
+        MessageWindow temp = new MessageWindow(message, faceSet, face);
+        temp.initalizeMessages(message);
+        displayMessage(temp);
     }
     
-    private void initalizeMessages(String message, Graphics2D g)
+    private void initalizeMessages(String message)
     {
         messages = new ArrayList<String>();
-        
-        Display.setFont(g);
         
         int length = width - SPACER;
         if (hasFace)
@@ -111,7 +110,7 @@ public class MessageWindow implements Renderable {
         int len = 0;
         while (!temp.isEmpty())
         {
-            while ((g.getFontMetrics().stringWidth(temp.substring(0, len)) < length) && (len < temp.length()))
+            while ((Display.getFontMetrics().stringWidth(temp.substring(0, len)) < length) && (len < temp.length()))
             {
                 len++;
             }
@@ -153,7 +152,7 @@ public class MessageWindow implements Renderable {
     {
         if (messages == null)
         {
-            initalizeMessages(message, g2);
+            initalizeMessages(message);
         }
         
         int y = MessageWindowLocation.Bottom.getY();
@@ -240,4 +239,5 @@ public class MessageWindow implements Renderable {
             return y;
         }
     }
+
 }

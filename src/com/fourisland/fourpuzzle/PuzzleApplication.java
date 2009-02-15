@@ -7,7 +7,6 @@ package com.fourisland.fourpuzzle;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
-import com.fourisland.fourpuzzle.gamestate.mapview.ChipSet;
 import com.fourisland.fourpuzzle.util.Interval;
 import com.fourisland.fourpuzzle.window.SystemGraphic;
 import java.awt.GraphicsEnvironment;
@@ -87,7 +86,7 @@ public class PuzzleApplication extends Application {
                         debugSpeed = true;
                     }
                 } else {
-                    Game.setKey(e);
+                    KeyboardInput.getKey().keyInput(e);
                 }
             }
             
@@ -98,8 +97,7 @@ public class PuzzleApplication extends Application {
                 {
                     debugSpeed = false;
                 } else {
-                    e.setKeyCode(KeyEvent.VK_UNDEFINED);
-                    Game.setKey(e);
+                    KeyboardInput.getKey().letGo();
                 }
             }
         });
@@ -120,10 +118,7 @@ public class PuzzleApplication extends Application {
                         {
                             if (!Display.isTransitionRunning())
                             {
-                                if (Game.getKey() != null)
-                                {
-                                    Game.getGameState().processInput();
-                                }
+                                KeyboardInput.processInput();
 
                                 Game.getGameState().doGameCycle();
                             }
