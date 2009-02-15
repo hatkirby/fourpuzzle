@@ -45,6 +45,18 @@ public class LayerEvent extends AbstractEvent implements Event {
         this.label = label;
     }
     
+    public LayerEvent copy()
+    {
+        LayerEvent temp = new LayerEvent(getLocation().x, getLocation().y, getLabel());
+        
+        for (PossibleEvent pe : events)
+        {
+            temp.addEvent(pe.copy());
+        }
+        
+        return temp;
+    }
+    
     private String label;
     public String getLabel()
     {

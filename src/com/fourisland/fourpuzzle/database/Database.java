@@ -128,7 +128,7 @@ public class Database {
     
     public static Map getMap(String key)
     {
-        return maps.get(key);
+        return maps.get(key).copy();
     }
 
 }

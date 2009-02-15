@@ -19,6 +19,18 @@ public class EventList extends Vector<LayerEvent> {
         setParentMap(parentMap);
     }
     
+    public EventList copy(Map parentMap)
+    {
+        EventList temp = new EventList(parentMap);
+        
+        for (LayerEvent ev : this)
+        {
+            temp.add(ev.copy());
+        }
+        
+        return temp;
+    }
+    
     @Override
     public boolean add(LayerEvent o)
     {

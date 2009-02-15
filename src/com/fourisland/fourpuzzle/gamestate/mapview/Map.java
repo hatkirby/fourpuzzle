@@ -63,6 +63,22 @@ public class Map {
         setMusicType(musicType);
     }
     
+    public Map copy()
+    {
+        Map temp;
+        if (getMusicType() == MapMusicType.Specified)
+        {
+            temp = new Map(getSize().width, getSize().height, getChipSet(), getMusic());
+        } else {
+            temp = new Map(getSize().width, getSize().height, getChipSet(), getMusicType());
+        }
+        
+        temp.mapData = new Vector<HashMap<Integer,Integer>>(getMapData());
+        temp.events = getEvents().copy(this);
+        
+        return temp;
+    }
+    
     private Dimension size;
     public Dimension getSize()
     {

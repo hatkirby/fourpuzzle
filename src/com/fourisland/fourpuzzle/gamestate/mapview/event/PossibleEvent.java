@@ -96,6 +96,22 @@ public class PossibleEvent {
         calltime = builder.calltime;
         callback = builder.callback;
     }
+    
+    public PossibleEvent copy()
+    {
+        PossibleEvent temp =  new Builder()
+                .graphic(graphic)
+                .layer(layer)
+                .animation(animation)
+                .movement(movement)
+                .calltime(calltime)
+                .callback(callback)
+                .build();
+        
+        temp.getPreconditions().addAll(preconditions);
+        
+        return temp;
+    }
 
     public EventGraphic getGraphic()
     {
