@@ -188,8 +188,8 @@ public class Display {
         transitionWait = new CountDownLatch(1);
         transitionWait.await();
         
-        transition = null;
-        
+        Display.transition = null;
+
         if (!startedTransition)
         {
             transitionRunning = false;
