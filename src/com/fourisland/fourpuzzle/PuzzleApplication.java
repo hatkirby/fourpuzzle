@@ -9,6 +9,7 @@ import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.util.Interval;
 import com.fourisland.fourpuzzle.window.SystemGraphic;
+import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -26,7 +27,6 @@ import org.jdesktop.application.Application;
 public class PuzzleApplication extends Application {
 
     public static PuzzleApplication INSTANCE;
-    public static JDialog gameFrame;
     public static boolean debugSpeed = false;
     public static boolean stretchScreen = true;
     public static boolean gameSleep = false;
@@ -42,11 +42,11 @@ public class PuzzleApplication extends Application {
     protected void startup() {
         INSTANCE = this;
         
-        gameFrame = new JDialog(new JFrame(), false);
-        gameFrame.setTitle(Database.getVocab(Vocabulary.Title));
-        gameFrame.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
-        gameFrame.setResizable(false);
-        gameFrame.addWindowListener(new WindowAdapter() {
+        final JDialog gameDialog = new JDialog(new JFrame(), false);
+        gameDialog.setTitle(Database.getVocab(Vocabulary.Title));
+        gameDialog.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
+        gameDialog.setResizable(false);
+        gameDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -62,22 +62,22 @@ public class PuzzleApplication extends Application {
                 gameSleep = true;
             }
         });
-        gameFrame.addKeyListener(new KeyAdapter() {
+        gameDialog.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e)
             {
                 if (e.getKeyCode() == KeyEvent.VK_F4)
                 {
-                    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(gameFrame);
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(gameDialog);
                 } else if (e.getKeyCode() == KeyEvent.VK_F5)
                 {
                     stretchScreen = !stretchScreen;
 
                     if (stretchScreen)
                     {
-                        gameFrame.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
+                        gameDialog.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
                     } else {
-                        gameFrame.setSize(Game.WIDTH, Game.HEIGHT);
+                        gameDialog.setSize(Game.WIDTH, Game.HEIGHT);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_SHIFT)
                 {
@@ -101,7 +101,7 @@ public class PuzzleApplication extends Application {
                 }
             }
         });
-        gameFrame.setVisible(true);
+        gameDialog.setVisible(true);
 
         new Thread(new Runnable() {
             public void run() {
@@ -123,7 +123,7 @@ public class PuzzleApplication extends Application {
                                 Game.getGameState().doGameCycle();
                             }
                             
-                            Display.render(gameFrame);
+                            Display.render(gameDialog.getContentPane());
                         }
                     }
                 } catch (RuntimeException ex) {

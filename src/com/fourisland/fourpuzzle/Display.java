@@ -12,6 +12,7 @@ import com.fourisland.fourpuzzle.transition.Transition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
 import com.fourisland.fourpuzzle.util.Renderable;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
@@ -27,7 +28,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import org.jdesktop.application.ResourceMap;
 
 /**
@@ -40,7 +40,7 @@ public class Display {
     
     private static List<Renderable> renderables = new CopyOnWriteArrayList<Renderable>();
 
-    public static void render(JDialog gameFrame)
+    public static void render(Component gameFrame)
     {
         VolatileImage vImg = gameFrame.createVolatileImage(Game.WIDTH, Game.HEIGHT);
         render(gameFrame, vImg);
@@ -61,7 +61,7 @@ public class Display {
             img = vImg;
         } while (vImg.contentsLost());
 
-        gameFrame.getContentPane().getGraphics().drawImage(img, 0, 0, gameFrame.getContentPane().getWidth(), gameFrame.getContentPane().getHeight(), gameFrame);
+        gameFrame.getGraphics().drawImage(img, 0, 0, gameFrame.getWidth(), gameFrame.getHeight(), gameFrame);
         img.flush();
         Toolkit.getDefaultToolkit().sync();
 
@@ -73,7 +73,7 @@ public class Display {
         }
     }
 
-    private static void render(JDialog gameFrame, VolatileImage vImg)
+    private static void render(Component gameFrame, VolatileImage vImg)
     {
         if (vImg.validate(gameFrame.getGraphicsConfiguration()) == VolatileImage.IMAGE_INCOMPATIBLE)
         {
