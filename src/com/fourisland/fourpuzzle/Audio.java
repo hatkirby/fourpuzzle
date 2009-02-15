@@ -62,6 +62,10 @@ public class Audio {
         if ((seq.getSequence() != null) && (seq.getSequence().equals(s)))
         {
             return;
+        } else {
+            seq.close();
+            
+            init();
         }
         
         try {

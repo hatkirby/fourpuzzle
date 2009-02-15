@@ -55,7 +55,12 @@ public class MidiParser {
         {
             parseShortMessage((ShortMessage) mm,tick);
         } else {
-            currentTrack.add(new MidiEvent(mm, tick));
+            if (foundFirstReal)
+            {
+                currentTrack.add(new MidiEvent(mm, tick-firstReal));
+            } else {
+                currentTrack.add(new MidiEvent(mm, 0));
+            }
         }
     }
     
@@ -77,7 +82,12 @@ public class MidiParser {
             }   
         }
         
-        currentTrack.add(new MidiEvent(mm, tick-firstReal));
+        if (foundFirstReal)
+        {
+            currentTrack.add(new MidiEvent(mm, tick-firstReal));
+        } else {
+            currentTrack.add(new MidiEvent(mm, 0));
+        }
     }
 
 }
