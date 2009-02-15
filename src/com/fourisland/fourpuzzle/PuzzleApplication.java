@@ -9,7 +9,6 @@ import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.util.Interval;
 import com.fourisland.fourpuzzle.window.SystemGraphic;
-import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -46,6 +45,8 @@ public class PuzzleApplication extends Application {
         gameDialog.setTitle(Database.getVocab(Vocabulary.Title));
         gameDialog.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
         gameDialog.setResizable(false);
+        gameDialog.setUndecorated(true);
+        gameDialog.setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().x-Game.WIDTH, GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().y-Game.HEIGHT);
         gameDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -68,16 +69,13 @@ public class PuzzleApplication extends Application {
             {
                 if (e.getKeyCode() == KeyEvent.VK_F4)
                 {
-                    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(gameDialog);
-                } else if (e.getKeyCode() == KeyEvent.VK_F5)
-                {
                     stretchScreen = !stretchScreen;
 
                     if (stretchScreen)
                     {
-                        gameDialog.setSize(Game.WIDTH * 2, Game.HEIGHT * 2);
+                        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(gameDialog);
                     } else {
-                        gameDialog.setSize(Game.WIDTH, Game.HEIGHT);
+                        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_SHIFT)
                 {
@@ -102,6 +100,8 @@ public class PuzzleApplication extends Application {
             }
         });
         gameDialog.setVisible(true);
+        
+        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(gameDialog);
 
         new Thread(new Runnable() {
             public void run() {
