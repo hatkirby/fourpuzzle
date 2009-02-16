@@ -68,9 +68,11 @@ public class MessageWindow implements Renderable {
                 if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
                 {
                     if (mw.pushEnter())
-                    {
+                    {    
                         cdl.countDown();
                     }
+                    
+                    key.letGo();
                 }
             }
         };
