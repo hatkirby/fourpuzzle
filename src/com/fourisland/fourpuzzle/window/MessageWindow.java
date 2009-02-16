@@ -161,7 +161,6 @@ public class MessageWindow implements Renderable {
         
         g2.drawImage(cacheBase, 0, y, null);
         
-        int fw = g2.getFontMetrics().stringWidth(message);
         int fh = g2.getFontMetrics().getHeight();
         int tx = Window.Default.getLeftX();
         int ty = Window.Default.getTopY()+fh-(SPACER/2)+y;
@@ -178,6 +177,7 @@ public class MessageWindow implements Renderable {
         for (int i=0;i<msgs;i++)
         {
             String message = messages.get(i);
+            int fw = g2.getFontMetrics().stringWidth(message);
             
             g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(message.substring(0, Math.min(toPrint, message.length())), tx, ty);

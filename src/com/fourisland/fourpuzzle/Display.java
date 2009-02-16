@@ -12,12 +12,14 @@ import com.fourisland.fourpuzzle.transition.Transition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
 import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
 import com.fourisland.fourpuzzle.util.Renderable;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
@@ -61,7 +63,13 @@ public class Display {
             img = vImg;
         } while (vImg.contentsLost());
 
-        gameFrame.getGraphics().drawImage(img, 0, 0, gameFrame.getWidth(), gameFrame.getHeight(), gameFrame);
+        Rectangle renderArea = getRenderArea(gameFrame);
+        gameFrame.getGraphics().setColor(Color.BLACK);
+        gameFrame.getGraphics().fillRect(0, 0, renderArea.x, gameFrame.getHeight());
+        gameFrame.getGraphics().fillRect(0, 0, gameFrame.getWidth(), renderArea.y);
+        gameFrame.getGraphics().fillRect(renderArea.x+renderArea.width, 0, gameFrame.getWidth()-(renderArea.x+renderArea.width), gameFrame.getHeight());
+        gameFrame.getGraphics().fillRect(0, renderArea.y+renderArea.height, gameFrame.getWidth(), gameFrame.getHeight()-(renderArea.y+renderArea.height));
+        gameFrame.getGraphics().drawImage(img, renderArea.x, renderArea.y, renderArea.width, renderArea.height, gameFrame);
         img.flush();
         Toolkit.getDefaultToolkit().sync();
 
@@ -254,6 +262,27 @@ public class Display {
         }
         
         return fontMetrics;
+    }
+    
+    private static Component cacheFrame = null;
+    private static Rectangle cachePoint = null;
+    private static Rectangle getRenderArea(Component gameFrame)
+    {
+        if ((cacheFrame != null) && (cacheFrame == gameFrame.getParent()))
+        {
+            return cachePoint;
+        }
+        
+        float wt = gameFrame.getWidth() / (float) Game.WIDTH;
+        float ht = gameFrame.getHeight() / (float) Game.HEIGHT;
+        int width = Math.round(Math.min(wt, ht) * Game.WIDTH);
+        int height = Math.round(Math.min(wt, ht) * Game.HEIGHT);
+        int x = (gameFrame.getWidth()/2)-(width/2);
+        int y = (gameFrame.getHeight()/2)-(height/2);
+        cacheFrame = gameFrame.getParent();
+        cachePoint = new Rectangle(x, y, width, height);
+        
+        return cachePoint;
     }
     
 }
