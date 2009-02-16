@@ -5,6 +5,7 @@
 
 package com.fourisland.fourpuzzle;
 
+import com.fourisland.fourpuzzle.gamestate.GameState;
 import com.fourisland.fourpuzzle.transition.InTransition;
 import com.fourisland.fourpuzzle.transition.MultidirectionalTransition;
 import com.fourisland.fourpuzzle.transition.OutTransition;
@@ -28,6 +29,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdesktop.application.ResourceMap;
@@ -201,6 +204,36 @@ public class Display {
         if (!startedTransition)
         {
             transitionRunning = false;
+        }
+    }
+    
+    private static Executor transitioner = Executors.newSingleThreadExecutor();
+    public static void transition(final Transition out, final GameState gameState, final Transition in, boolean thread)
+    {
+        Runnable transitionCall = new Runnable() {
+            public void run()
+            {
+                try {
+                    Display.transition(out);
+                    Game.setGameState(gameState);
+                    Display.transition(in);
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                } catch (RuntimeException ex)
+                {
+                    PuzzleApplication.INSTANCE.reportError(ex);
+                } catch (Error ex)
+                {
+                    PuzzleApplication.INSTANCE.reportError(ex);
+                }
+            }
+        };
+        
+        if (thread)
+        {
+            transitioner.execute(transitionCall);
+        } else {
+            transitionCall.run();
         }
     }
     
