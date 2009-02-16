@@ -24,6 +24,7 @@ import javax.sound.sampled.Clip;
 public class Audio {
 
     private static Sequencer seq;
+    private static boolean firstInit = false;
     
     public static void init()
     {
@@ -31,15 +32,20 @@ public class Audio {
             seq = MidiSystem.getSequencer();
             seq.open();
 
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-                public void run() {
-                    if (seq.isRunning()) {
-                        seq.stop();
-                    }
+            if (!firstInit)
+            {
+                Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                    public void run() {
+                        if (seq.isRunning()) {
+                            seq.stop();
+                        }
 
-                    seq.close();
-                }
-            }));
+                        seq.close();
+                    }
+                }));
+                
+                firstInit = true;
+            }
         } catch (MidiUnavailableException ex) {
             Logger.getLogger(Audio.class.getName()).log(Level.SEVERE, null, ex);
         }
