@@ -31,7 +31,6 @@ public class MessageWindow implements Renderable {
     private static final int SPACER = 4;
     private static final int HEIGHT = (4*(Display.getFontMetrics().getHeight()+SPACER));
     
-    String message;
     private volatile List<String> messages;
     int width;
     BufferedImage cacheBase;
@@ -41,20 +40,23 @@ public class MessageWindow implements Renderable {
     Interval in = Interval.createTickInterval(4);
     private MessageWindow(String message)
     {
-        this.message = message;
         width = Game.WIDTH - Window.Default.getFullWidth(0);
-
         cacheBase = Window.Default.getImage(width, HEIGHT);
+        
+        initalizeMessages(message);
     }
     
     boolean hasFace = false;
     BufferedImage face;
     private MessageWindow(String message, String faceSet, int face)
     {
-        this(message);
+        width = Game.WIDTH - Window.Default.getFullWidth(0);
+        cacheBase = Window.Default.getImage(width, HEIGHT);
         
         this.face = FaceSet.getFaceSet(faceSet).getImage(face);
         hasFace = true;
+        
+        initalizeMessages(message);
     }
     
     private static void displayMessage(final MessageWindow mw) throws InterruptedException
@@ -84,16 +86,12 @@ public class MessageWindow implements Renderable {
     
     public static void displayMessage(String message) throws InterruptedException
     {
-        MessageWindow temp = new MessageWindow(message);
-        temp.initalizeMessages(message);
-        displayMessage(temp);
+        displayMessage(new MessageWindow(message));
     }
     
     public static void displayMessage(String message, String faceSet, int face) throws InterruptedException
     {
-        MessageWindow temp = new MessageWindow(message, faceSet, face);
-        temp.initalizeMessages(message);
-        displayMessage(temp);
+        displayMessage(new MessageWindow(message, faceSet, face));
     }
     
     private void initalizeMessages(String message)
@@ -150,11 +148,6 @@ public class MessageWindow implements Renderable {
     
     public void render(Graphics2D g2)
     {
-        if (messages == null)
-        {
-            initalizeMessages(message);
-        }
-        
         int y = MessageWindowLocation.Bottom.getY();
 
         Display.setFont(g2);
