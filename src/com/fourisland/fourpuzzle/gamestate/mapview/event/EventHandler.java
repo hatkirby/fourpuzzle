@@ -5,6 +5,8 @@
 
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
+import com.fourisland.fourpuzzle.PuzzleApplication;
+import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -32,13 +34,29 @@ public class EventHandler {
 
     public static Future runEvent(EventCall callback)
     {
-        eventAction = eventExecutorService.submit(callback);
+        eventAction = eventExecutorService.submit(eventThread(callback));
         return eventAction;
     }
     
     public static Future runParallel(EventCall callback)
     {
-        return parallelExecutorService.submit(callback);
+        return parallelExecutorService.submit(eventThread(callback));
+    }
+    
+    private static Runnable eventThread(final EventCall callback)
+    {
+        return new Runnable() {
+            public void run()
+            {
+                try
+                {
+                    callback.run();
+                } catch (ResourceNotFoundException ex)
+                {
+                    PuzzleApplication.INSTANCE.reportError(ex);
+                }
+            }
+        };
     }
     
     public static boolean isRunningEvent()

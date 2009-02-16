@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
  *
  * @author hatkirby
  */
-public abstract class EventCall extends SpecialEvent implements Runnable {
+public abstract class EventCall extends SpecialEvent {
     
     public static EventCall getEmptyEventCall()
     {
