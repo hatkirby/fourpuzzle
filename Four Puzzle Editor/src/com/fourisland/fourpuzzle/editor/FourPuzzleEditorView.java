@@ -4,6 +4,7 @@
 
 package com.fourisland.fourpuzzle.editor;
 
+import java.awt.Dimension;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -15,6 +16,7 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * The application's main frame.
@@ -79,6 +81,11 @@ public class FourPuzzleEditorView extends FrameView {
                 }
             }
         });
+        
+        jScrollPane3.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane3.getViewport().setViewSize(new Dimension(192, 320));
+        jScrollPane3.setSize(192, 320);
     }
 
     @Action
@@ -101,6 +108,12 @@ public class FourPuzzleEditorView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jSplitPane2 = new javax.swing.JSplitPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -114,15 +127,38 @@ public class FourPuzzleEditorView extends FrameView {
 
         mainPanel.setName("mainPanel"); // NOI18N
 
+        jSplitPane1.setName("jSplitPane1"); // NOI18N
+
+        jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane2.setName("jSplitPane2"); // NOI18N
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        jTree1.setEnabled(false);
+        jTree1.setName("jTree1"); // NOI18N
+        jScrollPane1.setViewportView(jTree1);
+
+        jSplitPane2.setBottomComponent(jScrollPane1);
+
+        jScrollPane3.setMinimumSize(new java.awt.Dimension(192, 320));
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+        jSplitPane2.setLeftComponent(jScrollPane3);
+
+        jSplitPane1.setLeftComponent(jSplitPane2);
+
+        jScrollPane2.setMinimumSize(new java.awt.Dimension(640, 480));
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+        jSplitPane1.setRightComponent(jScrollPane2);
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -162,11 +198,11 @@ public class FourPuzzleEditorView extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 656, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -190,6 +226,12 @@ public class FourPuzzleEditorView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JSplitPane jSplitPane2;
+    private javax.swing.JTree jTree1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
