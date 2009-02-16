@@ -120,7 +120,7 @@ public class MapViewGameState implements GameState {
                 }
             }
 
-            if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
+            if (key.isActionDown())
             {
                 for (LayerEvent ev : currentMap.getEvents())
                 {

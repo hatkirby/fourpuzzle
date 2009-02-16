@@ -57,4 +57,9 @@ public class KeyInput
     {
         return key;
     }
+    
+    public boolean isActionDown()
+    {
+        return ((key == KeyEvent.VK_ENTER) || (key == KeyEvent.VK_SPACE));
+    }
 }

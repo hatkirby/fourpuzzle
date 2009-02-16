@@ -16,7 +16,6 @@ import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class MessageWindow implements Renderable {
         Inputable in = new Inputable() {
             public void processInput(KeyInput key)
             {
-                if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
+                if (key.isActionDown())
                 {
                     if (mw.pushEnter())
                     {    

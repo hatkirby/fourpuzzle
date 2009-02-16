@@ -48,7 +48,7 @@ public class TitleScreenGameState implements GameState {
     {
         if (pt.isElapsed())
         {
-            if (key.getKey() == KeyEvent.VK_ENTER)
+            if (key.isActionDown())
             {
                 Audio.playSound(Database.getSound(Sound.Selection));
                 

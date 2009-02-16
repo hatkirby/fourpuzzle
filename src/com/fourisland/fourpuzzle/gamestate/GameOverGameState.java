@@ -15,7 +15,6 @@ import com.fourisland.fourpuzzle.database.Music;
 import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 
 /**
  *
@@ -35,7 +34,7 @@ public class GameOverGameState implements GameState {
 
     public void processInput(KeyInput key)
     {
-        if ((key.getKey() == KeyEvent.VK_ENTER) || (key.getKey() == KeyEvent.VK_SPACE))
+        if (key.isActionDown())
         {
             Game.setSaveFile(new SaveFile());
             
