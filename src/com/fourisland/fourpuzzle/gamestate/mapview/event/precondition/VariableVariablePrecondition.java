@@ -31,14 +31,12 @@ public class VariableVariablePrecondition implements Precondition {
     {
         if (Game.getSaveFile().getVariables().containsKey(variableID))
         {
-            int n1 = Game.getSaveFile().getVariables().get(variableID);
-            int n2 = Game.getSaveFile().getVariables().get(variableID2);
-            
-            switch (comparison)
+            if (Game.getSaveFile().getVariables().containsKey(variableID2))
             {
-                case Less: return (n1 < n2);
-                case Greater: return (n1 > n2);
-                case Equal: return (n1 == n2);
+                int n1 = Game.getSaveFile().getVariables().get(variableID);
+                int n2 = Game.getSaveFile().getVariables().get(variableID2);
+
+                return comparison.compare(n1, n2);
             }
         }
         

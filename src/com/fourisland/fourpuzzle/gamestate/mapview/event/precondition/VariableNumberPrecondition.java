@@ -33,13 +33,8 @@ public class VariableNumberPrecondition implements Precondition {
         {
             int n1 = Game.getSaveFile().getVariables().get(variableID);
             int n2 = number;
-            
-            switch (comparison)
-            {
-                case Less: return (n1 < n2);
-                case Greater: return (n1 > n2);
-                case Equal: return (n1 == n2);
-            }
+
+            return comparison.compare(n1, n2);
         }
         
         return false;
