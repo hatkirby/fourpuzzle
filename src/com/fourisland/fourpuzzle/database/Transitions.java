@@ -6,71 +6,33 @@
 package com.fourisland.fourpuzzle.database;
 
 import com.fourisland.fourpuzzle.transition.FadeTransition;
-import com.fourisland.fourpuzzle.transition.InTransition;
-import com.fourisland.fourpuzzle.transition.MultidirectionalTransition;
-import com.fourisland.fourpuzzle.transition.OutTransition;
 import com.fourisland.fourpuzzle.transition.SquareTransition;
-import com.fourisland.fourpuzzle.transition.Transition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
-import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
+import com.fourisland.fourpuzzle.transition.TransitionPair;
 
 /**
  *
  * @author hatkirby
  */
 public enum Transitions {
-    TitleExit(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out)),
-    TitleToMap(TransitionDirection.In, new FadeTransition(TransitionDirection.In)),
-    MapExit(TransitionDirection.Out, new SquareTransition(TransitionDirection.Out)),
-    MapEnter(TransitionDirection.In, new SquareTransition(TransitionDirection.In)),
-    MapToTitle(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out)),
-    TitleEnter(TransitionDirection.In, new FadeTransition(TransitionDirection.In)),
-    MapToGameOver(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out)),
-    GameOverEnter(TransitionDirection.In, new FadeTransition(TransitionDirection.In)),
-    GameOverToTitle(TransitionDirection.Out, new FadeTransition(TransitionDirection.Out));
     
-    private final TransitionDirection dir;
-    private Transition trans;
-    private Transitions(TransitionDirection dir, Transition trans)
+    Generic(new TransitionPair(new FadeTransition(TransitionDirection.Out), new FadeTransition(TransitionDirection.In))),
+    Map(new TransitionPair(new SquareTransition(TransitionDirection.Out), new SquareTransition(TransitionDirection.In)));
+    
+    private TransitionPair trans;
+    private Transitions(TransitionPair trans)
     {
-        this.dir = dir;
-        
-        if (isTransitionSupported(dir, trans))
-        {
-            this.trans = trans;
-        } else {
-            throw new TransitionUnsupportedException(trans.getClass().getName(), dir);
-        }
+        this.trans = trans;
     }
     
-    Transition getValue()
+    TransitionPair getValue()
     {
         return trans;
     }
     
-    void setValue(Transition trans)
+    void setValue(TransitionPair trans)
     {
-        if (isTransitionSupported(dir, trans))
-        {
-            this.trans = trans;
-        } else {
-            throw new TransitionUnsupportedException(trans.getClass().getName(), dir);
-        }
+        this.trans = trans;
     }
     
-    private boolean isTransitionSupported(TransitionDirection dir, Transition trans)
-    {
-        if (trans instanceof MultidirectionalTransition)
-        {
-            return (((MultidirectionalTransition) trans).getDirection() == dir);
-        } else if (trans instanceof OutTransition)
-        {
-            return (dir == TransitionDirection.Out);
-        } else if (trans instanceof InTransition)
-        {
-            return (dir == TransitionDirection.In);
-        }
-        
-        return false;
-    }
 }

@@ -6,7 +6,7 @@
 package com.fourisland.fourpuzzle.database;
 
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
-import com.fourisland.fourpuzzle.transition.Transition;
+import com.fourisland.fourpuzzle.transition.TransitionPair;
 import java.util.HashMap;
 
 /**
@@ -77,7 +77,7 @@ public class Database {
         key.setValue(value);
     }
     
-    public static Transition getTransition(Transitions key)
+    public static TransitionPair getTransition(Transitions key)
     {
         return key.getValue().copy();
     }
@@ -96,7 +96,7 @@ public class Database {
      * @param key The transition to change
      * @param value The transition to change it to
      */
-    public static void setTransition(Transitions key, Transition value)
+    public static void setTransition(Transitions key, TransitionPair value)
     {
         key.setValue(value);
     }

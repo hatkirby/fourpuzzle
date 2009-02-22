@@ -157,7 +157,7 @@ public class SpecialEvent {
     {
         Audio.stopMusic();
         
-        Display.transition(Database.getTransition(Transitions.MapToGameOver), new GameOverGameState(), Database.getTransition(Transitions.GameOverEnter), false);
+        Display.transition(Database.getTransition(Transitions.Generic), new GameOverGameState(), false);
     }
     
     /**
@@ -169,7 +169,7 @@ public class SpecialEvent {
     {
         Audio.stopMusic();
 
-        Display.transition(Database.getTransition(Transitions.MapToTitle), new TitleScreenGameState(), Database.getTransition(Transitions.TitleEnter), false);
+        Display.transition(Database.getTransition(Transitions.Generic), new TitleScreenGameState(), false);
     }
     
     private boolean startedTransition = false;
@@ -211,7 +211,7 @@ public class SpecialEvent {
     {
         if (!startedTransition)
         {
-            Display.transition(Database.getTransition(Transitions.MapExit), new MapViewGameState(map, x, y), Database.getTransition(Transitions.MapEnter), false);
+            Display.transition(Database.getTransition(Transitions.Map), new MapViewGameState(map, x, y), false);
         } else {
             Game.setGameState(new MapViewGameState(map, x, y));
         }

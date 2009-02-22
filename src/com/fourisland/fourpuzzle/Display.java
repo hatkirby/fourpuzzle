@@ -11,6 +11,7 @@ import com.fourisland.fourpuzzle.transition.MultidirectionalTransition;
 import com.fourisland.fourpuzzle.transition.OutTransition;
 import com.fourisland.fourpuzzle.transition.Transition;
 import com.fourisland.fourpuzzle.transition.TransitionDirection;
+import com.fourisland.fourpuzzle.transition.TransitionPair;
 import com.fourisland.fourpuzzle.transition.TransitionUnsupportedException;
 import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Color;
@@ -208,7 +209,7 @@ public class Display {
     }
     
     private static Executor transitioner = Executors.newSingleThreadExecutor();
-    public static void transition(final Transition out, final GameState gameState, final Transition in, boolean thread)
+    public static void transition(final OutTransition out, final GameState gameState, final InTransition in, boolean thread)
     {
         Runnable transitionCall = new Runnable() {
             public void run()
@@ -235,6 +236,11 @@ public class Display {
         } else {
             transitionCall.run();
         }
+    }
+    
+    public static void transition(TransitionPair trans, GameState gameState, boolean thread)
+    {
+        transition(trans.getOutTransition(), gameState, trans.getInTransition(), thread);
     }
     
     public static boolean isTransitionRunning()

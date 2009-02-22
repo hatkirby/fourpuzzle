@@ -56,7 +56,7 @@ public class TitleScreenGameState implements GameState {
                 {
                     Game.setSaveFile(new SaveFile());
 
-                    Display.transition(Database.getTransition(Transitions.TitleExit), new MapViewGameState("TestMap", 1, 2), Database.getTransition(Transitions.TitleToMap), true);
+                    Display.transition(Database.getTransition(Transitions.Generic), new MapViewGameState("TestMap", 1, 2), true);
                 } else if (choices.getSelected().equals(Database.getVocab(Vocabulary.LoadGame)))
                 {
                     // Do nothing, yet
@@ -65,7 +65,7 @@ public class TitleScreenGameState implements GameState {
                     new Thread(new Runnable() {
                         public void run() {
                             try {
-                                Display.transition(Database.getTransition(Transitions.TitleExit));
+                                Display.transition(Database.getTransition(Transitions.Generic).getOutTransition());
                             } catch (InterruptedException ex) {
                                 Thread.currentThread().interrupt();
                             }

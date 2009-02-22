@@ -38,7 +38,7 @@ public class GameOverGameState implements GameState {
         {
             Game.setSaveFile(new SaveFile());
             
-            Display.transition(Database.getTransition(Transitions.GameOverToTitle), new TitleScreenGameState(), Database.getTransition(Transitions.TitleEnter), true);
+            Display.transition(Database.getTransition(Transitions.Generic), new TitleScreenGameState(), true);
         }
     }
 
