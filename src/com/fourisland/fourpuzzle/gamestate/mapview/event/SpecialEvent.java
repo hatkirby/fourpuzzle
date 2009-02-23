@@ -282,18 +282,26 @@ public class SpecialEvent {
         mapView.setViewpoint(new MovingViewpoint(viewpoint.getX(), viewpoint.getY(), x*16, y*16, new Runnable() {
             public void run()
             {
-                mapView.setViewpoint(new FixedViewpoint(x*16,y*16));
-                
                 if (block)
                 {
                     blocker.countDown();
+                } else {
+                    mapView.setViewpoint(new FixedViewpoint(x*16,y*16));
                 }
             }
         }, length));
         
         if (block)
         {
-            blocker.await();
+            try
+            {
+                blocker.await();
+            } catch (InterruptedException ex)
+            {
+                throw ex;
+            } finally {
+                mapView.setViewpoint(new FixedViewpoint(x*16,y*16));
+            }
         }
     }
     
@@ -332,6 +340,16 @@ public class SpecialEvent {
     public void StopMusic()
     {
         Audio.stopMusic();
+    }
+    
+    /**
+     * Ends the currently executing event thread
+     * 
+     * @throws InterruptedException
+     */
+    public void StopThread() throws InterruptedException
+    {
+        throw new InterruptedException();
     }
     
 }

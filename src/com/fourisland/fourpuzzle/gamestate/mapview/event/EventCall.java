@@ -22,19 +22,27 @@ public abstract class EventCall extends SpecialEvent {
         };
     }
     
-    public abstract void run();
+    public abstract void run() throws InterruptedException;
 
-    private Future isRunning = null;
+    private Future eventThread = null;
     public void activate(EventCallTime calltime)
     {
-        if ((isRunning == null) || (isRunning.isDone()))
+        if ((eventThread == null) || (eventThread.isDone()))
         {
             if (calltime == EventCallTime.ParallelProcess)
             {
-                isRunning = EventHandler.runParallel(this);
+                eventThread = EventHandler.runParallel(this);
             } else {
-                isRunning = EventHandler.runEvent(this);
+                eventThread = EventHandler.runEvent(this);
             }
+        }
+    }
+    
+    public void cancel()
+    {
+        if ((eventThread != null) && (!eventThread.isDone()))
+        {
+            eventThread.cancel(true);
         }
     }
     

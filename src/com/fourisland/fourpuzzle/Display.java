@@ -198,47 +198,54 @@ public class Display {
         transitionRunning = true;
         
         transitionWait = new CountDownLatch(1);
-        transitionWait.await();
         
-        Display.transition = null;
+        try {
+            transitionWait.await();
+        } catch (InterruptedException ex) {
+            throw ex;
+        } finally {
+            Display.transition = null;
 
-        if (!startedTransition)
-        {
-            transitionRunning = false;
+            if (!startedTransition)
+            {
+                transitionRunning = false;
+            }
         }
     }
     
     private static Executor transitioner = Executors.newSingleThreadExecutor();
-    public static void transition(final OutTransition out, final GameState gameState, final InTransition in, boolean thread)
+    public static void transition(final OutTransition out, final GameState gameState, final InTransition in, boolean thread) throws InterruptedException
     {
-        Runnable transitionCall = new Runnable() {
-            public void run()
-            {
-                try {
-                    Display.transition(out);
-                    Game.setGameState(gameState);
-                    Display.transition(in);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                } catch (RuntimeException ex)
-                {
-                    PuzzleApplication.INSTANCE.reportError(ex);
-                } catch (Error ex)
-                {
-                    PuzzleApplication.INSTANCE.reportError(ex);
-                }
-            }
-        };
-        
         if (thread)
         {
+            Runnable transitionCall = new Runnable() {
+                public void run()
+                {
+                    try {
+                        Display.transition(out);
+                        Game.setGameState(gameState);
+                        Display.transition(in);
+                    } catch (InterruptedException ex) {
+                        return;
+                    } catch (RuntimeException ex)
+                    {
+                        PuzzleApplication.INSTANCE.reportError(ex);
+                    } catch (Error ex)
+                    {
+                        PuzzleApplication.INSTANCE.reportError(ex);
+                    }
+                }
+            };
+            
             transitioner.execute(transitionCall);
         } else {
-            transitionCall.run();
+            Display.transition(out);
+            Game.setGameState(gameState);
+            Display.transition(in);
         }
     }
     
-    public static void transition(TransitionPair trans, GameState gameState, boolean thread)
+    public static void transition(TransitionPair trans, GameState gameState, boolean thread) throws InterruptedException
     {
         transition(trans.getOutTransition(), gameState, trans.getInTransition(), thread);
     }

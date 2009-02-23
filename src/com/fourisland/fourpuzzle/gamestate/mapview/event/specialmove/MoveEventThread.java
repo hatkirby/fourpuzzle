@@ -8,10 +8,12 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove;
 import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -20,10 +22,11 @@ import java.util.concurrent.Semaphore;
  */
 public class MoveEventThread implements Runnable {
     
-    private static Executor moveEventExecutor = Executors.newCachedThreadPool();
+    private static ExecutorService moveEventExecutor = Executors.newCachedThreadPool();
 
     private static volatile List<Event> events = new Vector<Event>();
     private static volatile Semaphore moveEventWait = new Semaphore(100);
+    private static volatile List<Future> eventThreads = new ArrayList<Future>();
     
     private Event ev;
     private MoveEvent[] actions;
@@ -36,7 +39,15 @@ public class MoveEventThread implements Runnable {
     
     public void start()
     {
-        moveEventExecutor.execute(this);
+        for (Future f : eventThreads)
+        {
+            if (f.isDone())
+            {
+                eventThreads.remove(f);
+            }
+        }
+        
+        eventThreads.add(moveEventExecutor.submit(this));
     }
 
     public void run()
@@ -44,7 +55,7 @@ public class MoveEventThread implements Runnable {
         try {
             moveEventWait.acquire();
         } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
+            return;
         }
         
         while (ev.isMoving())
@@ -52,25 +63,49 @@ public class MoveEventThread implements Runnable {
             try {
                 Thread.sleep(2);
             } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
+                return;
             }
         }
         
         events.add(ev);
         
-        for (MoveEvent action : actions)
+        try
         {
-            action.doAction(ev);
-        }
+            for (MoveEvent action : actions)
+            {
+                action.doAction(ev);
 
-        events.remove(ev);
-        moveEventWait.release();
+                if (Thread.currentThread().isInterrupted())
+                {
+                    throw new InterruptedException();
+                }
+            }
+        } catch (InterruptedException ex)
+        {
+            /* Swallow the interrupt because execution will drop to the finally
+             * and then the method will end anyway */
+        } finally {
+            events.remove(ev);
+            moveEventWait.release();
+        }
     }
     
     public static void moveAll() throws InterruptedException
     {
-        moveEventWait.acquire(100);
-        moveEventWait.release(100);
+        try
+        {
+            moveEventWait.acquire(100);
+        } catch (InterruptedException ex)
+        {
+            for (Future f : eventThreads)
+            {
+                f.cancel(true);
+            }
+            
+            throw ex;
+        } finally {
+            moveEventWait.release(100);
+        }
     }
     
     public static boolean isHeroActive()

@@ -141,6 +141,17 @@ public class MapViewGameState implements GameState {
                         }
                     }
                 }
+            }    
+        }
+        
+        if (EventHandler.isRunningEvent())
+        {
+            if ((key.getKey() == KeyEvent.VK_F11) && (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode")))
+            {
+                for (LayerEvent ev : currentMap.getEvents())
+                {
+                    ev.getCallback().cancel();
+                }
             }
         }
     }

@@ -79,10 +79,16 @@ public class MessageWindow implements Renderable {
         Display.registerRenderable(mw);
         KeyboardInput.registerInputable(in);
 
-        cdl.await();
-        
-        Display.unregisterRenderable(mw);
-        KeyboardInput.unregisterInputable(in);
+        try
+        {
+            cdl.await();
+        } catch (InterruptedException ex)
+        {
+            throw ex;
+        } finally {    
+            Display.unregisterRenderable(mw);
+            KeyboardInput.unregisterInputable(in);
+        }
     }
     
     public static void displayMessage(String message) throws InterruptedException

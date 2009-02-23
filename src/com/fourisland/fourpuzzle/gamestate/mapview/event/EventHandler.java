@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
 import com.fourisland.fourpuzzle.PuzzleApplication;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,6 +52,14 @@ public class EventHandler {
                 try
                 {
                     callback.run();
+                } catch (InterruptedException ex) {
+                    /* Swallow the interrupt, as the interruption probably
+                     * indicates that the event should be cancelled
+                     * 
+                     * Also reset the viewpoint in case the viewpoint was
+                     * fixed during the thread */
+                    
+                    SpecialEvent.mapView.setViewpoint(new AutomaticViewpoint(SpecialEvent.mapView.getCurrentMap()));
                 } catch (ResourceNotFoundException ex)
                 {
                     PuzzleApplication.INSTANCE.reportError(ex);
