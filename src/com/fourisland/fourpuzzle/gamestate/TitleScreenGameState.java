@@ -55,8 +55,12 @@ public class TitleScreenGameState implements GameState {
                 if (choices.getSelected().equals(Database.getVocab(Vocabulary.NewGame)))
                 {
                     Game.setSaveFile(new SaveFile());
-
-                    Display.transition(Database.getTransition(Transitions.Generic), new MapViewGameState("TestMap", 1, 2), true);
+                    
+                    try {
+                        Display.transition(Database.getTransition(Transitions.Generic), new MapViewGameState("TestMap", 1, 2), true);
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
                 } else if (choices.getSelected().equals(Database.getVocab(Vocabulary.LoadGame)))
                 {
                     // Do nothing, yet

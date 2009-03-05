@@ -6,6 +6,8 @@
 package com.fourisland.fourpuzzle.util;
 
 import com.fourisland.fourpuzzle.Game;
+import com.fourisland.fourpuzzle.KeyboardInput;
+import com.fourisland.fourpuzzle.PuzzleApplication;
 
 /**
  *
@@ -32,6 +34,11 @@ public class Interval {
     private long last = System.nanoTime();
     public boolean isElapsed()
     {
+        if (PuzzleApplication.debugSpeed)
+        {
+            return true;
+        }
+        
         if (last+wait < System.nanoTime())
         {
             last = System.nanoTime();

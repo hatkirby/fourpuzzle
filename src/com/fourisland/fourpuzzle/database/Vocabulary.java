@@ -13,7 +13,13 @@ public enum Vocabulary {
     Title("Untitled Game"),
     NewGame("New Game"),
     LoadGame("Load Game"),
-    EndGame("End Game");
+    EndGame("End Game"),
+    
+    EscapeMenuItems("Items"),
+    EscapeMenuEquipment("Equipment"),
+    EscapeMenuMagic("Magic"),
+    EscapeMenuSave("Save"),
+    EscapeMenuQuit("Quit");
     
     private String value;
     private Vocabulary(String value)

@@ -15,6 +15,7 @@ import com.fourisland.fourpuzzle.KeyInput;
 import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 import com.fourisland.fourpuzzle.database.Database;
+import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventCallTime;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventHandler;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.EventList;
@@ -23,10 +24,13 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.SpecialEvent;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventThread;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
+import com.fourisland.fourpuzzle.gamestate.menu.MenuGameState;
 import com.fourisland.fourpuzzle.util.Functions;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -141,7 +145,16 @@ public class MapViewGameState implements GameState {
                         }
                     }
                 }
-            }    
+            }
+            
+            if (key.getKey() == KeyEvent.VK_ESCAPE)
+            {
+                try {
+                    Display.transition(Database.getTransition(Transitions.Generic), new MenuGameState(this), true);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MapViewGameState.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         
         if (EventHandler.isRunningEvent())

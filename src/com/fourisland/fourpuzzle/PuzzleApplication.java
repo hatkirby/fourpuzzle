@@ -92,10 +92,10 @@ public class PuzzleApplication extends Application {
                     {
                         debugSpeed = true;
                     }
-                } else {
-                    KeyboardInput.getKey().keyInput(e);
+                    } else {
+                        KeyboardInput.getKey().keyInput(e);
+                    }
                 }
-            }
 
             @Override
             public void keyReleased(KeyEvent e)
@@ -132,7 +132,7 @@ public class PuzzleApplication extends Application {
                     Interval in = Interval.createTickInterval(1);
                     while (true)
                     {
-                        if ((debugSpeed || in.isElapsed()) && !gameSleep)
+                        if (in.isElapsed() && !gameSleep)
                         {
                             if (!Display.isTransitionRunning())
                             {
@@ -165,7 +165,7 @@ public class PuzzleApplication extends Application {
         if ((ex instanceof Exception) && !(ex instanceof RuntimeException))
         {
             return;
-        }
+         }
         
         JFrame errorBox = new JFrame(ex.getClass().getSimpleName());
         JLabel text = new JLabel();

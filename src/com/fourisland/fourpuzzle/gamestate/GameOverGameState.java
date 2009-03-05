@@ -38,7 +38,11 @@ public class GameOverGameState implements GameState {
         {
             Game.setSaveFile(new SaveFile());
             
-            Display.transition(Database.getTransition(Transitions.Generic), new TitleScreenGameState(), true);
+            try {
+                Display.transition(Database.getTransition(Transitions.Generic), new TitleScreenGameState(), true);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

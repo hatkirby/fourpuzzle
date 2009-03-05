@@ -124,6 +124,19 @@ public class ChoiceWindow implements Renderable {
     
     public static enum ChoiceWindowLocation
     {
+        AbsoluteTopLeft
+        {
+            public int getX(int width)
+            {
+                return 0;
+            }
+            
+            @Override
+            public int getY(int height)
+            {
+                return 0;
+            }
+        },
         BottomLeft
         {
             public int getX(int width)
