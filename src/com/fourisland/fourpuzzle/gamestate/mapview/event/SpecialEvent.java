@@ -47,21 +47,35 @@ public class SpecialEvent {
      * MessageDisplaySettings().</p>
      * 
      * <p>This function also automatically splits your message up into blocks that
-     * will fit onthe screen (breaks at spaces). If there are too many words,
+     * will fit on the screen (breaks at spaces). If there are too many words,
      * they will be held and displayed in the message area after the prior
      * message has been read.</p>
+     * 
+     * <p>Message Escapes can be used to preform specific actions during text
+     * display. For instance, <code>\C[number]</code> changes the text color to
+     * the color on the System Graphic represented by "number".</p>
      * 
      * @param message The message to display
      * @throws InterruptedException 
      */
     public void DisplayMessage(String message) throws InterruptedException
     {
+        MessageWindow mw;
+        
         if (faceSet.equals(""))
         {
-            MessageWindow.displayMessage(message);
+            mw = new MessageWindow(message);
         } else {
-            MessageWindow.displayMessage(message, faceSet, face);
+            mw = new MessageWindow(message, faceSet, face);
         }
+        
+        Display.registerRenderable(mw);
+        KeyboardInput.registerInputable(mw);
+
+        mw.waitForCompletion();
+        
+        Display.unregisterRenderable(mw);
+        KeyboardInput.unregisterInputable(mw);
     }
 
     /**
