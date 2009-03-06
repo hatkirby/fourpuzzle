@@ -29,12 +29,12 @@ public class PauseTimer {
         
         if (in.isElapsed())
         {
-            if (ticks == 0)
-            {
-                return true;
-            } else {
-                ticks--;
-            }
+            ticks--;
+        }
+        
+        if (ticks <= 0)
+        {
+            return true;
         }
         
         return false;

@@ -64,14 +64,19 @@ public class SystemGraphic {
         return systemGraphic.getSubimage(sca.x, sca.y, sca.width, sca.height);
     }
     
-    public static BufferedImage getTextColor()
+    public static BufferedImage getTextColor(int color)
     {
         if (systemGraphic == null)
         {
             initalize();
         }
         
-        return systemGraphic.getSubimage(0, 48, 16, 16);
+        if (color < 10)
+        {
+            return systemGraphic.getSubimage(color*16, 48, 16, 16);
+        } else {
+            return systemGraphic.getSubimage(color*16, 64, 16, 16);
+        }
     }
     
     public static BufferedImage getUpArrow()

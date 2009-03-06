@@ -79,7 +79,7 @@ public class ChoiceWindow implements Renderable {
                 g2.drawImage(Window.Selector.getImage(fw-Window.Selector.getLeftX(), fh-Window.Selector.getTopY()), tx-SPACER, ty-fh-SPACER, null);
             }
 
-            g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(), new Rectangle(tx, ty, fw, fh)));
+            g2.setPaint(new TexturePaint(SystemGraphic.getTextColor(0), new Rectangle(tx, ty, fw, fh)));
             g2.drawString(choice, tx, ty);
             
             ty+=(SPACER+fh);
