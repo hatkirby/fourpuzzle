@@ -74,8 +74,11 @@ public class SystemGraphic {
         if (color < 10)
         {
             return systemGraphic.getSubimage(color*16, 48, 16, 16);
+        } else if (color < 20)
+        {
+            return systemGraphic.getSubimage((color-10)*16, 64, 16, 16);
         } else {
-            return systemGraphic.getSubimage(color*16, 64, 16, 16);
+            throw new IllegalArgumentException("Color must be in the range of 0 to 19");
         }
     }
     
