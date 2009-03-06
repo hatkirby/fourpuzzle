@@ -150,7 +150,7 @@ public class TextRenderer {
         int currentColor = 0;
         
         int fh = g.getFontMetrics().getHeight();
-        int ty = fh-(SPACER/2);
+        int ty = fh;
         int toPrint = upTo;
         int end = Math.min(messages.size(), start+4);
         
