@@ -32,8 +32,11 @@ public class TitleScreenGameState implements GameState {
     {
         Audio.playMusic(Database.getMusic(Music.Title));
         
-        choices = new ChoiceWindow(Arrays.asList(Database.getVocab(Vocabulary.NewGame), Database.getVocab(Vocabulary.LoadGame), Database.getVocab(Vocabulary.EndGame)), true, ChoiceWindow.ChoiceWindowLocation.BottomLeft);
+        choices = new ChoiceWindow.Builder(Arrays.asList(Database.getVocab(Vocabulary.NewGame), Database.getVocab(Vocabulary.LoadGame), Database.getVocab(Vocabulary.EndGame)), ChoiceWindow.ChoiceWindowLocation.BottomLeft)
+                .center(true)
+                .build();
         Display.registerRenderable(choices);
+        KeyboardInput.registerInputable(choices);
     }
     
     public void deinitalize()
@@ -41,6 +44,7 @@ public class TitleScreenGameState implements GameState {
         Audio.stopMusic();
         
         Display.unregisterRenderable(choices);
+        KeyboardInput.unregisterInputable(choices);
     }
 
     PauseTimer pt = new PauseTimer(0);

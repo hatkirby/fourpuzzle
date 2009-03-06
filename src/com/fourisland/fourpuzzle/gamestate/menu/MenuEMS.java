@@ -14,7 +14,6 @@ import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.window.ChoiceWindow;
-import com.fourisland.fourpuzzle.window.InputableChoiceWindow;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -27,12 +26,14 @@ import java.util.Arrays;
 public class MenuEMS implements EscapeMenuState {
     
     MenuGameState parent;
-    InputableChoiceWindow cw;
+    ChoiceWindow cw;
 
     public void initalize(MenuGameState mgs)
     {
         parent = mgs;
-        cw = new InputableChoiceWindow(Arrays.asList(Database.getVocab(Vocabulary.EscapeMenuItems), Database.getVocab(Vocabulary.EscapeMenuEquipment), Database.getVocab(Vocabulary.EscapeMenuMagic), Database.getVocab(Vocabulary.EscapeMenuSave), Database.getVocab(Vocabulary.EscapeMenuQuit)), false, ChoiceWindow.ChoiceWindowLocation.AbsoluteTopLeft);
+        cw = new ChoiceWindow.Builder(Arrays.asList(Database.getVocab(Vocabulary.EscapeMenuItems), Database.getVocab(Vocabulary.EscapeMenuEquipment), Database.getVocab(Vocabulary.EscapeMenuMagic), Database.getVocab(Vocabulary.EscapeMenuSave), Database.getVocab(Vocabulary.EscapeMenuQuit)), ChoiceWindow.ChoiceWindowLocation.AbsoluteTopLeft)
+                .width(Game.WIDTH/5)
+                .build();
         Display.registerRenderable(cw);
         KeyboardInput.registerInputable(cw);
     }

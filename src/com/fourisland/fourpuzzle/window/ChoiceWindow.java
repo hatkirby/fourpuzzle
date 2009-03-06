@@ -8,12 +8,16 @@ package com.fourisland.fourpuzzle.window;
 import com.fourisland.fourpuzzle.Audio;
 import com.fourisland.fourpuzzle.Display;
 import com.fourisland.fourpuzzle.Game;
+import com.fourisland.fourpuzzle.KeyInput;
 import com.fourisland.fourpuzzle.database.Database;
 import com.fourisland.fourpuzzle.database.Sound;
+import com.fourisland.fourpuzzle.util.Inputable;
+import com.fourisland.fourpuzzle.util.PauseTimer;
 import com.fourisland.fourpuzzle.util.Renderable;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -21,9 +25,40 @@ import java.util.List;
  *
  * @author hatkirby
  */
-public class ChoiceWindow implements Renderable {
+public class ChoiceWindow implements Renderable, Inputable {
     
     private static final int SPACER = 4;
+
+    public static class Builder
+    {
+        List<String> choices;
+        ChoiceWindowLocation location;
+        boolean center = false;
+        int width = 0;
+        
+        public Builder(List<String> choices, ChoiceWindowLocation location)
+        {
+            this.choices = choices;
+            this.location = location;
+        }
+        
+        public Builder center(boolean center)
+        {
+            this.center = center;
+            return this;
+        }
+        
+        public Builder width(int width)
+        {
+            this.width = width;
+            return this;
+        }
+        
+        public ChoiceWindow build()
+        {
+            return new ChoiceWindow(this);
+        }
+    }
     
     private List<String> choices;
     int numChoices;
@@ -33,27 +68,36 @@ public class ChoiceWindow implements Renderable {
     BufferedImage cacheBase;
     int x;
     int y;
-    public ChoiceWindow(List<String> choices, boolean center, ChoiceWindowLocation cwl)
+    String clickSound;
+    private ChoiceWindow(Builder builder)
     {
-        this.choices = choices;
+        this.choices = builder.choices;
         numChoices = choices.size();
-        this.center = center;
+        this.center = builder.center;
         
         for (String choice : choices)
         {
-            int l = Display.getFontMetrics().stringWidth(choice);
-            if (l > getWidth())
+            if (builder.width == 0)
             {
-                width = l;
+                int l = Display.getFontMetrics().stringWidth(choice);
+                if (l > getWidth())
+                {
+                    width = l;
+                }
             }
-            
+
             height += Display.getFontMetrics().getHeight() + SPACER;
+        }
+        
+        if (builder.width != 0)
+        {
+            width = builder.width;
         }
         
         cacheBase = Window.Default.getImage(width, height);
         
-        x = cwl.getX(width);
-        y = cwl.getY(height);
+        x = builder.location.getX(width);
+        y = builder.location.getY(height);
     }
 
     public void render(Graphics2D g2)
@@ -164,6 +208,41 @@ public class ChoiceWindow implements Renderable {
         public int getY(int height)
         {
             return (Game.HEIGHT/4*3)-(height/2);
+        }
+    }
+
+    Boolean hasInput = false;
+    PauseTimer pt = new PauseTimer(0);
+    public void processInput(KeyInput key)
+    {
+        if (key.getKey() == KeyEvent.VK_UP)
+        {
+            if (pt.isElapsed())
+            {
+                moveUp();
+                pt.setTimer(1);
+            }
+        } else if (key.getKey() == KeyEvent.VK_DOWN)
+        {
+            if (pt.isElapsed())
+            {
+                moveDown();
+                pt.setTimer(1);
+            }
+        } else if (key.isActionDown())
+        {
+            synchronized (hasInput)
+            {
+                hasInput = true;
+            }
+        }
+    }
+    
+    public boolean hasInput()
+    {
+        synchronized (hasInput)
+        {
+            return hasInput;
         }
     }
 
