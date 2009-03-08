@@ -24,6 +24,7 @@ public class PossibleEvent {
     private Layer layer;
     private AnimationType animation;
     private MovementType movement;
+    private MoveSpeed moveSpeed;
     private EventCallTime calltime;
     private EventCall callback;
     
@@ -42,6 +43,7 @@ public class PossibleEvent {
         private Layer layer = Layer.Below;
         private AnimationType animation = AnimationType.CommonWithoutStepping;
         private MovementType movement = new StayStillMovementType();
+        private MoveSpeed moveSpeed = MoveSpeed.Normal;
         private EventCallTime calltime = EventCallTime.PushKey;
         private EventCall callback = EventCall.getEmptyEventCall();
         
@@ -69,6 +71,12 @@ public class PossibleEvent {
             return this;
         }
         
+        public Builder speed(MoveSpeed moveSpeed)
+        {
+            this.moveSpeed = moveSpeed;
+            return this;
+        }
+        
         public Builder calltime(EventCallTime calltime)
         {
             this.calltime = calltime;
@@ -93,6 +101,7 @@ public class PossibleEvent {
         layer = builder.layer;
         animation = builder.animation;
         movement = builder.movement;
+        moveSpeed = builder.moveSpeed;
         calltime = builder.calltime;
         callback = builder.callback;
     }
@@ -104,6 +113,7 @@ public class PossibleEvent {
                 .layer(layer)
                 .animation(animation)
                 .movement(movement)
+                .speed(moveSpeed)
                 .calltime(calltime)
                 .callback(callback)
                 .build();
@@ -133,6 +143,16 @@ public class PossibleEvent {
     public MovementType getMovement()
     {
         return movement;
+    }
+    
+    void setMoveSpeed(MoveSpeed moveSpeed)
+    {
+        this.moveSpeed = moveSpeed;
+    }
+    
+    public MoveSpeed getMoveSpeed()
+    {
+        return moveSpeed;
     }
 
     private boolean moving = false;

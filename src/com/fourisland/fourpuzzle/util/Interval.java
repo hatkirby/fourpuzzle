@@ -6,7 +6,6 @@
 package com.fourisland.fourpuzzle.util;
 
 import com.fourisland.fourpuzzle.Game;
-import com.fourisland.fourpuzzle.KeyboardInput;
 import com.fourisland.fourpuzzle.PuzzleApplication;
 
 /**
@@ -21,9 +20,9 @@ public class Interval {
         this.wait = wait;
     }
     
-    public static Interval createTickInterval(int ticks)
+    public static Interval createTickInterval(float ticks)
     {
-        return createMillisInterval(Game.FPS*ticks);
+        return createMillisInterval((int) (Game.FPS * ticks));
     }
     
     public static Interval createMillisInterval(int millis)

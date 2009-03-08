@@ -8,6 +8,7 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event;
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.util.Functions;
+import com.fourisland.fourpuzzle.util.Interval;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public abstract class AbstractEvent implements Event {
         if (!getParentMap().checkForCollision(this, toMove))
         {
             setAnimationStep(2);
-            moveTimer = 4;
+            moveTimer = getMoveSpeed().getSpeed();
             setMoving(true);
             
             return true;
@@ -69,19 +70,23 @@ public abstract class AbstractEvent implements Event {
         }
     }
     
+    Interval in = Interval.createTickInterval(0.5F);
     public void processMoving()
     {
         if (isMoving())
         {
-            moveTimer--;
-            if (moveTimer == 2)
+            if (in.isElapsed())
             {
-                setAnimationStep(0);
-            } else if (moveTimer == 0)
-            {
-                setAnimationStep(1);
-                setMoving(false);
-                setLocation(getDirection().to(getLocation()));
+                moveTimer--;
+                if (moveTimer <= 0)
+                {
+                    setAnimationStep(1);
+                    setMoving(false);
+                    setLocation(getDirection().to(getLocation()));
+                } else if (moveTimer <= (getMoveSpeed().getSpeed() / 2))
+                {
+                    setAnimationStep(0);    
+                }
             }
         }
     }
@@ -146,10 +151,10 @@ public abstract class AbstractEvent implements Event {
         {
             if (getDirection() == Direction.West)
             {
-                return -((4 - moveTimer) * 4);
+                return -(Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed())));
             } else if (getDirection() == Direction.East)
             {
-                return (4 - moveTimer) * 4;
+                return Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed()));
             }
         }
         
@@ -162,13 +167,24 @@ public abstract class AbstractEvent implements Event {
         {
             if (getDirection() == Direction.North)
             {
-                return -((4 - moveTimer) * 4);
+                return -(Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed())));
             } else if (getDirection() == Direction.South)
             {
-                return (4 - moveTimer) * 4;
+                return Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed()));
             }
         }
         
         return 0;
+    }
+    
+    private MoveSpeed moveSpeed;
+    public void setMoveSpeed(MoveSpeed moveSpeed)
+    {
+        this.moveSpeed = moveSpeed;
+    }
+    
+    public MoveSpeed getMoveSpeed()
+    {
+        return moveSpeed;
     }
 }

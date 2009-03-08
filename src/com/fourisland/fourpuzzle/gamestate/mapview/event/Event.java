@@ -48,4 +48,7 @@ public interface Event {
     
     public void setParentMap(Map parentMap);
     public Map getParentMap();
+    
+    public void setMoveSpeed(MoveSpeed moveSpeed);
+    public MoveSpeed getMoveSpeed();
 }

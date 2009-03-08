@@ -165,4 +165,16 @@ public class LayerEvent extends AbstractEvent implements Event {
         getPossibleEvent().setMoving(moving);
     }
     
+    @Override
+    public void setMoveSpeed(MoveSpeed moveSpeed)
+    {
+        getPossibleEvent().setMoveSpeed(moveSpeed);
+    }
+    
+    @Override
+    public MoveSpeed getMoveSpeed()
+    {
+        return getPossibleEvent().getMoveSpeed();
+    }
+    
 }
