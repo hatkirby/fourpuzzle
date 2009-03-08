@@ -10,11 +10,8 @@ import com.fourisland.fourpuzzle.PuzzleApplication;
 import com.fourisland.fourpuzzle.util.ObjectLoader;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +23,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
+ * ChipSet stores information about the tilesets for mapview.
+ * 
+ * I'm not really going to comment this class much yet because it currently
+ * parses Tiled-created chipset files and this is all going to be rewritten
+ * once I've written my own map editor.
  *
  * @author hatkirby
  */

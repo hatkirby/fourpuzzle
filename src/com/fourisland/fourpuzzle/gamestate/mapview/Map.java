@@ -116,7 +116,8 @@ public class Map {
     {
         int x = ev.getLocation().x;
         int y = ev.getLocation().y;
-        
+
+        // Check if the event is trying to move over the map boundaries
         if ((toMove == Direction.North) && (y == 0))
         {
             return true;
@@ -131,11 +132,14 @@ public class Map {
             return true;
         }
         
+        /* If the event is the hero and walkthrough is enabled, bypass the rest
+         * of the collision-checking */
         if ((ev instanceof HeroEvent) && (((MapViewGameState) Game.getGameState()).debugWalkthrough))
         {
             return false;
         }
         
+        // Check for layer events in the specified direction
         if ((toMove == Direction.North) && (checkForEventCollision(x, y-1)))
         {
             return true;
@@ -156,6 +160,7 @@ public class Map {
             return true;
         }
         
+        // Check for obstructions on the map itself in the specified direction
         ChipSet cSI = ChipSet.getChipSet(chipSet);
         HashMap<Integer,ChipSetData> cSID = cSI.getChipSetData();
         for (HashMap<Integer,Integer> mapArea : getMapData())

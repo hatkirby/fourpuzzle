@@ -24,11 +24,13 @@ public class GameOverGameState implements GameState {
     
     public void initalize()
     {
+        // Play the Database-specifed Game Over music
         Audio.playMusic(Database.getMusic(Music.GameOver));
     }
     
     public void deinitalize()
     {
+        // Stop the music
         Audio.stopMusic();
     }
 
@@ -36,6 +38,13 @@ public class GameOverGameState implements GameState {
     {
         if (key.isActionDown())
         {
+            /* When the user presses the action key to exit the game over
+             * screen, clear the save data and transition back to the title
+             * screen.
+             * 
+             * NOTE: Clearing the save data may not actually be necessary here
+             * because TitleScreenGameState clears the save data before starting
+             * a new file */
             Game.setSaveFile(new SaveFile());
             
             try {
@@ -53,6 +62,7 @@ public class GameOverGameState implements GameState {
 
     public void render(Graphics2D g)
     {
+        // Display the Game Over picture
         g.drawImage(ObjectLoader.getImage("Picture", "GameOver"), 0, 0, null);
     }
 

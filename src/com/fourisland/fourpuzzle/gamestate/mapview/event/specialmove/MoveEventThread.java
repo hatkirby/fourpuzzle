@@ -39,7 +39,7 @@ public class MoveEventThread implements Runnable {
     
     public void start()
     {
-        for (Future f : eventThreads)
+        for (Future f : new ArrayList<Future>(eventThreads))
         {
             if (f.isDone())
             {

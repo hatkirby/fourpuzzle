@@ -7,7 +7,6 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
 import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
-import com.fourisland.fourpuzzle.util.Functions;
 import com.fourisland.fourpuzzle.util.Interval;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -46,22 +45,38 @@ public abstract class AbstractEvent implements Event {
     private int moveTimer;
     public boolean startMoving(Direction toMove)
     {
+        /* If the event is already moving (sometimes it manages to slip through
+         * the other filters), simply return without doing anything */
         if (isMoving())
         {
             return false;
         }
         
+        /* Attempt to turn in the correct direction and then check if it was
+         * done. It could fail in certain cases which would mean the event
+         * shouldn't move, for instance, if a LayerEvent's AnimationType was
+         * FixedGraphic.
+         * 
+         * There is a slight problem with this, however. Currently, if the
+         * AnimationType is FixedGraphic, but the event is already facing the
+         * correct direction, the event will move anyway, despite being fixed */
         setDirection(toMove);
-        
         if (getDirection() != toMove)
         {
             return false;
         }
         
+        /* Make sure that there are no present obstructions on the map in the
+         * specified direction */
         if (!getParentMap().checkForCollision(this, toMove))
         {
+            // Start the stepping animation
             setAnimationStep(2);
+            
+            // Ask the event's MoveSpeed for the length of the animation
             moveTimer = getMoveSpeed().getSpeed();
+            
+            // Set the moving flag
             setMoving(true);
             
             return true;
@@ -75,17 +90,25 @@ public abstract class AbstractEvent implements Event {
     {
         if (isMoving())
         {
+            // Movement should be processed every half tick
             if (in.isElapsed())
             {
+                // Decrement the move timer
                 moveTimer--;
+                
                 if (moveTimer <= 0)
                 {
+                    /* If movement has finished, stop the animation and unset
+                     * the moving flag */
                     setAnimationStep(1);
                     setMoving(false);
+                    
+                    // Move the event to the correct location
                     setLocation(getDirection().to(getLocation()));
                 } else if (moveTimer <= (getMoveSpeed().getSpeed() / 2))
                 {
-                    setAnimationStep(0);    
+                    // If movement is half-complete, advance its animation
+                    setAnimationStep(0);
                 }
             }
         }
@@ -93,14 +116,22 @@ public abstract class AbstractEvent implements Event {
     
     public boolean isOccupyingSpace(int x, int y)
     {
+        // Check if the event occupies the given location
         if (getLocation().equals(new Point(x,y)))
         {
             return true;
         }
         
-        if (Functions.isMovingTo(this, x, y))
+        /* Because a moving event technically occupies two locations, we also
+         * need to check if the given location is where the event is moving to
+         * (if it's moving at all) */
+        if (isMoving())
         {
-            return true;
+            Point loc = getDirection().to(getLocation());
+            if ((loc.x == x) && (loc.y == y))
+            {
+                return true;
+            }
         }
         
         return false;

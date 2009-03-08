@@ -43,9 +43,16 @@ public class PuzzleApplication extends Application {
     
     private void initGameDialog(boolean undecorated)
     {
+        /* Because the game form is accessed from many places at once, a
+         * Semaphore is used to control access to it */
         gameDialogHandler.acquireUninterruptibly();
         
+        /* If the dialog is already visible (for instance, when changing the
+         * from full screen mode to windowed or vice versa while the program is
+         * running), it has to be closed so it can be reinitalized */
         gameDialog.setVisible(false);
+        
+        // Set up the actual dialog
         Container contentPane = gameDialog.getContentPane();
         gameDialog = new JDialog(new JFrame(), false);
         gameDialog.setContentPane(contentPane);
@@ -76,6 +83,9 @@ public class PuzzleApplication extends Application {
             {
                 if (e.getKeyCode() == KeyEvent.VK_F4)
                 {
+                    /* The user is trying to switch the full screen mode; flip
+                     * the status switch, reinitalize the dialog and then tell
+                     * the GraphicsEnvironment what's happening */
                     stretchScreen = !stretchScreen;
 
                     if (stretchScreen)
@@ -88,20 +98,24 @@ public class PuzzleApplication extends Application {
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_SHIFT)
                 {
+                    /* If debug mode is enabled, holding Shift down should put
+                     * the game into hyperactive mode */
                     if (INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
                     {
                         debugSpeed = true;
                     }
-                    } else {
-                        KeyboardInput.getKey().keyInput(e);
-                    }
+                } else {
+                    // If anything else is pressed, let the GameState handle it
+                    KeyboardInput.getKey().keyInput(e);
                 }
+            }
 
             @Override
             public void keyReleased(KeyEvent e)
             {
                 if (e.getKeyCode() == KeyEvent.VK_SHIFT)
                 {
+                    // If Shift is let go of, hyperactive mode should end
                     debugSpeed = false;
                 } else {
                     KeyboardInput.getKey().letGo();
@@ -110,30 +124,44 @@ public class PuzzleApplication extends Application {
         });
         gameDialog.setVisible(true);
         
+        // As we're done with the game dialog, we can release the permit
         gameDialogHandler.release();
     }
 
     @Override
-    protected void startup() {
+    protected void startup()
+    {
         INSTANCE = this;
         
+        // Create the game form
         initGameDialog(true);
-        
+
+        // The game should start out in full screen mode
         GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(gameDialog);
 
+        // Create the game cycle and run it
         new Thread(new Runnable() {
             public void run() {
                 try {
                     Audio.init();
                     SystemGraphic.initalize();
                     
+                    // The game starts with the Title Screen
                     Game.setGameState(new TitleScreenGameState());
-                    
+
+                    /* The game cycle should run every tick (unless hyperactive
+                     * mode is enabled, when it should run constantly */
                     Interval in = Interval.createTickInterval(1);
                     while (true)
                     {
+                        /* If the game window is deactivated, the game should
+                         * pause execution */
                         if (in.isElapsed() && !gameSleep)
                         {
+                            /* If there is currently a transition running, the
+                             * only necessary function is rendering, otherwise
+                             * process keyboard input and run GameState-specific
+                             * game cycle code too */
                             if (!Display.isTransitionRunning())
                             {
                                 KeyboardInput.processInput();
@@ -141,6 +169,9 @@ public class PuzzleApplication extends Application {
                                 Game.getGameState().doGameCycle();
                             }
 
+                            /* Now, render to the game dialog. Note that as it
+                             * is used in many places, a Semaphore permit is
+                             * required before rendering can start */
                             gameDialogHandler.acquireUninterruptibly();
                             Display.render(gameDialog.getContentPane());
                             gameDialogHandler.release();

@@ -25,7 +25,6 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventTh
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.gamestate.menu.MenuGameState;
-import com.fourisland.fourpuzzle.util.Functions;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -44,14 +43,23 @@ public class MapViewGameState implements GameState {
     
     public MapViewGameState(String map, int x, int y)
     {
+        // Load the specified map into memory
         setCurrentMap(map);
+        
+        // Place the Hero at the specified location
         Game.getSaveFile().getHero().setLocation(x, y);
+        
+        // Create a new viewpoint for the map
         currentViewpoint = new AutomaticViewpoint(currentMap);
+        
+        // Tell SpecialEvent about the new map so it can access it
         SpecialEvent.setMapView(this);
     }
         
     public void initalize()
     {
+        /* Depending on the specified music type, either play music, stop the
+         * music or let the already playing music continue */
         switch (currentMap.getMusicType())
         {
             case NoMusic: Audio.stopMusic(); break;
@@ -67,8 +75,11 @@ public class MapViewGameState implements GameState {
 
     public void processInput(KeyInput key)
     {
+        // Store the hero event in a local variable as it is used often
         HeroEvent hero = Game.getSaveFile().getHero();
 
+        /* If debug mode is enabled and the control key is held down, set the
+         * walkthrough flag so the Hero can walk through stuff */
         if (key.isCtrlDown() && !debugWalkthrough)
         {
             if (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
@@ -79,11 +90,14 @@ public class MapViewGameState implements GameState {
             debugWalkthrough = false;
         }
 
+        /* If the hero is not moving or the center of a MoveEvent action and no
+         * blocking special events are running, check the user input */
         if (!hero.isMoving() && !MoveEventThread.isHeroActive() && !EventHandler.isRunningEvent())
         {
             Direction toMove = null;
             Boolean letsMove = false;
 
+            // Translate the key input into the appropriate direction
             switch (key.getKey())
             {
                 case KeyEvent.VK_UP:
@@ -104,17 +118,22 @@ public class MapViewGameState implements GameState {
                     break;
             }
 
+            // If a movement key was indeed pressed, process it
             if (letsMove)
             {
+                // Try to move the hero in the specified direction
                 if (!hero.startMoving(toMove))
                 {
+                    /* If the hero is blocked in that direction, check to see
+                     * if a middle-layer OnHeroTouch event is the blocker, if
+                     * so, execute it */
                     for (LayerEvent ev : currentMap.getEvents())
                     {
                         if (ev.getCalltime() == EventCallTime.OnHeroTouch)
                         {
                             if (ev.getLayer() == Layer.Middle)
                             {
-                                if (Functions.isFacing(hero, ev))
+                                if (hero.getDirection().to(hero.getLocation()).equals(ev.getLocation()))
                                 {
                                     ev.getCallback().activate(ev.getCalltime());
                                 }
@@ -124,6 +143,8 @@ public class MapViewGameState implements GameState {
                 }
             }
 
+            /* If the player presses the action key, check if either of the two
+             * PushKey conditions are available */
             if (key.isActionDown())
             {
                 for (LayerEvent ev : currentMap.getEvents())
@@ -132,12 +153,16 @@ public class MapViewGameState implements GameState {
                     {
                         if (ev.getLayer() == Layer.Middle)
                         {
-                            if (Functions.isFacing(hero, ev))
+                            /* If the event is middle-layered and the hero is
+                             * facing it, execute it */
+                            if (hero.getDirection().to(hero.getLocation()).equals(ev.getLocation()))
                             {
                                 ev.setDirection(hero.getDirection().opposite());
                                 ev.getCallback().activate(ev.getCalltime());
                             }
                         } else {
+                            /* If the event is not middle-layered and the hero
+                             * is on it, execute it */
                             if (ev.getLocation().equals(hero.getLocation()))
                             {
                                 ev.getCallback().activate(ev.getCalltime());
@@ -146,7 +171,8 @@ public class MapViewGameState implements GameState {
                     }
                 }
             }
-            
+
+            // If the player presses the escape key, open the menu
             if (key.getKey() == KeyEvent.VK_ESCAPE)
             {
                 try {
@@ -159,6 +185,8 @@ public class MapViewGameState implements GameState {
         
         if (EventHandler.isRunningEvent())
         {
+            /* If debug mode is enabled and F11 is pressed, cancel any running
+             * events */
             if ((key.getKey() == KeyEvent.VK_F11) && (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode")))
             {
                 for (LayerEvent ev : currentMap.getEvents())
@@ -171,11 +199,15 @@ public class MapViewGameState implements GameState {
     
     public void doGameCycle()
     {
+        // Store the hero event in a local variable as it is used often
         HeroEvent hero = Game.getSaveFile().getHero();
         if (hero.isMoving())
         {
+            // If the player is in the process of moving, continue it
             hero.processMoving();
             
+            /* If the player has just finished moving, check for a non
+             * middle-layered OnHeroTouch on the Hero and execute it */
             if (!hero.isMoving())
             {
                 for (LayerEvent ev : currentMap.getEvents())
@@ -198,6 +230,10 @@ public class MapViewGameState implements GameState {
         {
             if (!ev.isMoving())
             {
+                /* If one of the map's layer events aren't moving or being
+                 * processed by a MoveEvent action and no blocking special
+                 * events are running, start it moving in the direction provided
+                 * by its MovementType */
                 if (!MoveEventThread.isOtherActive(ev))
                 {
                     if (!EventHandler.isRunningEvent())
@@ -206,23 +242,28 @@ public class MapViewGameState implements GameState {
                     }
                 }
             } else {
+                // If the event IS moving, process the movement
                 ev.processMoving();
             }
             
             if (ev.getCalltime() == EventCallTime.ParallelProcess)
             {
+                // If the event is a ParallelProcess, execute it
                 ev.getCallback().activate(ev.getCalltime());
             }
         }
     }
 
     public void render(Graphics2D g)
-    {   
+    {
+        // Ask the current viewpoint where to render from
         int x = currentViewpoint.getX();
         int y = currentViewpoint.getY();
         
+        // Render the lower layer of the map
         g.drawImage(currentMap.renderLower(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
 
+        // Render each lower and middle layered event onto a seperate canvas
         BufferedImage eventLayer = Display.createCanvas(currentMap.getSize().width*16, currentMap.getSize().height*16);
         Graphics2D g2 = eventLayer.createGraphics();
         EventList events = currentMap.getEvents();
@@ -235,8 +276,10 @@ public class MapViewGameState implements GameState {
             }
         }
         
+        // Render the hero event onto the event canvas
         Game.getHeroEvent().render(g2);
 
+        // Render each above layered event onto the event canvas
         for (LayerEvent event : events)
         {
             if (event.getLayer() == Layer.Above)
@@ -245,13 +288,19 @@ public class MapViewGameState implements GameState {
             }
         }
 
+        // Render the event canvas
         g.drawImage(eventLayer, 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
+        
+        // Render the upper layer of the map
         g.drawImage(currentMap.renderUpper(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
     }
     
     public void setCurrentMap(String mapName)
     {
+        // Tell the save data what map is currently loaded
         Game.getSaveFile().setCurrentMap(mapName);
+        
+        // Load the specified map from the database
         currentMap = Database.getMap(mapName);
     }
     
