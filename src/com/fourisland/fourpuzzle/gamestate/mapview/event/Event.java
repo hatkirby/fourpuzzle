@@ -10,6 +10,7 @@ import com.fourisland.fourpuzzle.Layer;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.List;
 
 /**
  *
@@ -40,6 +41,7 @@ public interface Event {
     public Layer getLayer();
     
     public boolean isOccupyingSpace(int x, int y);
+    public List<Direction> getLegalMoves();
     
     public void setAnimationStep(int animStep);
     public int getAnimationStep();

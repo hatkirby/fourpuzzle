@@ -9,6 +9,8 @@ import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.util.Functions;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -79,20 +81,7 @@ public abstract class AbstractEvent implements Event {
             {
                 setAnimationStep(1);
                 setMoving(false);
-                
-                if (getDirection() == Direction.North)
-                {
-                    setLocation(getLocation().x,getLocation().y-1);
-                } else if (getDirection() == Direction.West)
-                {
-                    setLocation(getLocation().x-1,getLocation().y);
-                } else if (getDirection() == Direction.South)
-                {
-                    setLocation(getLocation().x,getLocation().y+1);
-                } else if (getDirection() == Direction.East)
-                {
-                    setLocation(getLocation().x+1,getLocation().y);
-                }
+                setLocation(getDirection().to(getLocation()));
             }
         }
     }
@@ -110,6 +99,20 @@ public abstract class AbstractEvent implements Event {
         }
         
         return false;
+    }
+    
+    public List<Direction> getLegalMoves()
+    {
+        List<Direction> temp = new ArrayList<Direction>();
+        for (Direction d : Direction.values())
+        {
+            if (!getParentMap().checkForCollision(this, d))
+            {
+                temp.add(d);
+            }
+        }
+        
+        return temp;
     }
     
     private Map parentMap = null;
