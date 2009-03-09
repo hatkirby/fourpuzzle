@@ -74,7 +74,7 @@ public class Map {
         }
         
         temp.mapData = new Vector<HashMap<Integer,Integer>>(getMapData());
-        temp.events = getEvents().copy(this);
+        temp.events = getEvents().copy(temp);
         
         return temp;
     }
