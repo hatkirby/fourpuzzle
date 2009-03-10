@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event.movement;
 
 import com.fourisland.fourpuzzle.Direction;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.ImmutableEvent;
 
 /**
  * A MovementType is an object that specifies the type of AI a non-hero event
@@ -17,6 +18,6 @@ import com.fourisland.fourpuzzle.Direction;
  */
 public interface MovementType {
     
-    public Direction nextMovement();
+    public Direction nextMovement(ImmutableEvent ev);
     
 }

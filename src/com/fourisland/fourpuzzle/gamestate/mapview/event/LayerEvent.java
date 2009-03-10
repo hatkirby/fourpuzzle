@@ -99,23 +99,15 @@ public class LayerEvent extends AbstractEvent implements Event {
     
     public void startMoving()
     {
-        Direction toMove = getPossibleEvent().getMovement().nextMovement();
+        Direction toMove = getPossibleEvent().getMovement().nextMovement(new ImmutableEvent(this));
         
         if (toMove != null)
         {
-            startMoving(toMove);
+            if (getPossibleEvent().getGraphic() instanceof MoveableEventGraphic)
+            {
+                startMoving(toMove);
+            }
         }
-    }
-    
-    @Override
-    public boolean startMoving(Direction toMove)
-    {
-        if (!(getPossibleEvent().getGraphic() instanceof MoveableEventGraphic))
-        {
-            return false;
-        }
-        
-        return super.startMoving(toMove);
     }
     
     public Direction getDirection()

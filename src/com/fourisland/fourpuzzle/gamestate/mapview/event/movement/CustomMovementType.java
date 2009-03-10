@@ -6,6 +6,7 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event.movement;
 
 import com.fourisland.fourpuzzle.Direction;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.ImmutableEvent;
 
 /**
  * CustomMovementEvent takes an array of Directions and directions the event
@@ -24,8 +25,8 @@ public class CustomMovementType implements MovementType {
         this.moves = moves;
     }
     
-    public Direction nextMovement()
-    {        
+    public Direction nextMovement(ImmutableEvent ev)
+    {
         if (step >= moves.length)
         {
             step = 0;

@@ -6,6 +6,9 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event.movement;
 
 import com.fourisland.fourpuzzle.Direction;
+import com.fourisland.fourpuzzle.gamestate.mapview.event.ImmutableEvent;
+import com.fourisland.fourpuzzle.util.Interval;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,34 +18,19 @@ import java.util.Random;
  */
 public class RandomMovementType implements MovementType {
 
-    public Direction nextMovement()
+    Interval in = Interval.createTickInterval(10);
+    public Direction nextMovement(ImmutableEvent ev)
     {
-        Random r = new Random();
-        int ra = r.nextInt(1000);
-        Direction toMove = null;
-        boolean letsMove = false;
-
-        if (ra < 25)
+        if (in.isElapsed())
         {
-            toMove = Direction.North;
-            letsMove = true;
-        } else if (ra < 50)
-        {
-            toMove = Direction.West;
-            letsMove = true;
-        } else if (ra < 75)
-        {
-            toMove = Direction.South;
-            letsMove = true;
-        } else if (ra < 100)
-        {
-            toMove = Direction.East;
-            letsMove = true;
-        }
-
-        if (letsMove)
-        {
-            return toMove;
+            List<Direction> moves = ev.getLegalMoves();
+            Random r = new Random();
+            int ra = r.nextInt(moves.size());
+            
+            if (ra != moves.size())
+            {
+                return moves.get(ra);
+            }
         }
         
         return null;
