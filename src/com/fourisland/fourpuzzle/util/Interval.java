@@ -22,12 +22,12 @@ public class Interval {
     
     public static Interval createTickInterval(float ticks)
     {
-        return createMillisInterval((int) (Game.FPS * ticks));
+        return createMillisInterval(Game.FPS * ticks);
     }
     
-    public static Interval createMillisInterval(int millis)
+    public static Interval createMillisInterval(float millis)
     {
-        return new Interval(millis*1000000);
+        return new Interval((int) (millis*1000000));
     }
     
     private long last = System.nanoTime();

@@ -16,6 +16,8 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventTh
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.FixedViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.MovingViewpoint;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.ShakingViewpoint;
+import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.ShakingViewpoint.ShakeSpeed;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.transition.InTransition;
 import com.fourisland.fourpuzzle.transition.OutTransition;
@@ -364,6 +366,54 @@ public class SpecialEvent {
     public void StopThread() throws InterruptedException
     {
         throw new InterruptedException();
+    }
+    
+    /**
+     * Shake the screen like an earthquake
+     * 
+     * @param speed How fast the screen should shake
+     * @param length The amount of time (in milliseconds) the shaking should
+     * last
+     * @param block If true, the game will wait for the shaking to complete
+     * before executing any more commands
+     * @throws java.lang.InterruptedException
+     */
+    public void ShakeScreen(ShakeSpeed speed, int length, final boolean block) throws InterruptedException
+    {
+        Viewpoint viewpoint = mapView.getViewpoint();
+        final CountDownLatch blocker;
+        
+        if (block)
+        {
+            blocker = new CountDownLatch(1);
+        } else {
+            blocker = null;
+        }
+            
+        mapView.setViewpoint(new ShakingViewpoint(viewpoint.getX(), viewpoint.getY(), speed, length, new Runnable() {
+            public void run()
+            {
+                if (block)
+                {
+                    blocker.countDown();
+                } else {
+                    ResetViewpoint();
+                }
+            }
+        }));
+        
+        if (block)
+        {
+            try
+            {
+                blocker.await();
+            } catch (InterruptedException ex)
+            {
+                throw ex;
+            } finally {
+                ResetViewpoint();
+            }
+        }
     }
     
 }

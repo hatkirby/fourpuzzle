@@ -51,4 +51,7 @@ public interface Event {
     
     public void setMoveSpeed(MoveSpeed moveSpeed);
     public MoveSpeed getMoveSpeed();
+    
+    public void setFrequency(MoveFrequency freq);
+    public MoveFrequency getFrequency();
 }

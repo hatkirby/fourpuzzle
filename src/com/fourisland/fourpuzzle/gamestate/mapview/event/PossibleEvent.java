@@ -25,6 +25,7 @@ public class PossibleEvent {
     private AnimationType animation;
     private MovementType movement;
     private MoveSpeed moveSpeed;
+    private MoveFrequency freq;
     private EventCallTime calltime;
     private EventCall callback;
     
@@ -44,6 +45,7 @@ public class PossibleEvent {
         private AnimationType animation = AnimationType.CommonWithoutStepping;
         private MovementType movement = new StayStillMovementType();
         private MoveSpeed moveSpeed = MoveSpeed.Normal;
+        private MoveFrequency freq = MoveFrequency.EIGHT;
         private EventCallTime calltime = EventCallTime.PushKey;
         private EventCall callback = EventCall.getEmptyEventCall();
         
@@ -77,6 +79,12 @@ public class PossibleEvent {
             return this;
         }
         
+        public Builder freq(MoveFrequency freq)
+        {
+            this.freq = freq;
+            return this;
+        }
+        
         public Builder calltime(EventCallTime calltime)
         {
             this.calltime = calltime;
@@ -102,6 +110,7 @@ public class PossibleEvent {
         animation = builder.animation;
         movement = builder.movement;
         moveSpeed = builder.moveSpeed;
+        freq = builder.freq;
         calltime = builder.calltime;
         callback = builder.callback;
     }
@@ -114,6 +123,7 @@ public class PossibleEvent {
                 .animation(animation)
                 .movement(movement)
                 .speed(moveSpeed)
+                .freq(freq)
                 .calltime(calltime)
                 .callback(callback)
                 .build();
@@ -153,6 +163,16 @@ public class PossibleEvent {
     public MoveSpeed getMoveSpeed()
     {
         return moveSpeed;
+    }
+    
+    void setFrequency(MoveFrequency freq)
+    {
+        this.freq = freq;
+    }
+    
+    public MoveFrequency getFrequency()
+    {
+        return freq;
     }
 
     private boolean moving = false;

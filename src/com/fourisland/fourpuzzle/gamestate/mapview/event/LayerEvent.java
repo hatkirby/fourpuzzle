@@ -12,6 +12,7 @@ import com.fourisland.fourpuzzle.Direction;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.MoveableEventGraphic;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.precondition.Precondition;
+import com.fourisland.fourpuzzle.util.PauseTimer;
 
 /**
  *
@@ -97,15 +98,21 @@ public class LayerEvent extends AbstractEvent implements Event {
         }
     }
     
+    PauseTimer pt = new PauseTimer(0);
     public void startMoving()
     {
-        Direction toMove = getPossibleEvent().getMovement().nextMovement(new ImmutableEvent(this));
-        
-        if (toMove != null)
+        if (pt.isElapsed())
         {
-            if (getPossibleEvent().getGraphic() instanceof MoveableEventGraphic)
+            pt.setTimer(getFrequency().getFrequency()-1);
+            
+            Direction toMove = getPossibleEvent().getMovement().nextMovement(new ImmutableEvent(this));
+        
+            if (toMove != null)
             {
-                startMoving(toMove);
+                if (getPossibleEvent().getGraphic() instanceof MoveableEventGraphic)
+                {
+                    startMoving(toMove);
+                }
             }
         }
     }
@@ -167,6 +174,18 @@ public class LayerEvent extends AbstractEvent implements Event {
     public MoveSpeed getMoveSpeed()
     {
         return getPossibleEvent().getMoveSpeed();
+    }
+    
+    @Override
+    public void setFrequency(MoveFrequency freq)
+    {
+        getPossibleEvent().setFrequency(freq);
+    }
+    
+    @Override
+    public MoveFrequency getFrequency()
+    {
+        return getPossibleEvent().getFrequency();
     }
     
 }

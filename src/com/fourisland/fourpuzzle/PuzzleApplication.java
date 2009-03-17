@@ -5,6 +5,7 @@
 package com.fourisland.fourpuzzle;
 
 import com.fourisland.fourpuzzle.database.Database;
+import com.fourisland.fourpuzzle.database.Transitions;
 import com.fourisland.fourpuzzle.database.Vocabulary;
 import com.fourisland.fourpuzzle.gamestate.TitleScreenGameState;
 import com.fourisland.fourpuzzle.util.Interval;
@@ -103,6 +104,14 @@ public class PuzzleApplication extends Application {
                     if (INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
                     {
                         debugSpeed = true;
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_F12)
+                {
+                    try {
+                        /* If the user presses F12, return to the title screen */
+                        Display.transition(Database.getTransition(Transitions.Generic), new TitleScreenGameState(), false);
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
                     }
                 } else {
                     // If anything else is pressed, let the GameState handle it

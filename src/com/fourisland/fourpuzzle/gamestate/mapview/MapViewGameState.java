@@ -25,6 +25,7 @@ import com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove.MoveEventTh
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.Viewpoint;
 import com.fourisland.fourpuzzle.gamestate.menu.MenuGameState;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -259,6 +260,11 @@ public class MapViewGameState implements GameState {
         // Ask the current viewpoint where to render from
         int x = currentViewpoint.getX();
         int y = currentViewpoint.getY();
+        
+        /* Fill the background with black so specialized viewpoints that go off
+         * the screen such as ShakingViewpoint render properly */
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
         
         // Render the lower layer of the map
         g.drawImage(currentMap.renderLower(), 0, 0, Game.WIDTH, Game.HEIGHT, x, y, x+Game.WIDTH, y+Game.HEIGHT, null);
