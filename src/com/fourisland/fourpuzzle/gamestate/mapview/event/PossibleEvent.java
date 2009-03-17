@@ -25,7 +25,7 @@ public class PossibleEvent {
     private AnimationType animation;
     private MovementType movement;
     private MoveSpeed moveSpeed;
-    private MoveFrequency freq;
+    private int freq;
     private EventCallTime calltime;
     private EventCall callback;
     
@@ -45,16 +45,26 @@ public class PossibleEvent {
         private AnimationType animation = AnimationType.CommonWithoutStepping;
         private MovementType movement = new StayStillMovementType();
         private MoveSpeed moveSpeed = MoveSpeed.Normal;
-        private MoveFrequency freq = MoveFrequency.EIGHT;
+        private int freq = 1;
         private EventCallTime calltime = EventCallTime.PushKey;
         private EventCall callback = EventCall.getEmptyEventCall();
         
+        /**
+         * Set the graphic that this event will display
+         * 
+         * @param graphic The graphic this event will display
+         */
         public Builder graphic(EventGraphic graphic)
         {
             this.graphic = graphic;
             return this;
         }
         
+        /**
+         * Set the layer that this event will be on
+         * 
+         * @param layer The layer (Above, Middle, Below) this event will be on
+         */
         public Builder layer(Layer layer)
         {
             this.layer = layer;
@@ -79,7 +89,14 @@ public class PossibleEvent {
             return this;
         }
         
-        public Builder freq(MoveFrequency freq)
+        /**
+         * Set how often this event will initiate movement
+         * 
+         * @param freq How many ticks, minus one, that the event must wait
+         * before it can start moving. This number must be greater than or equal
+         * to one. For no pause, use 1.
+         */
+        public Builder freq(int freq)
         {
             this.freq = freq;
             return this;
@@ -109,8 +126,8 @@ public class PossibleEvent {
         layer = builder.layer;
         animation = builder.animation;
         movement = builder.movement;
-        moveSpeed = builder.moveSpeed;
-        freq = builder.freq;
+        setMoveSpeed(builder.moveSpeed);
+        setFrequency(builder.freq);
         calltime = builder.calltime;
         callback = builder.callback;
     }
@@ -165,12 +182,17 @@ public class PossibleEvent {
         return moveSpeed;
     }
     
-    void setFrequency(MoveFrequency freq)
+    void setFrequency(int freq)
     {
+        if (freq < 1)
+        {
+            throw new IllegalArgumentException("Frequency must be greater than or equal to one");
+        }
+        
         this.freq = freq;
     }
     
-    public MoveFrequency getFrequency()
+    public int getFrequency()
     {
         return freq;
     }

@@ -218,15 +218,4 @@ public abstract class AbstractEvent implements Event {
     {
         return moveSpeed;
     }
-    
-    private MoveFrequency freq;
-    public void setFrequency(MoveFrequency freq)
-    {
-        this.freq = freq;
-    }
-    
-    public MoveFrequency getFrequency()
-    {
-        return freq;
-    }
 }

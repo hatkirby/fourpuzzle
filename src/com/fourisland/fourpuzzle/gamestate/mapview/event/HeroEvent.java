@@ -25,7 +25,6 @@ public class HeroEvent extends AbstractEvent implements Event {
     {
         setLocation(new Point());
         setMoveSpeed(MoveSpeed.Faster);
-        setFrequency(MoveFrequency.EIGHT);
     }
     
     public String getLabel()

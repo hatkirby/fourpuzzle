@@ -103,7 +103,7 @@ public class LayerEvent extends AbstractEvent implements Event {
     {
         if (pt.isElapsed())
         {
-            pt.setTimer(getFrequency().getFrequency()-1);
+            pt.setTimer(getFrequency()-1);
             
             Direction toMove = getPossibleEvent().getMovement().nextMovement(new ImmutableEvent(this));
         
@@ -176,14 +176,12 @@ public class LayerEvent extends AbstractEvent implements Event {
         return getPossibleEvent().getMoveSpeed();
     }
     
-    @Override
-    public void setFrequency(MoveFrequency freq)
+    public void setFrequency(int freq)
     {
         getPossibleEvent().setFrequency(freq);
     }
     
-    @Override
-    public MoveFrequency getFrequency()
+    public int getFrequency()
     {
         return getPossibleEvent().getFrequency();
     }
