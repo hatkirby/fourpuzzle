@@ -18,9 +18,6 @@ import static org.junit.Assert.*;
  */
 public class SwitchPreconditionTest {
 
-    public SwitchPreconditionTest() {
-    }
-    
     String switchName = "TestSwitch";
     SwitchPrecondition sp;
 
@@ -44,9 +41,5 @@ public class SwitchPreconditionTest {
         Game.getSaveFile().getSwitches().put(switchName, true);
         assertTrue(sp.match());
     }
-
-    @After
-    public void tearDown() {
-    }
-
+    
 }

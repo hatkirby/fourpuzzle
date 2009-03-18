@@ -56,7 +56,7 @@ public final class ImmutableEvent
 
     public List<Direction> getLegalMoves()
     {
-        return Collections.unmodifiableList(ev.getLegalMoves());
+        return ev.getLegalMoves();
     }
 
     public int getAnimationStep()
