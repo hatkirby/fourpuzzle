@@ -83,7 +83,7 @@ public class MapViewGameState implements GameState {
          * walkthrough flag so the Hero can walk through stuff */
         if (key.isCtrlDown() && !debugWalkthrough)
         {
-            if (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
+            if (PuzzleApplication.getInstance().getContext().getResourceMap().getBoolean("debugMode"))
             {
                 debugWalkthrough = true;
             }
@@ -188,7 +188,7 @@ public class MapViewGameState implements GameState {
         {
             /* If debug mode is enabled and F11 is pressed, cancel any running
              * events */
-            if ((key.getKey() == KeyEvent.VK_F11) && (PuzzleApplication.INSTANCE.getContext().getResourceMap().getBoolean("debugMode")))
+            if ((key.getKey() == KeyEvent.VK_F11) && (PuzzleApplication.getInstance().getContext().getResourceMap().getBoolean("debugMode")))
             {
                 for (LayerEvent ev : currentMap.getEvents())
                 {

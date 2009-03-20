@@ -7,6 +7,7 @@ package com.fourisland.fourpuzzle.gamestate.mapview.event.specialmove;
 
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 import java.awt.Point;
+import java.util.Arrays;
 
 /**
  * LoopUntilCollisionMoveEvent takes an array of <b>MoveEvent</b>s and repeatedly
@@ -24,7 +25,7 @@ public class LoopUntilCollisionMoveEvent implements MoveEvent {
     
     public LoopUntilCollisionMoveEvent(MoveEvent[] moves)
     {
-        this.moves = moves;
+        this.moves = Arrays.copyOf(moves, moves.length);
     }
 
     public void doAction(Event ev)

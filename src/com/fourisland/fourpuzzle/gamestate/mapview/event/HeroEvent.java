@@ -14,12 +14,18 @@ import com.fourisland.fourpuzzle.database.GameCharacter;
 import com.fourisland.fourpuzzle.gamestate.mapview.Map;
 import com.fourisland.fourpuzzle.gamestate.mapview.MapViewGameState;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.graphic.BlankEventGraphic;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  *
  * @author hatkirby
  */
-public class HeroEvent extends AbstractEvent implements Event {
+public class HeroEvent extends AbstractEvent implements Event, Serializable {
+    
+    private static final long serialVersionUID = 402340890;
     
     public HeroEvent()
     {
@@ -72,6 +78,28 @@ public class HeroEvent extends AbstractEvent implements Event {
     public Map getParentMap()
     {
         return ((MapViewGameState) Game.getGameState()).getCurrentMap();
+    }
+    
+    /**
+     * Serialize this HeroEvent instance
+     * 
+     * When serializing a HeroEvent, the only information that is really
+     * necessary is the Hero's location and direction, because all other
+     * important information is serialized by SaveFile.
+     * 
+     * @serialData The Hero's location (as a Point object) is emitted, followed
+     * by the a Direction object representing the Hero's direction.
+     */
+    private void writeObject(ObjectOutputStream s) throws IOException
+    {
+        s.writeObject(getLocation());
+        s.writeObject(getDirection());
+    }
+    
+    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
+    {
+        setLocation((Point) s.readObject());
+        setDirection((Direction) s.readObject());
     }
 
 }

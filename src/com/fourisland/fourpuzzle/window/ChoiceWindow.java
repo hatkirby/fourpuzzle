@@ -61,18 +61,15 @@ public class ChoiceWindow implements Renderable, Inputable {
     }
     
     private List<String> choices;
-    int numChoices;
     boolean center;
     private int width;
     private int height;
     BufferedImage cacheBase;
     int x;
     int y;
-    String clickSound;
     private ChoiceWindow(Builder builder)
     {
         this.choices = builder.choices;
-        numChoices = choices.size();
         this.center = builder.center;
         
         for (String choice : choices)
@@ -211,6 +208,7 @@ public class ChoiceWindow implements Renderable, Inputable {
         }
     }
 
+    Object hasInputLock = new Object();
     Boolean hasInput = false;
     PauseTimer pt = new PauseTimer(0);
     public void processInput(KeyInput key)
@@ -231,7 +229,7 @@ public class ChoiceWindow implements Renderable, Inputable {
             }
         } else if (key.isActionDown())
         {
-            synchronized (hasInput)
+            synchronized (hasInputLock)
             {
                 hasInput = true;
             }
@@ -240,7 +238,7 @@ public class ChoiceWindow implements Renderable, Inputable {
     
     public boolean hasInput()
     {
-        synchronized (hasInput)
+        synchronized (hasInputLock)
         {
             return hasInput;
         }

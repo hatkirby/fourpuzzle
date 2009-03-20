@@ -28,10 +28,8 @@ import org.jdesktop.application.Application;
  */
 public class PuzzleApplication extends Application {
 
-    public static PuzzleApplication INSTANCE;
-    public static boolean debugSpeed = false;
-    public static boolean stretchScreen = true;
-    public static boolean gameSleep = false;
+    private static boolean stretchScreen = true;
+    private static boolean gameSleep = false;
     private static JDialog gameDialog = new JDialog(new JFrame(), false);
     private static Semaphore gameDialogHandler = new Semaphore(1);
     
@@ -101,9 +99,9 @@ public class PuzzleApplication extends Application {
                 {
                     /* If debug mode is enabled, holding Shift down should put
                      * the game into hyperactive mode */
-                    if (INSTANCE.getContext().getResourceMap().getBoolean("debugMode"))
+                    if (getInstance().getContext().getResourceMap().getBoolean("debugMode"))
                     {
-                        debugSpeed = true;
+                        Interval.setDebugSpeed(true);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_F12)
                 {
@@ -125,7 +123,7 @@ public class PuzzleApplication extends Application {
                 if (e.getKeyCode() == KeyEvent.VK_SHIFT)
                 {
                     // If Shift is let go of, hyperactive mode should end
-                    debugSpeed = false;
+                    Interval.setDebugSpeed(false);
                 } else {
                     KeyboardInput.getKey().letGo();
                 }
@@ -140,8 +138,6 @@ public class PuzzleApplication extends Application {
     @Override
     protected void startup()
     {
-        INSTANCE = this;
-        
         // Create the game form
         initGameDialog(true);
 
@@ -197,10 +193,10 @@ public class PuzzleApplication extends Application {
     
     public String getGamePackage()
     {
-        return INSTANCE.getContext().getResourceMap().getString("Application.package");
+        return getInstance().getContext().getResourceMap().getString("Application.package");
     }
     
-    public void reportError(Throwable ex)
+    public static void reportError(Throwable ex)
     {
         if ((ex instanceof Exception) && !(ex instanceof RuntimeException))
         {

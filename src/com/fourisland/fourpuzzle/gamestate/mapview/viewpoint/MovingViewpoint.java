@@ -39,7 +39,7 @@ public class MovingViewpoint implements Viewpoint {
         this.sy = sy;
         this.dx = dx;
         this.dy = dy;
-        this.speed = length / Game.FPS;
+        this.speed = length / (double) Game.FPS;
         this.xdist = dx - sx;
         this.ydist = dy - sy;
         this.callback = callback;

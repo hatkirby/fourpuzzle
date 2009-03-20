@@ -59,10 +59,10 @@ public class EventHandler {
                      * Also reset the viewpoint in case the viewpoint was
                      * fixed during the thread */
                     
-                    SpecialEvent.mapView.setViewpoint(new AutomaticViewpoint(SpecialEvent.mapView.getCurrentMap()));
+                    new SpecialEvent().ResetViewpoint();
                 } catch (ResourceNotFoundException ex)
                 {
-                    PuzzleApplication.INSTANCE.reportError(ex);
+                    PuzzleApplication.reportError(ex);
                 }
             }
         };

@@ -9,6 +9,7 @@ import com.fourisland.fourpuzzle.Game;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.Event;
 import com.fourisland.fourpuzzle.gamestate.mapview.event.LayerEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
@@ -34,7 +35,7 @@ public class MoveEventThread implements Runnable {
     public MoveEventThread(Event ev, MoveEvent[] actions)
     {
         this.ev = ev;
-        this.actions = actions;
+        this.actions = Arrays.copyOf(actions, actions.length);
     }
     
     public void start()

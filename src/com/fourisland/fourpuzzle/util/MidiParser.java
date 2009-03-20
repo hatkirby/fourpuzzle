@@ -27,7 +27,7 @@ public class MidiParser {
     
     public Sequence parse() throws InvalidMidiDataException
     {
-        Sequence temp = temp = new Sequence(seq.getDivisionType(), seq.getResolution());
+        Sequence temp = new Sequence(seq.getDivisionType(), seq.getResolution());
         
         for (Track t : seq.getTracks())
         {

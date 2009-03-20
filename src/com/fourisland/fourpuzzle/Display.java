@@ -42,8 +42,7 @@ import org.jdesktop.application.ResourceMap;
  */
 public class Display {
     
-    public static int tileAnimationFrame = 0;
-    
+    private static int tileAnimationFrame = 0;
     private static List<Renderable> renderables = new CopyOnWriteArrayList<Renderable>();
 
     public static void render(Component gameFrame)
@@ -229,10 +228,10 @@ public class Display {
                         return;
                     } catch (RuntimeException ex)
                     {
-                        PuzzleApplication.INSTANCE.reportError(ex);
+                        PuzzleApplication.reportError(ex);
                     } catch (Error ex)
                     {
-                        PuzzleApplication.INSTANCE.reportError(ex);
+                        PuzzleApplication.reportError(ex);
                     }
                 }
             };
@@ -329,6 +328,11 @@ public class Display {
         cachePoint = new Rectangle(x, y, width, height);
         
         return cachePoint;
+    }
+    
+    public int getTileAnimationFrame()
+    {
+        return tileAnimationFrame;
     }
     
 }

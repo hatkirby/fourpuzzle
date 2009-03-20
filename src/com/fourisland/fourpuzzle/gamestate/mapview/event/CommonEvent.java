@@ -51,11 +51,13 @@ public class CommonEvent {
         this.callback = callback;
     }
 
-    public EventCallTime getCalltime() {
+    public EventCallTime getCalltime()
+    {
         return calltime;
     }
 
-    public void setCalltime(EventCallTime calltime) {
+    public void setCalltime(EventCallTime calltime)
+    {
         this.calltime = calltime;
     }
     

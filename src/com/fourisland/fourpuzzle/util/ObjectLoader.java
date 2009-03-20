@@ -55,7 +55,7 @@ public class ObjectLoader {
     {
         if (!imageCache.containsKey(type + "/" + name))
         {
-            ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+            ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
             String filename = getFilename(type, name, "png");
             InputStream str = rm.getClassLoader().getResourceAsStream(filename);
             BufferedImage bImg = null;
@@ -75,7 +75,7 @@ public class ObjectLoader {
     {
         if (!imageCache.containsKey(type + "/" + name))
         {
-            ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+            ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
             String filename = getFilename(type, name, "png");
             InputStream str = rm.getClassLoader().getResourceAsStream(filename);
             BufferedImage bImg = null;
@@ -107,7 +107,7 @@ public class ObjectLoader {
     {
         if (!musicCache.containsKey(name))
         {
-            ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+            ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
             String filename = getFilename("Music", name, "mid");
             InputStream str = rm.getClassLoader().getResourceAsStream(filename);
             Sequence seq = null;
@@ -136,7 +136,7 @@ public class ObjectLoader {
     {
         if (!soundCache.containsKey("Sound/" + name))
         {
-            ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+            ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
             String filename = getFilename("Sound", name, "wav");
             InputStream soundFile = rm.getClassLoader().getResourceAsStream(filename);
             AudioInputStream ais = null;
@@ -173,7 +173,7 @@ public class ObjectLoader {
     
     public static String getFilename(String type, String name, String ex)
     {
-        ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+        ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
         String f = rm.getResourcesDir() + type.toLowerCase() + "/" + name + "." + ex;
         URL fu = rm.getClassLoader().getResource(f);
 

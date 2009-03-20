@@ -14,6 +14,8 @@ import java.util.Vector;
  */
 public class EventList extends Vector<LayerEvent> {
     
+    private static final long serialVersionUID = 765438545;
+    
     public EventList(Map parentMap)
     {
         setParentMap(parentMap);
@@ -62,7 +64,7 @@ public class EventList extends Vector<LayerEvent> {
         return super.add(o);
     }
     
-    private Map parentMap = null;
+    private transient Map parentMap = null;
     public Map getParentMap()
     {
         return parentMap;
@@ -75,6 +77,36 @@ public class EventList extends Vector<LayerEvent> {
         {
             ev.setParentMap(parentMap);
         }
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 3;
+        hash = 59 * hash + (this.parentMap != null ? this.parentMap.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        
+        final EventList other = (EventList) obj;
+        if (this.parentMap != other.parentMap && (this.parentMap == null || !this.parentMap.equals(other.parentMap)))
+        {
+            return false;
+        }
+        
+        return true;
     }
 
 }

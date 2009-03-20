@@ -33,7 +33,7 @@ public class Interval {
     private long last = System.nanoTime();
     public boolean isElapsed()
     {
-        if (PuzzleApplication.debugSpeed)
+        if (Interval.getDebugSpeed())
         {
             return true;
         }
@@ -46,6 +46,17 @@ public class Interval {
         }
         
         return false;
+    }
+    
+    private static boolean debugSpeed = false;
+    public static void setDebugSpeed(boolean debugSpeed)
+    {
+        Interval.debugSpeed = debugSpeed;
+    }
+    
+    public static boolean getDebugSpeed()
+    {
+        return debugSpeed;
     }
 
 }

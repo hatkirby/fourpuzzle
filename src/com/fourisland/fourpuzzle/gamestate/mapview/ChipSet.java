@@ -52,7 +52,7 @@ public class ChipSet {
 
     public static void initalize(String name)
     {
-        ResourceMap rm = PuzzleApplication.INSTANCE.getContext().getResourceManager().getResourceMap();
+        ResourceMap rm = PuzzleApplication.getInstance().getContext().getResourceManager().getResourceMap();
         InputStream cs = null;
         
         if (rm.getClassLoader().getResource(rm.getResourcesDir() + "chipset/" + name + ".tsx") == null)

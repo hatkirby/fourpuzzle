@@ -26,7 +26,7 @@ public enum Window
     },
     Selector(64)
     {
-        Interval in = Interval.createTickInterval(4);
+        transient Interval in = Interval.createTickInterval(4);
         boolean isFlashing = false;
         
         @Override

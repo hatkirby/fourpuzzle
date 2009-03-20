@@ -23,6 +23,8 @@ import java.util.logging.Logger;
  */
 public class SaveFile implements Serializable {
     
+    private static final long serialVersionUID = 234503257;
+    
     /**
      * Creates a new SaveFile
      */
@@ -31,7 +33,7 @@ public class SaveFile implements Serializable {
         switches = new HashMap<String, Boolean>();
         party = Database.createParty();
         variables = new HashMap<String, Integer>();
-        currentMap = new String();
+        currentMap = "";
         hero = new HeroEvent();
     }
     
@@ -43,7 +45,7 @@ public class SaveFile implements Serializable {
      */
     public SaveFile(int file) throws IOException
     {
-        InputStream is = PuzzleApplication.INSTANCE.getContext().getLocalStorage().openInputFile("Save" + file + ".sav");
+        InputStream is = PuzzleApplication.getInstance().getContext().getLocalStorage().openInputFile("Save" + file + ".sav");
         ObjectInputStream ois = new ObjectInputStream(is);
         SaveFile temp = null;
         try {
@@ -63,7 +65,7 @@ public class SaveFile implements Serializable {
     
     public void saveGame(int file) throws IOException
     {
-        OutputStream os = PuzzleApplication.INSTANCE.getContext().getLocalStorage().openOutputFile("Save" + file + ".sav");
+        OutputStream os = PuzzleApplication.getInstance().getContext().getLocalStorage().openOutputFile("Save" + file + ".sav");
         ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(this);
         oos.close();

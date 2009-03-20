@@ -26,7 +26,7 @@ public final class ImmutableEvent
 
     public String getLabel()
     {
-        return new String(ev.getLabel());
+        return ev.getLabel();
     }
 
     public Point getLocation()

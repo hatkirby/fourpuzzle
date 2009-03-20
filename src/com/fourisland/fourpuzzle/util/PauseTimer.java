@@ -5,8 +5,6 @@
 
 package com.fourisland.fourpuzzle.util;
 
-import com.fourisland.fourpuzzle.PuzzleApplication;
-
 /**
  *
  * @author hatkirby
@@ -22,7 +20,7 @@ public class PauseTimer {
     Interval in = Interval.createTickInterval(1);
     public boolean isElapsed()
     {
-        if (PuzzleApplication.debugSpeed)
+        if (Interval.getDebugSpeed())
         {
             return true;
         }

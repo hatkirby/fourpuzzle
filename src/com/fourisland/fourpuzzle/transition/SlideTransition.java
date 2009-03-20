@@ -42,7 +42,7 @@ public class SlideTransition implements MultidirectionalTransition {
             way = SlideDirection.SideToSide;
         }
         
-        wait = Math.round(max / (Game.FPS/2));
+        wait = max / (Game.FPS/2);
     }
     
     public TransitionDirection getDirection()

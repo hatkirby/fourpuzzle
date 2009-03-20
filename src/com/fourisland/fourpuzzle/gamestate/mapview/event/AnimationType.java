@@ -26,7 +26,7 @@ public enum AnimationType {
      */
     CommonWithStepping(true, true)
     {
-        Interval in = Interval.createTickInterval(2);
+        transient Interval in = Interval.createTickInterval(2);
         
         @Override
         public void tick(PossibleEvent pe)
@@ -56,7 +56,7 @@ public enum AnimationType {
      */
     TurnLeft(true, true)
     {
-        Interval in = Interval.createTickInterval(2);
+        transient Interval in = Interval.createTickInterval(2);
         
         @Override
         public void tick(PossibleEvent pe)
@@ -73,7 +73,7 @@ public enum AnimationType {
      */
     TurnRight(true, true)
     {
-        Interval in = Interval.createTickInterval(2);
+        transient Interval in = Interval.createTickInterval(2);
         
         @Override
         public void tick(PossibleEvent pe)

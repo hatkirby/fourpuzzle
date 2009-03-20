@@ -30,7 +30,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class SpecialEvent {
     
-    protected static MapViewGameState mapView = null;
+    private static MapViewGameState mapView = null;
     public static void setMapView(MapViewGameState mapView)
     {
         SpecialEvent.mapView = mapView;

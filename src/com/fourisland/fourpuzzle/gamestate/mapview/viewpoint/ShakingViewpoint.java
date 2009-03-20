@@ -28,7 +28,7 @@ public class ShakingViewpoint implements Viewpoint {
         this.length = length;
         this.x = x;
         this.y = y;
-        this.in = Interval.createMillisInterval(1000 / speed.getSpeed());
+        this.in = Interval.createMillisInterval(1000F / speed.getSpeed());
         this.speed = speed;
         this.callback = callback;
         this.start = System.currentTimeMillis();
