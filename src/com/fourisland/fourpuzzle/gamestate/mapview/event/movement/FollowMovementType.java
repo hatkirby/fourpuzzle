@@ -40,6 +40,9 @@ public class FollowMovementType implements MovementType {
     
     private boolean search(ImmutableEvent ev)
     {
+        /* Iterate over all of the directions and check if moving in that
+         * direction would place the event on the destination event. If so, the
+         * correct path has been aquired and thus we can return */
         for (Direction d : Direction.values())
         {
             Point loc = d.to(ev.getLocation());
@@ -48,6 +51,9 @@ public class FollowMovementType implements MovementType {
                 return true;
             }
         }
+        
+        /* Calculate the directions to attempt and the order in which to do so
+         * based on proximity to the destination event */
         
         List<Direction> ds = ev.getLegalMoves();
         List<Direction> tempd = new ArrayList<Direction>();
@@ -80,18 +86,25 @@ public class FollowMovementType implements MovementType {
             }
         }
         
+        // Remove calculated directions that aren't legal movements
         tempd.retainAll(ds);
+        
+        // Randomize directions so movement is more fluid
         Collections.shuffle(tempd);
         
+        // Iterate over the suggested directions 
         for (Direction d : tempd)
         {
+            /* If the position in the suggested direction has already been
+             * covered, try the next direction */
             Point loc = d.to(ev.getLocation());
-            
             if (attempts.contains(loc))
             {
                 continue;
             }
             
+            /* Create a dummy event and use it to search from the position in
+             * the suggested direction */
             Event temp = new LayerEvent(loc.x, loc.y);
             temp.setParentMap(ev.getParentMap());
             attempts.add(loc);

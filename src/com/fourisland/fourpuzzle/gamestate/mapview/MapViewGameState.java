@@ -71,7 +71,11 @@ public class MapViewGameState implements GameState {
     
     public void deinitalize()
     {
-        // Do nothing, yet
+        // If an event is running when the game state is closing, kill it
+        for (LayerEvent ev : currentMap.getEvents())
+        {
+            ev.getCallback().cancel();
+        }
     }
 
     public void processInput(KeyInput key)

@@ -63,21 +63,27 @@ public class SpecialEvent {
     public void DisplayMessage(String message) throws InterruptedException
     {
         MessageWindow mw;
-        
+
         if (faceSet.equals(""))
         {
             mw = new MessageWindow(message);
         } else {
             mw = new MessageWindow(message, faceSet, face);
         }
-        
+
         Display.registerRenderable(mw);
         KeyboardInput.registerInputable(mw);
-
-        mw.waitForCompletion();
         
-        Display.unregisterRenderable(mw);
-        KeyboardInput.unregisterInputable(mw);
+        try {
+            mw.waitForCompletion();
+        } catch (InterruptedException ex) {
+            /* The special event has been cancelled, kill the message and then
+             * propogate the exception to the EventHandler */
+            throw ex;
+        } finally {
+            Display.unregisterRenderable(mw);
+            KeyboardInput.unregisterInputable(mw);
+        }
     }
 
     /**
