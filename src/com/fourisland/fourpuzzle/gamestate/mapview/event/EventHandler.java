@@ -6,7 +6,6 @@
 package com.fourisland.fourpuzzle.gamestate.mapview.event;
 
 import com.fourisland.fourpuzzle.PuzzleApplication;
-import com.fourisland.fourpuzzle.gamestate.mapview.viewpoint.AutomaticViewpoint;
 import com.fourisland.fourpuzzle.util.ResourceNotFoundException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -32,14 +32,24 @@ public class LoopUntilCollisionMoveEvent implements MoveEvent {
     {
         loc = new Point();
         
-        while ((loc == null) || (!loc.equals(ev.getLocation())))
-        {
-            loc.setLocation(ev.getLocation());
-            
-            for (MoveEvent move : moves)
+        try {
+            while ((loc == null) || (!loc.equals(ev.getLocation())))
             {
-                move.doAction(ev);
+                loc.setLocation(ev.getLocation());
+
+                for (MoveEvent move : moves)
+                {
+                    move.doAction(ev);
+
+                    if (Thread.currentThread().isInterrupted())
+                    {
+                        throw new InterruptedException();
+                    }
+                }
             }
+        } catch (InterruptedException ex) {
+            /* The special event has been cancelled; Propogate the interrupt to
+             * the MoveEventThread */
         }
     }
 

@@ -163,7 +163,7 @@ public class SpecialEvent {
     /**
      * Waits until all previously called MoveEvent()s have finished
      * 
-     * @throws InterruptedException
+     * @throws InterruptedException 
      */
     public void MoveEventWait() throws InterruptedException
     {
