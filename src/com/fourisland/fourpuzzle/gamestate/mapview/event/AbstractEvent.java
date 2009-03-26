@@ -43,6 +43,7 @@ public abstract class AbstractEvent implements Event {
     }
     
     private int moveTimer;
+    private Direction moveDirection;
     public boolean startMoving(Direction toMove)
     {
         /* If the event is already moving (sometimes it manages to slip through
@@ -52,24 +53,19 @@ public abstract class AbstractEvent implements Event {
             return false;
         }
         
-        /* Attempt to turn in the correct direction and then check if it was
-         * done. It could fail in certain cases which would mean the event
-         * shouldn't move, for instance, if a LayerEvent's AnimationType was
-         * FixedGraphic.
+        /* Attempt to face the event in the specified direction
          * 
-         * There is a slight problem with this, however. Currently, if the
-         * AnimationType is FixedGraphic, but the event is already facing the
-         * correct direction, the event will move anyway, despite being fixed */
+         * This may fail due to an incompatiable LayerEvent's AnimationType, but
+         * moving will work regardless of this */
         setDirection(toMove);
-        if (getDirection() != toMove)
-        {
-            return false;
-        }
         
         /* Make sure that there are no present obstructions on the map in the
          * specified direction */
         if (!getParentMap().checkForCollision(this, toMove))
         {
+            // Face the event in the correct direction
+            moveDirection = toMove;
+            
             // Start the stepping animation
             setAnimationStep(2);
             
@@ -80,7 +76,7 @@ public abstract class AbstractEvent implements Event {
             setMoving(true);
             
             return true;
-        } else {
+        } else {   
             return false;
         }
     }
@@ -104,7 +100,7 @@ public abstract class AbstractEvent implements Event {
                     setMoving(false);
                     
                     // Move the event to the correct location
-                    setLocation(getDirection().to(getLocation()));
+                    setLocation(moveDirection.to(getLocation()));
                 } else if (moveTimer <= (getMoveSpeed().getSpeed() / 2))
                 {
                     // If movement is half-complete, advance its animation
@@ -127,7 +123,7 @@ public abstract class AbstractEvent implements Event {
          * (if it's moving at all) */
         if (isMoving())
         {
-            Point loc = getDirection().to(getLocation());
+            Point loc = moveDirection.to(getLocation());
             if ((loc.x == x) && (loc.y == y))
             {
                 return true;
@@ -180,10 +176,10 @@ public abstract class AbstractEvent implements Event {
     {
         if (isMoving())
         {
-            if (getDirection() == Direction.West)
+            if (moveDirection == Direction.West)
             {
                 return -(Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed())));
-            } else if (getDirection() == Direction.East)
+            } else if (moveDirection == Direction.East)
             {
                 return Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed()));
             }
@@ -196,10 +192,10 @@ public abstract class AbstractEvent implements Event {
     {
         if (isMoving())
         {
-            if (getDirection() == Direction.North)
+            if (moveDirection == Direction.North)
             {
                 return -(Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed())));
-            } else if (getDirection() == Direction.South)
+            } else if (moveDirection == Direction.South)
             {
                 return Math.round((getMoveSpeed().getSpeed() - moveTimer) * (16F / getMoveSpeed().getSpeed()));
             }
